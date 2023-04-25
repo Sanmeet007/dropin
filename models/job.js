@@ -31,7 +31,9 @@ class JobDetails {
     this.client_profile_image = d.profle_image;
     this.is_user_verified = d.verified;
     this.client_email = d.email;
-    this.client_name = d.first_name + " " + d.last_name;
+    if (d.last_name) {
+      this.client_name = d.first_name + " " + d.last_name;
+    } else this.client_name = d.first_name;
   }
   static fromData(json) {
     return new JobDetails(json);
