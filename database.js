@@ -41,7 +41,7 @@ class DataBase {
   }
 
   /**
-   *
+   * Fetches all the users from the database
    * @returns {Promise<Array<User>?>}
    */
   async getAllUsers() {
@@ -54,7 +54,7 @@ class DataBase {
   }
 
   /**
-   *
+   * Fetches details of user
    * @returns {Promise<Client|Freelancer?>}
    */
   async getUserDetails(uid) {
@@ -89,7 +89,7 @@ class DataBase {
   }
 
   /**
-   *
+   * Fetches Client details
    * @param {Number} uid
    * @returns {Promise<ClientDetails?>}
    */
@@ -103,7 +103,7 @@ class DataBase {
   }
 
   /**
-   *
+   * Fetches Freelancer Details
    * @param {Number} uid
    * @returns {Promise<FreelancerDetails?>}
    */
@@ -117,6 +117,9 @@ class DataBase {
   }
 
   /**
+   *
+   * Creates a new user depending on the `account_type` i.e. user can be client or freelancer.
+   *
    * @param {string} account_type
    * @param {Object} details
    * @param {string} details.first_name
@@ -200,7 +203,7 @@ class DataBase {
   }
 
   /**
-   *
+   * Deletes user from the database
    * @param {number} uid
    */
   async deleteUser(uid) {
@@ -244,6 +247,7 @@ class DataBase {
   }
 
   /**
+   * Updates Client details by using user_id of the user
    *
    * @param {number} uid
    * @param {Object} details
@@ -276,6 +280,7 @@ class DataBase {
   }
 
   /**
+   * Updates Freelancer details using user_id.
    *
    * @param {number} uid
    * @param {Object} details
@@ -312,6 +317,8 @@ class DataBase {
   }
 
   /**
+   * Sets the verification status of the user .
+   * Sets it true by default i.e when called with all correct params user gets verified.
    *
    * @param {number} uid
    * @param {boolean} verified
@@ -326,6 +333,9 @@ class DataBase {
   }
 
   /**
+   * Updates or changes password of user.
+   *
+   * NOTE : You don't have to hash the password. It handles hashing by itself  ( md5 )
    *
    * @param {number} uid
    * @param {string} password
@@ -342,6 +352,8 @@ class DataBase {
 
   /**
    *
+   * Returns an Array of Jobs in database.
+   * NOTE : It doesn't returns jobs based on status you need to filter it by yourself.
    * @param {number} limit
    * @param {number} offset
    * @param {boolean} latest
@@ -351,13 +363,17 @@ class DataBase {
   async listJobs(limit = 10, offset = 0, latest = true) {
     /** @type {Array?} */
     const result = await this.#query(
-      "SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users"
+      `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users ORDER BY created_at ${
+        latest ? "DESC" : "ASC"
+      } LIMIT ?,?`,
+      [offset, limit]
     );
     if (result && result.length > 0) return result.map(JobDetails.fromData);
     return null;
   }
 
   /**
+   * Returns job details based on job_id passed as parama.
    *
    * @param {number} job_id
    * @returns {Promise<JobDetails>}
@@ -372,6 +388,7 @@ class DataBase {
   }
 
   /**
+   * Creates a new job.
    *
    * @param {number} user_id
    * @param {Object} job_details
@@ -389,6 +406,9 @@ class DataBase {
   }
 
   /**
+   *
+   * Updates Job Details.
+   *
    * @param {number} job_id
    * @param {Object} job_details
    * @param {string} job_details.title
@@ -419,6 +439,7 @@ class DataBase {
   }
 
   /**
+   * Delete the Job permanently from database.
    *
    * @param {number} job_id
    * @returns {Promise<void>}
