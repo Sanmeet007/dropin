@@ -280,3 +280,42 @@ END$
 $ 
 
 DELIMITER ;
+
+DROP procedure IF EXISTS `create_job`;
+
+DELIMITER $$
+
+CREATE PROCEDURE `CREATE_JOB`(IN _USER_ID INT, IN TITLE 
+VARCHAR(255), IN DESCRIPTION LONGTEXT, IN BUDGET DECIMAL
+) BEGIN 
+	declare k int;
+	set k = (
+	        select client_id
+	        from clients
+	        where
+	            user_id = _user_id
+	        limit 1
+	    );
+	if k is not null then start transaction;
+	insert into
+	    jobs (
+	        client_id,
+	        title,
+	        description,
+	        budget,
+	        status
+	    )
+	values (
+	        k,
+	        title,
+	        description,
+	        budget,
+	        'open'
+	    );
+	commit;
+	end if;
+END$ 
+
+$ 
+
+DELIMITER ;
