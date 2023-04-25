@@ -436,6 +436,21 @@ class DataBase {
     ]);
     return;
   }
+
+  /**
+   *
+   * @param {number} uid
+   * @param {string} password
+   * @returns {Promise<void>}
+   */
+  async updateUserPassword(uid, password) {
+    const hashedPassword = md5(password, "hex");
+    await this.#query("UPDATE users SET password = ? WHERE user_id = ?", [
+      hashedPassword,
+      uid,
+    ]);
+    return;
+  }
 }
 
 module.exports = DataBase;
