@@ -94,7 +94,7 @@ CREATE TABLE
         job_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         client_id INTEGER UNSIGNED,
         title VARCHAR(255),
-        description VARCHAR(255),
+        description LONGTEXT,
         budget DECIMAL DEFAULT 5.0,
         status ENUM('closed', 'open', 'progress') DEFAULT 'open',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
