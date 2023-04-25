@@ -96,8 +96,6 @@ CREATE TABLE
         title VARCHAR(255),
         description VARCHAR(255),
         budget DECIMAL DEFAULT 5.0,
-        bio VARCHAR(255) DEFAULT 'Feeling Lucky',
-        profile_image VARCHAR(255),
         status ENUM('closed', 'open', 'progress') DEFAULT 'open',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT `min_job_price` CHECK (budget > 5),
@@ -248,8 +246,7 @@ IN COMPANY_WEBSITE VARCHAR(255), IN COMPANY_SIZE INT
 	        account_type,
 	        dob
 	    )
-	VALUES
-	(
+	VALUES (
 	        k,
 	        first_name,
 	        last_name,
