@@ -1,4 +1,4 @@
-# Upwork Db design clone
+# Database design
 
 ## Basic
 
