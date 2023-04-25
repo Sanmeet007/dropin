@@ -104,3 +104,5 @@ call
         "Create me a hello world app in python programming language",
         500
     );
+    
+select * from jobs    

@@ -95,7 +95,7 @@ CREATE TABLE
         client_id INTEGER UNSIGNED,
         title VARCHAR(255),
         description LONGTEXT,
-        budget DECIMAL DEFAULT 5.0,
+        budget DOUBLE DEFAULT 5.0,
         status ENUM('closed', 'open', 'progress') DEFAULT 'open',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT `min_job_price` CHECK (budget > 5),
@@ -114,7 +114,7 @@ CREATE TABLE
         user_id INTEGER UNSIGNED,
         job_id INTEGER UNSIGNED,
         cover_letter LONGTEXT NOT NULL,
-        bid_amount DECIMAL DEFAULT 5,
+        bid_amount DOUBLE DEFAULT 5,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         timeframe INT NOT NULL,
         CONSTRAINT `fk_proposals_user_key` FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
@@ -131,7 +131,7 @@ CREATE TABLE
         contact_id INTEGER UNSIGNED PRIMARY KEY AUTO_INCREMENT,
         freelancer_id INTEGER UNSIGNED,
         job_id INTEGER UNSIGNED,
-        payment_amount DECIMAL NOT NULL,
+        payment_amount DOUBLE NOT NULL,
         start_date DATE NOT NULL,
         end_date DATE NOT NULL,
         CONSTRAINT `fk_freelancer_key` FOREIGN KEY (freelancer_id) REFERENCES freelancers(freelancer_id) ON DELETE CASCADE,
@@ -286,7 +286,7 @@ DROP procedure IF EXISTS `create_job`;
 DELIMITER $$
 
 CREATE PROCEDURE `CREATE_JOB`(IN _USER_ID INT, IN TITLE 
-VARCHAR(255), IN DESCRIPTION LONGTEXT, IN BUDGET DECIMAL
+VARCHAR(255), IN DESCRIPTION LONGTEXT, IN BUDGET DOUBLE
 ) BEGIN 
 	declare k int;
 	set k = (

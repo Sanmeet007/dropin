@@ -8,129 +8,17 @@ const conn = mysql.createConnection({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
 });
+const {
+  User,
+  FreelancerDetails,
+  Freelancer,
+  Client,
+  ClientDetails,
+} = require("./models/users");
+
+const { JobDetails } = require("./models/job");
 
 conn.connect();
-
-class User {
-  /** @type {number} */ uid;
-  /** @type {string} */ first_name;
-  /** @type {string} */ last_name;
-  /** @type {string} */ email;
-  /** @type {string} */ hashedPassword;
-  /** @type {string} */ location;
-  /** @type {string} */ bio;
-  /** @type {string} */ profile_image;
-  /** @type {string} */ account_type;
-  /** @type {string} */ gender;
-  /** @type {boolean} */ verified;
-
-  /**
-   * @type {Date}
-   * @private
-   * */ #dob;
-
-  get age() {
-    return new Date().getFullYear - this.#dob.getFullYear();
-  }
-
-  get fullname() {
-    return `${this.first_name}  ${this.last_name}`;
-  }
-
-  constructor({
-    user_id,
-    first_name,
-    last_name,
-    email,
-    password,
-    location,
-    bio,
-    account_type,
-    gender,
-    dob,
-    profile_image = null,
-    verified = false,
-  }) {
-    this.first_name = first_name;
-    this.last_name = last_name;
-    this.uid = user_id;
-    this.account_type = account_type;
-    this.#dob = dob;
-    this.gender = gender;
-    this.email = email;
-    this.profile_image = profile_image;
-    this.bio = bio;
-    this.hashedPassword = password;
-    this.location = location;
-    this.verified = Boolean(verified);
-  }
-  /**
-   *
-   * @param {Object} json
-   * @returns {User}
-   */
-  static fromData(json) {
-    return new User(json);
-  }
-}
-
-class FreelancerDetails {
-  /** @type {number} */ freelancer_id;
-  /** @type {string?} */ education;
-  /** @type {Array<string>?} */ skills;
-  /** @type {Array<string>?} */ programming_languages;
-  /** @type {Array<string>?} */ languages;
-  /** @type {Array<string>?} */ databases;
-  /** @type {Array<string>?} */ other_skills;
-
-  constructor(d) {
-    this.freelancer_id = d.freelancer_id;
-    this.skills = d.skills?.split(",") ?? null;
-    this.programming_languages = d.programming_languages?.split(",") ?? null;
-    this.databases = d.databases?.split(",");
-    this.other_skills = d.other_skills?.split(",") ?? null;
-    this.education = d.education;
-    this.languages = d.languages?.split(",") ?? null;
-  }
-}
-
-class Freelancer extends User {
-  /** @type {FreelancerDetails} */ details;
-  constructor(d) {
-    super(d);
-    this.details = new FreelancerDetails(d);
-  }
-  static fromData(d) {
-    return new Freelancer(d);
-  }
-}
-
-class ClientDetails {
-  /** @type {number} */ client_id;
-  /** @type {string} */ company_name;
-  /** @type {string} */ company_website;
-  /** @type {string} */ company_size;
-  /** @type {string} */ industry;
-
-  constructor(d) {
-    this.client_id = d.client_id;
-    this.company_name = d.company_name;
-    this.company_website = d.company_website;
-    this.company_size = d.company_size;
-    this.industry = d.industry;
-  }
-}
-
-class Client extends User {
-  /** @type {ClientDetails} */ details;
-  constructor(d) {
-    super(d);
-    this.details = new ClientDetails(d);
-  }
-  static fromData(d) {
-    return new Client(d);
-  }
-}
 
 class DataBase {
   /** @type {mysql.Connection} */
@@ -449,6 +337,94 @@ class DataBase {
       hashedPassword,
       uid,
     ]);
+    return;
+  }
+
+  /**
+   *
+   * @param {number} limit
+   * @param {number} offset
+   * @param {boolean} latest
+   *
+   * @returns {Promise<Array<JobDetails>?>}
+   */
+  async listJobs(limit = 10, offset = 0, latest = true) {
+    /** @type {Array?} */
+    const result = await this.#query(
+      "SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users"
+    );
+    if (result && result.length > 0) return result.map(JobDetails.fromData);
+    return null;
+  }
+
+  /**
+   *
+   * @param {number} job_id
+   * @returns {Promise<JobDetails>}
+   */
+  async getJobDetails(job_id) {
+    const result = await this.#query(
+      "SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users WHERE job_id = ?",
+      [job_id]
+    );
+    if (result && result.length > 0) return JobDetails.fromData(result[0]);
+    return null;
+  }
+
+  /**
+   *
+   * @param {number} user_id
+   * @param {Object} job_details
+   * @param {string} job_details.title
+   * @param {string}   job_details.description
+   * @param {number}   job_details.budget
+   */
+  async createJob(user_id, job_details) {
+    await this.#query("call create_job(? ,? , ? , ?)", [
+      user_id,
+      job_details.title,
+      job_details.description,
+      job_details.budget,
+    ]);
+  }
+
+  /**
+   * @param {number} job_id
+   * @param {Object} job_details
+   * @param {string} job_details.title
+   * @param {string} job_details.description
+   * @param {number} job_details.budget
+   * @returns {Promise<void>}
+   */
+  async updateJobDetails(job_id, job_details) {
+    let query = "UPDATE jobs SET ";
+    const entries = Object.entries(job_details);
+    const params = [];
+    if (entries.length === 0) return;
+
+    entries.map(([k, v], i) => {
+      if (i !== 0) {
+        query += ",";
+      }
+
+      query += ` ${k} = ? `;
+      params.push(v);
+    });
+
+    query += " WHERE job_id = ?";
+    params.push(job_id);
+
+    await this.#query(query, params);
+    return;
+  }
+
+  /**
+   *
+   * @param {number} job_id
+   * @returns {Promise<void>}
+   */
+  async deleteJob(job_id) {
+    await this.#query("DELETE FROM jobs WHERE job_id = ?", [job_id]);
     return;
   }
 }
