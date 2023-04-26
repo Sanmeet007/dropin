@@ -56,6 +56,7 @@ class DataBase {
 
   /**
    * Fetches details of user
+   * @param {number} uid
    * @returns {Promise<Client|Freelancer?>}
    */
   async getUserDetails(uid) {
@@ -585,6 +586,7 @@ class DataBase {
   async getAllJobsByUserId(user_id) {}
   async getPaymentsHistoryByUserId(user_id) {}
   async getPaymentDetailsById(payment_id) {}
+  async getWithdrawalHistoryForFreelancer(user_id) {}
   async setPaymentStatusByContractId(contract_id, status) {}
 }
 

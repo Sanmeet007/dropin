@@ -98,3 +98,14 @@ Payments
 | `status` | The status of the payment, which could be one of several values such as "pending", "paid", or "failed". |
 | `created_at` | The date and time when the payment was created. |
 | `updated_at` | The date and time when the payment was last updated. |
+
+Withdrawals
+
+| Column Name | Description |
+|-------------|-------------|
+| `id` | A unique identifier for each withdrawal. |
+| `freelancer_id` | A foreign key reference to the `freelancers` table to associate the withdrawal with a particular freelancer. |
+| `amount` | The amount of the withdrawal, stored as a decimal with two decimal places. |
+| `status` | The status of the withdrawal, which could be one of several values such as "pending", "processed", or "failed". |
+| `created_at` | The date and time when the withdrawal was created. |
+| `updated_at` | The date and time when the withdrawal was last updated. |

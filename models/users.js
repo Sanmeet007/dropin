@@ -1,3 +1,5 @@
+const { ProposalsDetails } = require("./proposal");
+
 class User {
   /** @type {number} */ uid;
   /** @type {string} */ first_name;
@@ -82,6 +84,10 @@ class FreelancerDetails {
 }
 
 class Freelancer extends User {
+  /** @type {number} */ balance;
+  /** @type {Array<Contract>} */ contracts;
+  /** @type {Array<ProposalsDetails>} */ job_proposals;
+  /** @type {Array<Withdraw>} */ withdraw_history;
   /** @type {FreelancerDetails} */ details;
   constructor(d) {
     super(d);
@@ -109,6 +115,9 @@ class ClientDetails {
 }
 
 class Client extends User {
+  /** @type {Array<Contract>} */ contracts;
+  /** @type {Array<ProposalsDetails>} */ job_proposals;
+  /** @type {Array<Payment>} */ payment_history;
   /** @type {ClientDetails} */ details;
   constructor(d) {
     super(d);
