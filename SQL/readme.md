@@ -43,6 +43,7 @@ The User Table contains information about the users on the platform. The `user_i
 | budget | decimal | budget for the job |
 | status | varchar | status of the job (open, closed, in progress, etc.) |
 | created_at | datetime | date and time the job was posted |
+| closed_at | datetime | date and time the job was posted |
 
 The Job Table contains information about the jobs that clients post on the platform. The `job_id` is the primary key for this table. The `client_id` column is a foreign key to the Client Table, which identifies the client who posted the job. Other tables, such as the Proposal and Contract tables, will use the `job_id` as a foreign key to link data about proposals and contracts to specific jobs.
 
@@ -86,3 +87,14 @@ The Proposal Table contains information about the proposals that freelancers sub
 | end_date | date | date the job was completed |
 
 The Contract Table contains information about the contracts between clients and freelancers on the platform. The `contract_id` is the primary key for this table. The `freelancer_id` column is a foreign key to the User Table, which identifies the freelancer who accepted the job. The `job_id` column is a foreign key to the Job Table, which identifies the job the contract is for.
+
+Payments
+
+| Column Name | Description |
+|-------------|-------------|
+| `id` | A unique identifier for each payment. |
+| `job_id` | A foreign key reference to the `jobs` table to associate the payment with a particular job. |
+| `amount` | The amount of the payment, stored as a decimal with two decimal places. |
+| `status` | The status of the payment, which could be one of several values such as "pending", "paid", or "failed". |
+| `created_at` | The date and time when the payment was created. |
+| `updated_at` | The date and time when the payment was last updated. |
