@@ -1,6 +1,7 @@
 const { ClientDetails } = require("./users");
 
 class JobDetails {
+  /** @type {number} */ uid;
   /** @type {number} */ id;
   /** @type {ClientDetails} */ client_details;
   /** @type {number} */ budget;
@@ -14,6 +15,7 @@ class JobDetails {
   /** @type {string} */ client_name;
 
   constructor(d) {
+    this.uid = d.user_id;
     this.id = d.job_id;
     this.client_details = new ClientDetails({
       client_id: d.client_id,

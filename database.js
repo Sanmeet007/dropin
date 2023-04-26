@@ -17,6 +17,7 @@ const {
 } = require("./models/users");
 
 const { JobDetails } = require("./models/job");
+const { ProposalsDetails } = require("./models/proposal");
 
 conn.connect();
 
@@ -447,6 +448,97 @@ class DataBase {
   async deleteJob(job_id) {
     await this.#query("DELETE FROM jobs WHERE job_id = ?", [job_id]);
     return;
+  }
+
+  /**
+   *
+   * @param {number} user_id
+   * @param {number} job_id
+   * @param {Object} details
+   *
+   * @param {string} details.cover_letter
+   * @param {number} details.timeframe
+   * @param {number} details.bid_amount
+   *
+   * @returns {Promise<void>}
+   */
+
+  async createProposal(user_id, job_id, details) {
+    await this.#query(
+      `INSERT INTO proposals(user_id, job_id , cover_letter , timeframe , bid_amount) VALUES (?,?,?,?,?)`,
+      [
+        user_id,
+        job_id,
+        details.cover_letter,
+        details.timeframe,
+        details.bid_amount,
+      ]
+    );
+    return;
+  }
+
+  /**
+   * @param {number} proposal_id
+   *
+   * @param {object} details
+   * @param {string?} details.cover_letter
+   * @param {number?} details.timeframe
+   * @param {number?} details.bid_amount
+   *
+   * @returns {Promise<void>}
+   */
+  async updateProposalDetails(proposal_id, details) {
+    let query = "UPDATE proposals SET ";
+    const entries = Object.entries(details);
+    const params = [];
+    if (entries.length === 0) return;
+
+    entries.map(([k, v], i) => {
+      if (i !== 0) {
+        query += ",";
+      }
+
+      query += ` ${k} = ? `;
+      params.push(v);
+    });
+
+    query += " WHERE proposal_id = ?";
+    params.push(proposal_id);
+
+    await this.#query(query, params);
+    return;
+  }
+
+  /**
+   *
+   * @param {number} proposal_id
+   * @returns {Promise<void>}
+   */
+  async deleteProposal(proposal_id) {
+    await this.#query("DELETE FROM proposals WHERE proposal_id = ?", [
+      proposal_id,
+    ]);
+    return;
+  }
+
+  /**
+   *
+   * @param {number} job_id
+   *
+   *
+   * @returns {Promise<Array<ProposalsDetails>?>}
+   */
+
+  async getAllProposalsByJobId(job_id) {
+    /** @type {Array} */
+    const users = await this.#query(
+      `SELECT * FROM proposals where job_id = ?`,
+      [job_id]
+    );
+
+    if (users && users.length > 0) {
+      return users.map(ProposalsDetails.fromData);
+    } else return null;
   }
 }
 
