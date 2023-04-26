@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: localhost    Database: dropin
+-- Host: localhost    Database: upwork
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -171,7 +171,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (1,9,76,'success','2023-04-26 14:42:50','2023-04-26 15:38:15');
+INSERT INTO `payments` VALUES (1,9,76,'success','2023-04-26 14:42:50','2023-04-26 18:39:06');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -246,6 +246,37 @@ INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d9
 UNLOCK TABLES;
 
 --
+-- Table structure for table `withdrawals`
+--
+
+DROP TABLE IF EXISTS `withdrawals`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `withdrawals` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `freelancer_id` int unsigned DEFAULT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `status` enum('processed','failed','pending') NOT NULL DEFAULT 'pending',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
+  KEY `fk_freelancer_withdrawal_key` (`freelancer_id`),
+  CONSTRAINT `fk_freelancer_withdrawal_key` FOREIGN KEY (`freelancer_id`) REFERENCES `freelancers` (`freelancer_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `withdrawals`
+--
+
+LOCK TABLES `withdrawals` WRITE;
+/*!40000 ALTER TABLE `withdrawals` DISABLE KEYS */;
+INSERT INTO `withdrawals` VALUES (1,1,76.00,'2023-04-26 16:14:32','2023-04-26 16:17:50','processed');
+/*!40000 ALTER TABLE `withdrawals` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping events for database 'upwork'
 --
 
@@ -298,90 +329,6 @@ BEGIN
         );
         commit;
 		
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `create_concract` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `create_concract`(
-  in  _pid int
-)
-BEGIN
-	declare _fid int;
-    declare _uid int;
-    declare _jid int;
-    declare amnt double;
-    
-    select  user_id  , bid_amount  , job_id into  _uid , amnt  , _jid from proposals where proposal_id = _pid;
-    select freelancer_id into _fid from freelancers where user_id = _uid;
-    
-    if _fid is not null then 
-		start transaction;
-		
-        insert into contracts (freelancer_id , job_id , payment_amount, start_date)
-		values (
-			fid  , _jid , amnt , current_date 
-        );
-        
-        update jobs set status = 'progress' where job_id = _jid;
-        update proposals set status = 'accepted' where proposal_id = _pid;
-        
-        commit;
-    end if;
-    
-END ;;
-DELIMITER ;
-/*!50003 SET sql_mode              = @saved_sql_mode */ ;
-/*!50003 SET character_set_client  = @saved_cs_client */ ;
-/*!50003 SET character_set_results = @saved_cs_results */ ;
-/*!50003 SET collation_connection  = @saved_col_connection */ ;
-/*!50003 DROP PROCEDURE IF EXISTS `create_conract` */;
-/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
-/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
-/*!50003 SET @saved_col_connection = @@collation_connection */ ;
-/*!50003 SET character_set_client  = utf8mb4 */ ;
-/*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
-/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
-/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
-DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `create_conract`(
-  in  _pid int
-)
-BEGIN
-	declare _fid int;
-    declare _uid int;
-    declare _jid int;
-    declare amnt double;
-    
-    select  user_id  , bid_amount  , job_id into  _uid , amnt  , _jid from proposals where proposal_id = _pid;
-    select freelancer_id into _fid from freelancers where user_id = _uid;
-    
-    if _fid is not null then 
-		start transaction;
-		
-        insert into contracts (freelancer_id , job_id , payment_amount, start_date)
-		values (
-			fid  , _jid , amnt , current_date 
-        );
-        
-        update jobs set status = 'progress' where job_id = _jid;
-        update proposals set status = 'accepted' where proposal_id = _pid;
-        
-        commit;
-    end if;
-    
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -499,7 +446,8 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_job`(
 	in _user_id int,
     in title varchar(255),
     in description longtext,
-    in budget double
+    in budget double,
+    in _skillset text
 )
 BEGIN
 	declare k int ;
@@ -507,9 +455,9 @@ BEGIN
     
     if k is not null then 
 		start transaction;
-		insert into jobs (client_id , title , description , budget  , status)
+		insert into jobs (client_id , title , description , budget  , status , skillset)
 		values 
-		(k , title , description , budget , 'open');
+		(k , title , description , budget , 'open' , _skillset);
 		commit; 
 	end if; 
 END ;;
@@ -628,4 +576,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-26 21:12:05
+-- Dump completed on 2023-04-27  0:32:53

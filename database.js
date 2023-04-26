@@ -166,7 +166,7 @@ class DataBase {
    *
    * Creates a new user depending on the `account_type` i.e. user can be client or freelancer.
    *
-   * @param {string} account_type
+   * @param {('freelancer'|'client')} account_type
    * @param {Object} details
    * @param {string} details.first_name
    * @param {string?} details.last_name
@@ -176,7 +176,7 @@ class DataBase {
    * @param {string?} details.location
    * @param {string?} details.bio
    * @param {string?} details.profile_image
-   * @param {string}  details.gender
+   * @param {('male' | 'female')}  details.gender
    * @param {Array<string>}  details.skills
    * @param {Array<string?>} details.programming_languages
    * @param {Array<string?>} details.databases
@@ -570,6 +570,22 @@ class DataBase {
    */
   async deleteProposal(proposal_id) {
     await this.#query("DELETE FROM proposals WHERE proposal_id = ?", [
+      proposal_id,
+    ]);
+    return;
+  }
+
+  /**
+   *
+   * Sets proposal status
+   *
+   * @param {number} proposal_id
+   * @param {('accepted'|'declined'|'pending')} status
+   * @returns {Promise<void>}
+   */
+  async setProposalStatus(proposal_id, status = "pending") {
+    await this.#query("UPDATE proposals SET status = ? WHERE proposal_id = ?", [
+      status,
       proposal_id,
     ]);
     return;
