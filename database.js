@@ -452,6 +452,8 @@ class DataBase {
 
   /**
    *
+   * Creates a proposal
+   *
    * @param {number} user_id
    * @param {number} job_id
    * @param {Object} details
@@ -464,20 +466,20 @@ class DataBase {
    */
 
   async createProposal(user_id, job_id, details) {
-    await this.#query(
-      `INSERT INTO proposals(user_id, job_id , cover_letter , timeframe , bid_amount) VALUES (?,?,?,?,?)`,
-      [
-        user_id,
-        job_id,
-        details.cover_letter,
-        details.timeframe,
-        details.bid_amount,
-      ]
-    );
+    await this.#query(`call create_proposal (?,?,?,?,?)`, [
+      user_id,
+      job_id,
+      details.cover_letter,
+      details.timeframe,
+      details.bid_amount,
+    ]);
     return;
   }
 
   /**
+   *
+   * Updates proposal details for a specific proposal
+   *
    * @param {number} proposal_id
    *
    * @param {object} details
@@ -511,6 +513,8 @@ class DataBase {
 
   /**
    *
+   * Deltes a proposal permanently from database
+   *
    * @param {number} proposal_id
    * @returns {Promise<void>}
    */
@@ -523,9 +527,9 @@ class DataBase {
 
   /**
    *
+   * Returns all proposals to a specific job
+   *
    * @param {number} job_id
-   *
-   *
    * @returns {Promise<Array<ProposalsDetails>?>}
    */
 
@@ -540,6 +544,48 @@ class DataBase {
       return users.map(ProposalsDetails.fromData);
     } else return null;
   }
+
+  /**
+   * Converts the job proposal to contract
+   *
+   * @param {number} proposal_id
+   * @returns {Promise<void>}
+   */
+  async createContract(proposal_id) {
+    await this.#query("call create_contract(?)", [proposal_id]);
+    return;
+  }
+
+  /**
+   *
+   * Ends a contract with freelancer
+   *
+   * @param {number} contract_id
+   * @returns
+   */
+  async endContract(contract_id) {
+    await this.#query("call end_contract(?)", [contract_id]);
+    return;
+  }
+
+  /**
+   *
+   * Marks job as completed using job_id param
+   *
+   * @param {number} job_id
+   * @returns
+   */
+  async markJobAsCompleted(job_id) {
+    await this.#query("call end_job(?)", [job_id]);
+    return;
+  }
+
+  async getContractsDetailsById(contract_id) {}
+  async getAllContractsByUserId(user_id) {}
+  async getAllJobsByUserId(user_id) {}
+  async getPaymentsHistoryByUserId(user_id) {}
+  async getPaymentDetailsById(payment_id) {}
+  async setPaymentStatusByContractId(contract_id, status) {}
 }
 
 module.exports = DataBase;
