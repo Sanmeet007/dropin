@@ -1,4 +1,7 @@
 const { ProposalsDetails } = require("./proposal");
+const { Contract } = require("./contract");
+const { Payment } = require("./payment");
+const { Withdraw } = require("./withdraw");
 
 class User {
   /** @type {number} */ uid;
@@ -94,6 +97,13 @@ class Freelancer extends User {
     this.details = new FreelancerDetails(d);
   }
   static fromData(d) {
+    this.balance = d.balance;
+    this.contracts = d?.contracts.map(Contract.fromData) ?? null;
+    this.withdraw_history = d?.withdraw_history.map(Withdraw.fromData) ?? null;
+    this.job_proposals =
+      d?.job_proposals.map(ProposalsDetails.fromData) ?? null;
+
+    this.balance = d.balance;
     return new Freelancer(d);
   }
 }
@@ -121,6 +131,10 @@ class Client extends User {
   /** @type {ClientDetails} */ details;
   constructor(d) {
     super(d);
+    this.contracts = d?.contracts.map(Contract.fromData) ?? null;
+    this.payment_history = d?.payment_history.map(Withdraw.fromData) ?? null;
+    this.job_proposals =
+      d?.job_proposals.map(ProposalsDetails.fromData) ?? null;
     this.details = new ClientDetails(d);
   }
   static fromData(d) {
