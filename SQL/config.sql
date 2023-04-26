@@ -117,6 +117,11 @@ CREATE TABLE
         bid_amount DOUBLE DEFAULT 5,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         timeframe INT NOT NULL,
+        status ENUM(
+            'accepted',
+            'declined',
+            'pending'
+        ) DEFAULT 'pending' NOT NULL,
         CONSTRAINT `fk_proposals_user_key` FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
         CONSTRAINT `fk_propoals_job_key` FOREIGN KEY (job_id) REFERENCES jobs(job_id) ON DELETE CASCADE,
         CONSTRAINT `min_bid_amount` CHECK (bid_amount > 5)

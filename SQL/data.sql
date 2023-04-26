@@ -8,8 +8,7 @@ insert into
         account_type,
         dob
     )
-values
-(
+values (
         'Rohit',
         'Kumar',
         'rohit_kuman@gmail.com',
@@ -36,8 +35,7 @@ where freelancer_id = 1;
 
 insert into
     clients(user_id, company_name)
-values
-(1001, "Rohit productions");
+values (1001, "Rohit productions");
 
 call
     create_freelancer(
@@ -77,10 +75,6 @@ call
         NULL
     );
 
-select * from users;
-
-desc clients;
-
 insert into
     jobs(
         client_id,
@@ -104,5 +98,3 @@ call
         "Create me a hello world app in python programming language",
         500
     );
-    
-select * from jobs    

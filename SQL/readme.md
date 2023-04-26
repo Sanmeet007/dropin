@@ -69,6 +69,7 @@ The Client Table contains information about the clients who post jobs on the pla
 | cover_letter | varchar | cover letter for the proposal |
 | bid_amount | decimal | bid amount for the proposal |
 | created_at | datetime | date and time the proposal was submitted |
+| status | string | status of the proposal submmitted (accpeted , declined or pending) |
 | timeframe | int | timeframe proposed for completing the job in number of days |
 
 The Proposal Table contains information about the proposals that freelancers submit for jobs on the platform. The `proposal_id` is the primary key for this table. The `user_id` column is a foreign key to the User Table, which identifies the user who submitted the proposal. The `job_id` column is a foreign key to the Job Table, which identifies the job the proposal is for.

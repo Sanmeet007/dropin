@@ -5,6 +5,7 @@ class ProposalsDetails {
   /** @type {string} */ cover_letter;
   /** @type {Date} */ created_at;
   /** @type {number} */ timeframe;
+  /** @type {status} */ status;
 
   constructor(d) {
     this.cover_letter = d.cover_letter;
@@ -13,6 +14,7 @@ class ProposalsDetails {
     this.timeframe = d.timeframe;
     this.proposal_id = d.proposal_id;
     this.user_id = d.user_id;
+    this.status = d.status;
   }
 
   static fromData(json) {
