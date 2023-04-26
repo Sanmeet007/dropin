@@ -74,7 +74,26 @@ class DataBase {
       `,
         [uid]
       );
-      if (fullDetails) return Freelancer.fromData(fullDetails[0]);
+
+      const contracts = await this.#query(
+        "select * from contracts natural join freelancers natural join users where user_id = ?",
+        [uid]
+      );
+      const withdrawHistory = await this.#query(
+        "select * from withdrawals natural join freelancers natural join users where user_id =?",
+        [uid]
+      );
+      const jobProposals = await this.#query(
+        "select * from proposals where user_id =?",
+        [uid]
+      );
+      if (fullDetails)
+        return Freelancer.fromData({
+          ...fullDetails[0],
+          withdraw_history: withdrawHistory,
+          job_proposals: jobProposals,
+          contracts,
+        });
       else return null;
     } else if (user_type === "client") {
       const fullDetails = await this.#query(
@@ -83,7 +102,31 @@ class DataBase {
       `,
         [uid]
       );
-      if (fullDetails) return Client.fromData(fullDetails[0]);
+
+      const contracts = await this.#query(
+        "select * from contracts natural join clients natural join users where user_id = ?",
+        [uid]
+      );
+      const paymentHistory = await this.#query(
+        "select  id,user_id ,  client_id, t.job_id,t.status , t.created_at  , t.updated_at, amount from payments t inner join jobs j on j.job_id = t.job_id natural join clients where user_id = ?",
+        [uid]
+      );
+
+      const postedJobs = await this.#query(
+        `select *,(select count(*)  from proposals t2 where job_id = t.job_id)  as 'proposal_count'
+        from jobs t 
+        join clients c where t.client_id = c.client_id
+        and user_id = ?`,
+        [uid]
+      );
+
+      if (fullDetails)
+        return Client.fromData({
+          ...fullDetails[0],
+          payment_history: paymentHistory,
+          posted_jobs: postedJobs,
+          contracts,
+        });
       else return null;
     } else {
       return null;

@@ -3,6 +3,32 @@ const { Contract } = require("./contract");
 const { Payment } = require("./payment");
 const { Withdraw } = require("./withdraw");
 
+class PostedJob {
+  /** @type {number} */ job_id;
+  /** @type {string} */ title;
+  /** @type {string} */ description;
+  /** @type {number} */ proposals_count;
+  /** @type {number} */ budget;
+  /** @type {string} */ status;
+  /** @type {Date} */ creatd_at;
+  /** @type {Date?} */ closed_at;
+
+  constructor(d) {
+    this.job_id = d.job_id;
+    this.title = d.title;
+    this.description = d.description;
+    this.proposal_count = d.proposal_count;
+    this.budget = d.budget;
+    this.creatd_at = d.creatd_at;
+    this.status = d.status;
+    this.closed_at = d.closed_at;
+  }
+
+  static fromData(json) {
+    return new PostedJob(json);
+  }
+}
+
 class User {
   /** @type {number} */ uid;
   /** @type {string} */ first_name;
@@ -94,15 +120,14 @@ class Freelancer extends User {
   /** @type {FreelancerDetails} */ details;
   constructor(d) {
     super(d);
+    this.balance = d.balance;
+    this.contracts = d?.contracts?.map(Contract.fromData) ?? null;
+    this.withdraw_history = d?.withdraw_history?.map(Withdraw.fromData) ?? null;
+    this.job_proposals =
+      d?.job_proposals?.map(ProposalsDetails.fromData) ?? null;
     this.details = new FreelancerDetails(d);
   }
   static fromData(d) {
-    this.balance = d.balance;
-    this.contracts = d?.contracts.map(Contract.fromData) ?? null;
-    this.withdraw_history = d?.withdraw_history.map(Withdraw.fromData) ?? null;
-    this.job_proposals =
-      d?.job_proposals.map(ProposalsDetails.fromData) ?? null;
-
     this.balance = d.balance;
     return new Freelancer(d);
   }
@@ -126,15 +151,14 @@ class ClientDetails {
 
 class Client extends User {
   /** @type {Array<Contract>} */ contracts;
-  /** @type {Array<ProposalsDetails>} */ job_proposals;
+  /** @type {Array<PostedJob>} */ postedJobs;
   /** @type {Array<Payment>} */ payment_history;
   /** @type {ClientDetails} */ details;
   constructor(d) {
     super(d);
     this.contracts = d?.contracts.map(Contract.fromData) ?? null;
-    this.payment_history = d?.payment_history.map(Withdraw.fromData) ?? null;
-    this.job_proposals =
-      d?.job_proposals.map(ProposalsDetails.fromData) ?? null;
+    this.payment_history = d?.payment_history.map(Payment.fromData) ?? null;
+    this.postedJobs = d?.posted_jobs.map(PostedJob.fromData) ?? null;
     this.details = new ClientDetails(d);
   }
   static fromData(d) {
