@@ -1,5 +1,3 @@
-// TODO : Implement user updates !
-
 const md5 = require("crypto-md5");
 const mysql = require("mysql2");
 const conn = mysql.createConnection({
@@ -18,6 +16,9 @@ const {
 
 const { JobDetails } = require("./models/job");
 const { ProposalsDetails } = require("./models/proposal");
+const { Contract } = require("./models/contract");
+const { Payment } = require("./models/payment");
+const { Withdraw } = require("./models/withdraw");
 
 conn.connect();
 
@@ -440,13 +441,15 @@ class DataBase {
    * @param {string} job_details.title
    * @param {string}   job_details.description
    * @param {number}   job_details.budget
+   * @param {Array<string>} job_details.skillset
    */
   async createJob(user_id, job_details) {
-    await this.#query("call create_job(? ,? , ? , ?)", [
+    await this.#query("call create_job(? ,? , ? , ? , ?)", [
       user_id,
       job_details.title,
       job_details.description,
       job_details.budget,
+      job_details?.skillset?.join(",") ?? null,
     ]);
   }
 
@@ -459,9 +462,12 @@ class DataBase {
    * @param {string} job_details.title
    * @param {string} job_details.description
    * @param {number} job_details.budget
+   * @param {Array<String>} job_details.skillset
+   * @param {('closed'|'open'|'progress')} job_details.status
    * @returns {Promise<void>}
    */
   async updateJobDetails(job_id, job_details) {
+    job_details.skillset = job_details?.skillset?.join(",") ?? null;
     let query = "UPDATE jobs SET ";
     const entries = Object.entries(job_details);
     const params = [];
@@ -624,13 +630,91 @@ class DataBase {
     return;
   }
 
-  async getContractsDetailsById(contract_id) {}
-  async getAllContractsByUserId(user_id) {}
-  async getAllJobsByUserId(user_id) {}
-  async getPaymentsHistoryByUserId(user_id) {}
-  async getPaymentDetailsById(payment_id) {}
-  async getWithdrawalHistoryForFreelancer(user_id) {}
-  async setPaymentStatusByContractId(contract_id, status) {}
+  async getContractsDetailsById(contract_id) {
+    const result = await this.#query(
+      `select * from contracts c 
+      inner join jobs j  on j.job_id = c.job_id where contract_id = ?`,
+      [contract_id]
+    );
+    if (result && result.length > 0) return Contract.fromData(result[0]);
+    return null;
+  }
+  async getAllContractsByUserId(user_id) {
+    const result = await this.#query(
+      `
+      select * from contracts c inner join jobs j on c.job_id = j.job_id 
+      join clients cl on cl.client_id = j.client_id
+      join freelancers f on f.freelancer_id = c.freelancer_id
+      where cl.user_id = ? OR  f.user_id  = ?
+      `,
+      [user_id, user_id]
+    );
+    if (result && result.length > 0) return result.map(Contract.fromData);
+    return null;
+  }
+
+  async getWithdrawalHistoryByUserId(user_id) {
+    const result = await this.#query(
+      `
+      select * from withdrawals natural join freelancers 
+      natural join users where user_id = ?;
+    `,
+      [user_id]
+    );
+    if (result && result.length > 0) return result.map(Withdraw.fromData);
+    return null;
+  }
+  async getPaymentsHistoryByUserId(user_id) {
+    const result = await this.#query(
+      `
+      select p.status , p.created_at , p.updated_at , j.job_id , id , amount from payments p inner join jobs j on j.job_id = p.job_id 
+      inner join clients c on c.client_id = j.client_id
+      inner join users u on u.user_id = c.user_id 
+      where c.user_id = ?;
+    `,
+      [user_id]
+    );
+    if (result && result.length > 0) return result.map(Payment.fromData);
+    return null;
+  }
+  async getPaymentDetailsById(payment_id) {
+    const result = await this.#query("SELECT * FROM payments WHERE id = ?", [
+      payment_id,
+    ]);
+    if (result && result.length > 0) return Payment.fromData(result[0]);
+    return null;
+  }
+
+  async getAllJobsByUserId(user_id) {
+    const result = await this.#query(
+      `
+      select * from jobs j
+      inner join clients c on  c.client_id = j.client_id
+      where user_id = ?`,
+      [user_id]
+    );
+    if (result && result.length > 0) return result.map(JobDetails.fromData);
+    return null;
+  }
+
+  /**
+   *
+   * @param {number} contract_id
+   * @param {('pending'|'failed'|'success')} status
+   * @returns
+   */
+  async setPaymentStatusByContractId(contract_id, status) {
+    await this.#query(
+      `
+        update payments 
+        set status = ?
+        where  job_id  = (select j.job_id from contracts  c
+        inner join jobs j on  j.job_id = c.job_id  where c.contract_id = ?);
+    `,
+      [status, contract_id]
+    );
+    return;
+  }
 }
 
 module.exports = DataBase;
