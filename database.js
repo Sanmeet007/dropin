@@ -56,6 +56,19 @@ class DataBase {
   }
 
   /**
+   *
+   * @param {string} email
+   * @returns {Promise<User>}
+   */
+  async getUserByEmailId(email) {
+    const result = await this.#query("SELECT * FROM users WHERE email = ?", [
+      email,
+    ]);
+    if (result && result.length > 0) return User.fromData(result[0]);
+    return null;
+  }
+
+  /**
    * Fetches details of user
    * @param {string} email_id
    * @returns {Promise<Client|Freelancer?>}
