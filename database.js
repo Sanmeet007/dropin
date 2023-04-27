@@ -24,6 +24,7 @@ const { passwordHasher } = require("./utils/password_hasher");
 conn.connect();
 
 class TokenDetails {
+  /** @type {number} */ user_id;
   /** @type {Date}*/ creation_time;
   /** @type {string} */ token;
 
@@ -482,13 +483,13 @@ class DataBase {
   /**
    * Returns a verification token details
    *
-   * @param {number} uid
+   * @param {string} token
    * @returns {TokenDetails}
    */
-  async getVerifcationDetails(uid) {
+  async getVerifcationDetails(token) {
     const result = await this.#query(
-      `SELECT token_creation_time,  verification_token from users where user_id = ?`,
-      [uid]
+      `SELECT user_id, token_creation_time , verification_token from users where verification_token = ?`,
+      [token]
     );
 
     if (result && result.length > 0) return result[0];
@@ -501,11 +502,8 @@ class DataBase {
    * @param {string} token
    * @returns
    */
-  async setUserVerificationDetails(uid, token) {
-    await this.#query(
-      "UPDATE users SET  token_creation_time = current_timestamp , verification_token = ?  WHERE user_id = ?",
-      [token, uid]
-    );
+  async verifyUser(token) {
+    await this.#query("call verify_user(?)", [token]);
     return;
   }
 
