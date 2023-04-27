@@ -14,6 +14,7 @@ app.use(
     secret: process.env.SECRET,
     resave: true,
     saveUninitialized: true,
+    maxAge: 8.64e7,
   })
 );
 
@@ -21,7 +22,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
-  return res.end("Everything is working correctly");
+  if (req.session.user) {
+    return res.render("index", {
+      user: req.session.user,
+    });
+  } else {
+    return res.render("index", {
+      user: null,
+    });
+  }
 });
 
 app.use("/api", ApiRoutes);

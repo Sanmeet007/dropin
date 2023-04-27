@@ -3,3 +3,4 @@ node_modules
 test.js
 sql/data.sql
 package-lock.json
+.prettierignore 
