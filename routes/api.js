@@ -120,4 +120,8 @@ router.get("/logout", (req, res) => {
   return res.end();
 });
 
+router.use("*", (_, res) => {
+  return res.status(405).end();
+});
+
 module.exports = router;
