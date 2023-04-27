@@ -23,6 +23,16 @@ const { passwordHasher } = require("./utils/password_hasher");
 
 conn.connect();
 
+class TokenDetails {
+  /** @type {Date}*/ creation_time;
+  /** @type {string} */ token;
+
+  constructor(d) {
+    this.creation_time = d.token_creation_time;
+    this.token = d.verfication_token;
+  }
+}
+
 class DataBase {
   /** @type {mysql.Connection} */
   #conn;
@@ -470,6 +480,36 @@ class DataBase {
   }
 
   /**
+   * Returns a verification token details
+   *
+   * @param {number} uid
+   * @returns {TokenDetails}
+   */
+  async getVerifcationDetails(uid) {
+    const result = await this.#query(
+      `SELECT token_creation_time,  verification_token from users where user_id = ?`,
+      [uid]
+    );
+
+    if (result && result.length > 0) return result[0];
+    return null;
+  }
+
+  /**
+   *
+   * @param {number} uid
+   * @param {string} token
+   * @returns
+   */
+  async setUserVerificationDetails(uid, token) {
+    await this.#query(
+      "UPDATE users SET  token_creation_time = current_timestamp , verfication_token = ?  WHERE user_id = ?",
+      [token, uid]
+    );
+    return;
+  }
+
+  /**
    * Sets the verification status of the user .
    * Sets it true by default i.e when called with all correct params user gets verified.
    *
@@ -478,10 +518,10 @@ class DataBase {
    * @returns {Promise<void>}
    */
   async setUserVerfication(uid, verified = true) {
-    await this.#query("UPDATE users SET verified = ? WHERE user_id = ?", [
-      verified,
-      uid,
-    ]);
+    await this.#query(
+      "UPDATE users SET verified = ? , token_creation_time = null , verfication_token = null  WHERE user_id = ?",
+      [verified, uid]
+    );
     return;
   }
 
