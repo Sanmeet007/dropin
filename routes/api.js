@@ -93,6 +93,12 @@ router.post("/sign-up", async (req, res) => {
     if (createdSuccessFully) {
       const user = await dbconn.getUserByEmailId(email);
       if (user) {
+        user.hashedPassword = null; // preventing password leakage in frontend
+
+        // Attaching extra details
+        user._name = user.fullname;
+        user._age = user.age;
+
         req.session.user = user;
         return res.json({
           error: false,
@@ -132,6 +138,8 @@ router.get("/logout", (req, res) => {
 // router.post("/user/update-details", (req, res) => {});
 
 // router.post("/user/verify", (req, res) => {});
+
+// router.post("/user/get-full-details", (req, res) => {});
 
 router.get("/jobs", async (_, res) => {
   const jobs = await dbconn.listJobs();
