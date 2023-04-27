@@ -295,7 +295,7 @@ class DataBase {
   async createUser(account_type, details) {
     try {
       const hashedPassword = passwordHasher(details.password);
-      const date = details.dob;
+      const date = new Date(details.dob);
 
       if (account_type === "freelancer") {
         await this.#query(
@@ -349,7 +349,9 @@ class DataBase {
       }
       return false;
     } catch (e) {
-      throw Error(e);
+      const error = new Error(e.sqlMessage);
+      Object.assign(error, e);
+      throw error;
     }
   }
 
