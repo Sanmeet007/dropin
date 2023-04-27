@@ -289,14 +289,14 @@ class DataBase {
    * @param {number} details.company_size,
    * @param {string?} details.industry,
    *
-   * @returns {Promise<void>}
+   * @returns {Promise<boolean>}
    * */
 
   async createUser(account_type, details) {
     const hashedPassword = passwordHasher(details.password);
     const date = details.dob;
 
-    if (details.account_type === "freelancer") {
+    if (account_type === "freelancer") {
       await this.#query(
         `
        CALL create_freelancer(?,?,?,?,?,?,?,?,?
@@ -321,8 +321,8 @@ class DataBase {
           details?.education ?? null,
         ]
       );
-      return;
-    } else {
+      return true;
+    } else if (account_type === "client") {
       await this.#query(
         `
         call create_client(?,?,?,?,?,?,?,?,?,?,?,?,?,?);
@@ -344,8 +344,9 @@ class DataBase {
           details.industry,
         ]
       );
-      return;
+      return true;
     }
+    return false;
   }
 
   /**
