@@ -4,3 +4,4 @@ test.js
 sql/data.sql
 package-lock.json
 .prettierignore 
+mail_templates/test*
