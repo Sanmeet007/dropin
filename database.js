@@ -30,7 +30,7 @@ class TokenDetails {
 
   constructor(d) {
     this.creation_time = d.token_creation_time;
-    this.token = d.verfication_token;
+    this.token = d.verification_token;
   }
 }
 
@@ -515,7 +515,7 @@ class DataBase {
    */
   async setUserVerificationDetails(uid, token) {
     await this.#query(
-      "UPDATE users SET  token_creation_time = current_timestamp , verfication_token = ?  WHERE user_id = ?",
+      "UPDATE users SET  token_creation_time = current_timestamp , verification_token = ?  WHERE user_id = ?",
       [token, uid]
     );
     return;
@@ -529,7 +529,7 @@ class DataBase {
    * @param {boolean} verified
    * @returns {Promise<void>}
    */
-  async setUserVerfication(uid, verified = true) {
+  async setUserverification(uid, verified = true) {
     await this.#query(
       "UPDATE users SET verified = ? , token_creation_time = null , verification_token = null  WHERE user_id = ?",
       [verified, uid]
