@@ -19,7 +19,14 @@ router.post("/login", async (req, res) => {
         });
       }
 
+      user.hashedPassword = null; // preventing password leakage in frontend
+
+      // Attaching extra details
+      user._name = user.fullname;
+      user._age = user.age;
+
       req.session.user = user;
+
       return res.json({
         error: false,
         message: "login success",
@@ -119,6 +126,12 @@ router.get("/logout", (req, res) => {
   req.session.destroy();
   return res.end();
 });
+
+// router.post("/user/change-password", (req, res) => {});
+
+// router.post("/user/update-details", (req, res) => {});
+
+// router.post("/user/verify", (req, res) => {});
 
 router.get("/jobs", async (_, res) => {
   const jobs = await dbconn.listJobs();
