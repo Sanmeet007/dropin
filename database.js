@@ -519,7 +519,7 @@ class DataBase {
    */
   async setUserVerfication(uid, verified = true) {
     await this.#query(
-      "UPDATE users SET verified = ? , token_creation_time = null , verfication_token = null  WHERE user_id = ?",
+      "UPDATE users SET verified = ? , token_creation_time = null , verification_token = null  WHERE user_id = ?",
       [verified, uid]
     );
     return;
