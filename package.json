@@ -1,5 +1,5 @@
 {
-  "name": "upwork-clone",
+  "name": "dropin",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Team Dropin",
   "license": "ISC",
   "dependencies": {
     "crypto-md5": "^1.0.0",
