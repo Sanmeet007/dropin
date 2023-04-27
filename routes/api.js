@@ -120,6 +120,29 @@ router.get("/logout", (req, res) => {
   return res.end();
 });
 
+router.get("/jobs", async (_, res) => {
+  const jobs = await dbconn.listJobs();
+  return res.json(jobs);
+});
+
+router.get("/jobs/:id", async (req, res) => {
+  const jobId = req.params.id;
+  if (!jobId)
+    return res.status(400).json({
+      error: true,
+      message: "Invalid request",
+    });
+
+  const jobDetails = await dbconn.getJobDetails(jobId);
+  if (!jobDetails)
+    return res.status(400).json({
+      error: true,
+      message: "Job not found",
+    });
+
+  return res.json(jobDetails);
+});
+
 router.use("*", (_, res) => {
   return res.status(405).end();
 });
