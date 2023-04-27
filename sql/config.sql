@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: localhost    Database: upwork
+-- Host: localhost    Database: dropin
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -230,8 +230,11 @@ CREATE TABLE `users` (
   `account_type` enum('admin','client','freelancer') NOT NULL DEFAULT 'client',
   `dob` date NOT NULL,
   `verified` tinyint(1) NOT NULL DEFAULT '0',
+  `verification_token` varchar(255) DEFAULT NULL,
+  `token_creation_time` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`user_id`),
-  UNIQUE KEY `email` (`email`)
+  UNIQUE KEY `email` (`email`),
+  UNIQUE KEY `verification_token` (`verification_token`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -241,7 +244,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world',NULL,'male','freelancer','2002-01-01',1),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0),(1004,'super sam',NULL,'supersam@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2012-04-30',0),(1005,'super sam',NULL,'supersam123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0),(1006,'Binit',NULL,'binit123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2023-04-27',0);
+INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world',NULL,'male','freelancer','2002-01-01',1,NULL,NULL),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0,NULL,NULL),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1,NULL,NULL),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0,NULL,NULL),(1004,'super sam',NULL,'supersam@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2012-04-30',0,NULL,NULL),(1005,'super sam',NULL,'supersam123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0,NULL,NULL),(1006,'Binit',NULL,'binit123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2023-04-27',0,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,11 +280,11 @@ INSERT INTO `withdrawals` VALUES (1,1,76.00,'2023-04-26 16:14:32','2023-04-26 16
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'upwork'
+-- Dumping events for database 'dropin'
 --
 
 --
--- Dumping routines for database 'upwork'
+-- Dumping routines for database 'dropin'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `create_client` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -577,6 +580,32 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `verify_user` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_0900_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `verify_user`(
+	in _token text
+)
+BEGIN
+	declare _uid int; 
+	select user_id into _uid from users where verification_token = _token;
+    if _uid is not null then 
+		UPDATE users SET  token_creation_time = null , verification_token = null , verified = true  
+        WHERE user_id = _uid;
+    end if;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -587,4 +616,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-27 12:34:00
+-- Dump completed on 2023-04-27 21:48:51
