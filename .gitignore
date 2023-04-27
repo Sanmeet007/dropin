@@ -1,0 +1,4 @@
+node_modules
+.env.local
+test.js
+sql/data.sql
