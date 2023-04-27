@@ -1,6 +1,9 @@
 const { dbconn } = require("../utils/dbconnect");
 const express = require("express");
 const { passwordHasher } = require("../utils/password_hasher");
+const { authenticateSession } = require("../middlewares/auth");
+const { generateToken } = require("../utils/generate_token");
+const { sendMail } = require("../utils/sendmail");
 
 const router = express.Router();
 
@@ -140,6 +143,58 @@ router.get("/logout", (req, res) => {
 // router.post("/user/verify", (req, res) => {});
 
 // router.post("/user/get-full-details", (req, res) => {});
+
+router.get("/user/get-verified", authenticateSession, async (req, res) => {
+  try {
+    const user = req.session.user;
+    const userId = user.uid;
+    const token = generateToken();
+    await dbconn.setUserVerificationDetails(userId, token);
+    await sendMail({
+      subject: "User Verification",
+      senderName: "Team Dropin",
+      recieverName: user._name,
+      recieverEmailId: user.email,
+      templateName: "verification",
+      templateParams: {
+        verification_link: "http://localhost/api/user/verify?token=" + token,
+      },
+    });
+    return res.json({
+      error: false,
+      message: "Verification link sent successfully to registered email id",
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.get("/user/verify", async (req, res) => {
+  const { token = null } = req.query;
+  if (!token) return res.status(400).end();
+
+  const tokenDetails = await dbconn.getVerifcationDetails(token);
+  const isExpired =
+    new Date(tokenDetails.creation_time.getTime() + 1.08e7) < Date.now();
+
+  if (!isExpired) {
+    await dbconn.verifyUser(token);
+
+    return res.json({
+      error: false,
+      message: "User verified successfully",
+    });
+  } else {
+    return res.status(400).json({
+      error: true,
+      message: "Token Expired",
+    });
+  }
+});
 
 router.get("/jobs", async (_, res) => {
   const jobs = await dbconn.listJobs();
