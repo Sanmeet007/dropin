@@ -508,6 +508,20 @@ class DataBase {
   }
 
   /**
+   *
+   * @param {number} uid
+   * @param {string} token
+   * @returns
+   */
+  async setUserVerificationDetails(uid, token) {
+    await this.#query(
+      "UPDATE users SET  token_creation_time = current_timestamp , verfication_token = ?  WHERE user_id = ?",
+      [token, uid]
+    );
+    return;
+  }
+
+  /**
    * Sets the verification status of the user .
    * Sets it true by default i.e when called with all correct params user gets verified.
    *

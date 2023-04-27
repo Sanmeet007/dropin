@@ -12,10 +12,10 @@ Contains details about different routes
         headers: {
             "Content-Type" : "application/json"
         },
-        body : {
+        body : JSON.stringify({
             "email" : "someone@gmail.com",
             "password" : "password"
-        }
+        })
     })
 ```
 
@@ -29,7 +29,7 @@ Contains details about different routes
         headers: {
             "Content-Type" : "application/json"
         },
-        body : {
+        body : JSON.stringify({
             "gender" : "male",
             "first_name" : "fname",
             "last_name" : "lname",
@@ -37,7 +37,7 @@ Contains details about different routes
             "email" : "someone@gmail.com",
             "dob" : "2012-04-30T02:15:12.356Z",
             "account_type" : "freelancer", 
-        }
+        })
     })
     
     // For Client registration 
@@ -48,7 +48,7 @@ Contains details about different routes
         headers: {
             "Content-Type" : "application/json"
         },
-        body : {
+        body : JSON.stringify({
             "gender" : "male",
             "first_name" : "fname",
             "last_name" : "lname",
@@ -57,7 +57,7 @@ Contains details about different routes
             "dob" : "2012-04-30T02:15:12.356Z",
             "account_type" : "client", 
             "company_name": "My Comapnny" 
-        }
+        })
     })
     
 ```
