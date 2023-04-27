@@ -484,7 +484,7 @@ class DataBase {
    * Returns a verification token details
    *
    * @param {string} token
-   * @returns {TokenDetails}
+   * @returns {Promise<TokenDetails>}
    */
   async getVerifcationDetails(token) {
     const result = await this.#query(
@@ -492,7 +492,7 @@ class DataBase {
       [token]
     );
 
-    if (result && result.length > 0) return result[0];
+    if (result && result.length > 0) return new TokenDetails(result[0]);
     return null;
   }
 
