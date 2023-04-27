@@ -32,7 +32,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`client_id`),
   KEY `fk_client_user_key` (`user_id`),
   CONSTRAINT `fk_client_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,1001,'Rohit productions',NULL,NULL,NULL),(2,1002,'cant be null',NULL,NULL,NULL),(3,1003,'superman',NULL,NULL,NULL);
+INSERT INTO `clients` VALUES (1,1001,'Rohit productions',NULL,NULL,NULL),(2,1002,'cant be null',NULL,NULL,NULL),(3,1003,'superman',NULL,NULL,NULL),(4,1004,'super cool store',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `freelancers` (
   PRIMARY KEY (`freelancer_id`),
   KEY `fk_user_key` (`user_id`),
   CONSTRAINT `fk_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `freelancers` (
 
 LOCK TABLES `freelancers` WRITE;
 /*!40000 ALTER TABLE `freelancers` DISABLE KEYS */;
-INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english',NULL,'+2',0);
+INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english',NULL,'+2',0),(20,1005,NULL,NULL,NULL,NULL,NULL,NULL,0),(21,1006,NULL,NULL,NULL,NULL,NULL,NULL,0);
 /*!40000 ALTER TABLE `freelancers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -241,7 +241,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world',NULL,'male','freelancer','2002-01-01',1),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0);
+INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world',NULL,'male','freelancer','2002-01-01',1),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0),(1004,'super sam',NULL,'supersam@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2012-04-30',0),(1005,'super sam',NULL,'supersam123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0),(1006,'Binit',NULL,'binit123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2023-04-27',0);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +296,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_client`(
 	in first_name  varchar(255), 
     in last_name varchar(255), 
-    in email varchar(255),
+    in _email varchar(255),
     in password  varchar(255), 
     in location varchar(255), 
     in bio longtext, 
@@ -311,24 +311,29 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_client`(
 )
 BEGIN
 		declare k int;
+        declare _e varchar(255);
         set k = (select user_id + 1 from users order by user_id desc limit 1);
         
-        start transaction;
-	
-        INSERT INTO users( user_id,first_name , last_name , email ,password , location , bio , profile_image ,
-        gender , account_type, dob)
-        VALUES(
-          k,first_name ,last_name,email,password,location,bio,profile_image,gender,account_type ,
-          dob
-        );
+        select email into _e from users where email = _email;
         
-        INSERT INTO  
-        clients(user_id,company_name , company_website, company_size , industry) 
-        VALUES (
-          k, company_name , company_website , company_size , industry
-        );
-        commit;
+        if _e is null then 
+			start transaction;
 		
+			INSERT INTO users( user_id,first_name , last_name , email ,password , location , bio , profile_image ,
+			gender , account_type, dob)
+			VALUES(
+			  k,first_name ,last_name,_email,password,location,bio,profile_image,gender,account_type ,
+			  dob
+			);
+			
+			INSERT INTO  
+			clients(user_id,company_name , company_website, company_size , industry) 
+			VALUES (
+			  k, company_name , company_website , company_size , industry
+			);
+			commit;
+		else SIGNAL SQLSTATE '45000' set MESSAGE_TEXT='Email already registered';
+		end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -390,7 +395,7 @@ DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `create_freelancer`(
 	in first_name  varchar(255), 
     in last_name varchar(255), 
-    in email varchar(255),
+    in _email varchar(255),
     in password  varchar(255), 
     in location varchar(255), 
     in bio longtext, 
@@ -407,25 +412,31 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_freelancer`(
 )
 BEGIN
 		declare k int;
+		declare _e varchar(255);
+                
         set k = (select user_id + 1 from users order by user_id desc limit 1);
         
-        start transaction;
-	
-        INSERT INTO users( user_id,first_name , last_name , email ,password , location , bio , profile_image ,
-        gender , account_type, dob)
-        VALUES(
-          k,first_name ,last_name,email,password,location,bio,profile_image,gender,account_type ,
-          dob
-        );
+		select email into _e from users where email = _email;
         
-        INSERT INTO  
-        freelancers(user_id, skills,programming_languages,`databases`,languages,other_skills,education) 
-        VALUES (
-          k,skills,programming_languages,db,
-          langs, other_skills, edu
-        );
-        commit;
-		
+        if _e is null then 
+			start transaction;
+			
+			INSERT INTO users( user_id,first_name , last_name , email ,password , location , bio , profile_image ,
+			gender , account_type, dob)
+			VALUES(
+			  k,first_name ,last_name,_email,password,location,bio,profile_image,gender,account_type ,
+			  dob
+			);
+			
+			INSERT INTO  
+			freelancers(user_id, skills,programming_languages,`databases`,languages,other_skills,education) 
+			VALUES (
+			  k,skills,programming_languages,db,
+			  langs, other_skills, edu
+			);
+			commit;
+		else SIGNAL SQLSTATE '45000' set MESSAGE_TEXT='Email already registered';
+        end if;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -576,4 +587,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-27  0:32:53
+-- Dump completed on 2023-04-27 12:34:00

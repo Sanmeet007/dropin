@@ -102,7 +102,7 @@ router.post("/sign-up", async (req, res) => {
         message: "Something went wrong",
       });
   } catch (e) {
-    if (e.code === "ER_DUP_ENTRY") {
+    if (e.sqlState === "45000") {
       return res.status(400).json({
         error: true,
         message: "Email id already registered",
