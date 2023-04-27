@@ -503,7 +503,7 @@ class DataBase {
    */
   async setUserVerificationDetails(uid, token) {
     await this.#query(
-      "UPDATE users SET  token_creation_time = current_timestamp , verfication_token = ?  WHERE user_id = ?",
+      "UPDATE users SET  token_creation_time = current_timestamp , verification_token = ?  WHERE user_id = ?",
       [token, uid]
     );
     return;
