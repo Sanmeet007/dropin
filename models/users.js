@@ -20,8 +20,8 @@ class PostedJob {
     this.proposal_count = d.proposal_count;
     this.budget = d.budget;
     this.status = d.status;
-    this.creatd_at = d?.creatd_at ?? null ? Date.parse(d.creatd_at) : null;
-    this.closed_at = d?.closed_at ?? null ? Date.parse(d.closed_at) : null;
+    this.creatd_at = d.creatd_at;
+    this.closed_at = d.closed_at;
   }
 
   static fromData(json) {

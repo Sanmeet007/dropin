@@ -17,8 +17,8 @@ class JobDetails {
   /** @type {Date} */ created_at;
 
   constructor(d) {
-    this.created_at = d?.created_at ?? null ? Date.parse(d.created_at) : null;
-    this.closed_at = d?.closed_at ?? null ? Date.parse(d.closed_at) : null;
+    this.created_at = d.created_at;
+    this.closed_at = d.closed_at;
     this.uid = d.user_id;
     this.id = d.job_id;
     this.required_skillset = d?.skillset?.split(",") ?? null;

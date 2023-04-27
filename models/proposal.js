@@ -9,9 +9,7 @@ class ProposalsDetails {
 
   constructor(d) {
     this.cover_letter = d.cover_letter;
-    this.created_at = new Date(d.created_at);
-    this.created_at = d?.created_at ?? null ? Date.parse(d.created_at) : null;
-
+    this.created_at = d.created_at;
     this.job_id = d.job_id;
     this.timeframe = d.timeframe;
     this.proposal_id = d.proposal_id;

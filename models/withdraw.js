@@ -8,8 +8,8 @@ class Withdraw {
   constructor(d) {
     this.id = d.id;
     this.amount = parseFloat(d.amount);
-    this.updated_at = d?.updated_at ?? null ? Date.parse(d.updated_at) : null;
-    this.created_at = d?.created_at ?? null ? Date.parse(d.created_at) : null;
+    this.updated_at = d.updated_at;
+    this.created_at = d.created_at;
     this.status = d.status;
   }
 

@@ -15,8 +15,8 @@ class Contract {
     this.freelancer_id = d.freelancer_id;
     this.job_id = d.job_id;
     this.payment_amount = d.payment_amount;
-    this.end_date = d?.end_date ?? null ? Date.parse(d.end_date) : null;
-    this.start_date = d?.start_date ?? null ? Date.parse(d.start_date) : null;
+    this.end_date = d.end_date;
+    this.start_date = d.start_date;
   }
   static fromData(json) {
     return new Contract(json);
