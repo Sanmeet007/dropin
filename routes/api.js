@@ -1,6 +1,6 @@
 const { dbconn } = require("../utils/dbconnect");
-const md5 = require("crypto-md5");
 const express = require("express");
+const { passwordHasher } = require("../utils/password_hasher");
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.post("/login", async (req, res) => {
     const user = await dbconn.getUserByEmailId(email);
 
     if (user) {
-      if (user.hashedPassword !== md5(password, "hex")) {
+      if (user.hashedPassword !== passwordHasher(password)) {
         return res.status(400).json({
           error: true,
           message: "Invalid Password Entered for registered user",

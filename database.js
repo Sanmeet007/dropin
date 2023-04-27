@@ -19,6 +19,7 @@ const { ProposalsDetails } = require("./models/proposal");
 const { Contract } = require("./models/contract");
 const { Payment } = require("./models/payment");
 const { Withdraw } = require("./models/withdraw");
+const { passwordHasher } = require("./utils/password_hasher");
 
 conn.connect();
 
@@ -292,7 +293,7 @@ class DataBase {
    * */
 
   async createUser(account_type, details) {
-    const hashedPassword = md5(details.password, "hex");
+    const hashedPassword = passwordHasher(details.password);
     const date = details.dob;
 
     if (details.account_type === "freelancer") {
@@ -487,7 +488,7 @@ class DataBase {
    * @returns {Promise<void>}
    */
   async updateUserPassword(uid, password) {
-    const hashedPassword = md5(password, "hex");
+    const hashedPassword = passwordHasher(password);
     await this.#query("UPDATE users SET password = ? WHERE user_id = ?", [
       hashedPassword,
       uid,
