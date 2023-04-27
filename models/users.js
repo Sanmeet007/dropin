@@ -19,9 +19,9 @@ class PostedJob {
     this.description = d.description;
     this.proposal_count = d.proposal_count;
     this.budget = d.budget;
-    this.creatd_at = d.creatd_at;
     this.status = d.status;
-    this.closed_at = d.closed_at;
+    this.creatd_at = d?.creatd_at ?? null ? Date.parse(d.creatd_at) : null;
+    this.closed_at = d?.closed_at ?? null ? Date.parse(d.closed_at) : null;
   }
 
   static fromData(json) {

@@ -6,7 +6,6 @@ class JobDetails {
   /** @type {ClientDetails} */ client_details;
   /** @type {number} */ budget;
   /** @type {string} */ status;
-  /** @type {Date} */ created_at;
   /** @type {string} */ description;
   /** @type {string} */ title;
   /** @type {string?} */ client_profile_image;
@@ -18,8 +17,8 @@ class JobDetails {
   /** @type {Date} */ created_at;
 
   constructor(d) {
-    this.created_at = d.created_at;
-    this.closed_at = d?.closed_at ?? null;
+    this.created_at = d?.created_at ?? null ? Date.parse(d.created_at) : null;
+    this.closed_at = d?.closed_at ?? null ? Date.parse(d.closed_at) : null;
     this.uid = d.user_id;
     this.id = d.job_id;
     this.required_skillset = d?.skillset?.split(",") ?? null;
@@ -32,7 +31,6 @@ class JobDetails {
     });
 
     this.status = d.status;
-    this.created_at = new Date(d.created_at);
     this.budget = parseFloat(d.budget);
     this.title = d.title;
     this.description = d.description;

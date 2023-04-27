@@ -11,8 +11,8 @@ class Payment {
     this.job_id = d.job_id;
     this.amount = d.amount;
     this.status = d.status;
-    this.created_at = d.created_at;
-    this.updated_at = d.updated_at;
+    this.created_at = d?.created_at ?? null ? Date.parse(d.created_at) : null;
+    this.updated_at = d?.updated_at ?? null ? Date.parse(d.updated_at) : null;
   }
 
   static fromData(json) {
