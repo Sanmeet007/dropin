@@ -39,4 +39,85 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/sign-up", async (req, res) => {
+  try {
+    if (req.session.user)
+      return res.status(400).json({
+        error: true,
+        message: "Logout fist to create a new user",
+      });
+
+    const {
+      account_type = "client",
+      email = null,
+      password = null,
+      gender = null,
+      dob = null,
+      first_name = null,
+      last_name = null,
+      company_name = null,
+    } = req.body;
+
+    if (!email || !password || !dob || !gender || !first_name)
+      return res.status(400).json({
+        error: true,
+        message: "Invalid data provided",
+      });
+
+    if (account_type === "client") {
+      if (!company_name) {
+        return res.status(400).json({
+          error: true,
+          message: "Company Name can't be null for client",
+        });
+      }
+    }
+
+    const createdSuccessFully = await dbconn.createUser(account_type, {
+      email: email,
+      first_name,
+      last_name,
+      password,
+      gender,
+      company_name,
+      dob,
+    });
+
+    if (createdSuccessFully) {
+      const user = await dbconn.getUserByEmailId(email);
+      if (user) {
+        req.session.user = user;
+        return res.json({
+          error: false,
+          message: "User created successfully",
+        });
+      } else
+        return res.status(500).json({
+          error: true,
+          message: "Something went wrong",
+        });
+    } else
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+  } catch (e) {
+    if (e.code === "ER_DUP_ENTRY") {
+      return res.status(400).json({
+        error: true,
+        message: "Email id already registered",
+      });
+    }
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.get("/logout", (req, res) => {
+  req.session.destroy();
+  return res.end();
+});
+
 module.exports = router;
