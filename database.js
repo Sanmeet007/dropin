@@ -293,60 +293,64 @@ class DataBase {
    * */
 
   async createUser(account_type, details) {
-    const hashedPassword = passwordHasher(details.password);
-    const date = details.dob;
+    try {
+      const hashedPassword = passwordHasher(details.password);
+      const date = details.dob;
 
-    if (account_type === "freelancer") {
-      await this.#query(
-        `
+      if (account_type === "freelancer") {
+        await this.#query(
+          `
        CALL create_freelancer(?,?,?,?,?,?,?,?,?
       ,?, ? , ? , ? , ? , ?, ?);
       `,
-        [
-          details.first_name,
-          details?.last_name ?? null,
-          details.email,
-          hashedPassword,
-          details.location,
-          details.bio,
-          details.profile_image,
-          details.gender,
-          account_type,
-          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-          details?.skills?.join(",") ?? null,
-          details?.programming_languages?.join(",") ?? null,
-          details?.databases?.join(",") ?? null,
-          details?.languages?.join(",") ?? null,
-          details?.other_skills?.join(",") ?? null,
-          details?.education ?? null,
-        ]
-      );
-      return true;
-    } else if (account_type === "client") {
-      await this.#query(
-        `
+          [
+            details.first_name,
+            details?.last_name ?? null,
+            details.email,
+            hashedPassword,
+            details.location,
+            details.bio,
+            details.profile_image,
+            details.gender,
+            account_type,
+            `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            details?.skills?.join(",") ?? null,
+            details?.programming_languages?.join(",") ?? null,
+            details?.databases?.join(",") ?? null,
+            details?.languages?.join(",") ?? null,
+            details?.other_skills?.join(",") ?? null,
+            details?.education ?? null,
+          ]
+        );
+        return true;
+      } else if (account_type === "client") {
+        await this.#query(
+          `
         call create_client(?,?,?,?,?,?,?,?,?,?,?,?,?,?);
       `,
-        [
-          details.first_name,
-          details?.last_name ?? null,
-          details.email,
-          hashedPassword,
-          details.location,
-          details.bio,
-          details.profile_image,
-          details.gender,
-          account_type,
-          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-          details.company_name,
-          details.company_website,
-          details.company_size,
-          details.industry,
-        ]
-      );
-      return true;
+          [
+            details.first_name,
+            details?.last_name ?? null,
+            details.email,
+            hashedPassword,
+            details.location,
+            details.bio,
+            details.profile_image,
+            details.gender,
+            account_type,
+            `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+            details.company_name,
+            details.company_website,
+            details.company_size,
+            details.industry,
+          ]
+        );
+        return true;
+      }
+      return false;
+    } catch (e) {
+      throw Error(e);
     }
-    return false;
   }
 
   /**
