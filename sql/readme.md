@@ -29,6 +29,8 @@ Designing a database for applications like Upwork or LinkedIn can be a complex t
 | bio | varchar | user's bio |
 | profile_image | varchar | URL to user's profile image |
 | account_type | varchar | type of account (freelancer, client, etc.) |
+| token_creation_time | timestamp | time at which verification token was created |
+| verification_token | varchar | verification token which was sent to user |
 
 The User Table contains information about the users on the platform. The `user_id` is the primary key for this table. Other tables, such as the Proposal and Contract tables, will use the `user_id` as a foreign key to link data about proposals and contracts to specific users.
 
@@ -88,7 +90,7 @@ The Proposal Table contains information about the proposals that freelancers sub
 
 The Contract Table contains information about the contracts between clients and freelancers on the platform. The `contract_id` is the primary key for this table. The `freelancer_id` column is a foreign key to the User Table, which identifies the freelancer who accepted the job. The `job_id` column is a foreign key to the Job Table, which identifies the job the contract is for.
 
-Payments
+### Payments
 
 | Column Name | Description |
 |-------------|-------------|
@@ -99,7 +101,7 @@ Payments
 | `created_at` | The date and time when the payment was created. |
 | `updated_at` | The date and time when the payment was last updated. |
 
-Withdrawals
+### Withdrawals
 
 | Column Name | Description |
 |-------------|-------------|
