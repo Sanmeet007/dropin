@@ -580,10 +580,27 @@ router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
     const jobId = parseInt(req.params.id);
     if (!jobId || jobId === NaN) return res.status(400).end();
 
-    const uid = req.session.user.uid;
-    await dbconn.updateJobDetails(uid, jobId, {
+    const user = req.session.user;
+    await dbconn.updateJobDetails(user.uid, jobId, {
       status: "closed",
     });
+    const jobDetails = await dbconn.getJobDetails(jobId);
+
+    await sendMail({
+      subject: "Job Completed",
+      senderName: "Team Dropin",
+      recieverEmailId: jobDetails.client_email,
+      recieverName: jobDetails.client_name,
+      templateName: "jobcompletion",
+      templateParams: {
+        title: jobDetails.title,
+        description: jobDetails.description,
+        freelancer_name: user._name,
+        freelancer_profile_image: user.profile_image,
+        closed_at: jobDetails.closed_at,
+      },
+    });
+
     return res.json({
       error: false,
       message: "Job submitted successfully",
