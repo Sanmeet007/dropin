@@ -448,7 +448,6 @@ class DataBase {
    *
    * @param {number} uid
    * @param {Object} details
-   * @param {number} details.freelancer_id
    * @param {string?} details.education
    * @param {Array<string>?} details.skills
    * @param {Array<string>?} details.programming_languages
