@@ -5,7 +5,21 @@ const { authenticateSession } = require("../middlewares/auth");
 const { generateToken } = require("../utils/generate_token");
 const { sendMail } = require("../utils/sendmail");
 const { objectCleaner } = require("../utils/object_cleaner");
+const multer = require("multer");
+const path = require("path");
+const { User } = require("../models/users");
 
+const storage = multer.diskStorage({
+  destination: (_, __, cb) => {
+    cb(null, path.join("public", process.env.UPLOADS_DIR));
+  },
+  filename: function (_, file, cb) {
+    const uniqueSuffix = Date.now();
+    cb(null, uniqueSuffix + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage: storage });
 const router = express.Router();
 
 // Auth Routes
@@ -163,69 +177,95 @@ router.post("/user/change-password", authenticateSession, async (req, res) => {
   }
 });
 
-router.post("/user/update-details", authenticateSession, async (req, res) => {
-  try {
-    const {
-      first_name = null,
-      last_name = null,
-      location = null,
-      bio = null,
-      profile_image = null,
-      gender = null,
-      company_name = null,
-      company_website = null,
-      industry = null,
-      company_size = null,
-      education = null,
-      skills = null,
-      programming_languages = null,
-      languages = null,
-      databases = null,
-      other_skills = null,
-    } = req.body;
+// Uploader
+router.post(
+  "/user/update-details",
+  authenticateSession,
+  upload.single("avatar"),
+  async (req, res) => {
+    try {
+      const {
+        first_name = null,
+        last_name = null,
+        location = null,
+        bio = null,
+        gender = null,
+        company_name = null,
+        company_website = null,
+        industry = null,
+        company_size = null,
+        education = null,
+        skills = null,
+        programming_languages = null,
+        languages = null,
+        databases = null,
+        other_skills = null,
+      } = req.body;
 
-    const user = req.session.user;
+      let profile_image = null;
+      if (req.file) {
+        const url = new URL(
+          path.join(process.env.UPLOADS_DIR, req.file.filename),
+          process.env.BASE_URL
+        );
+        profile_image = url.href;
+      }
+      const user = req.session.user;
 
-    const basicObject = {
-      first_name,
-      last_name,
-      location,
-      bio,
-      profile_image,
-      gender,
-    };
-
-    await dbconn.updateUserDetails(objectCleaner(basicObject));
-
-    if (user.account_type === "client") {
-      const companyDetails = {
-        company_name,
-        company_website,
-        industry,
-        company_size,
+      const basicObject = {
+        first_name,
+        last_name,
+        location,
+        bio,
+        profile_image,
+        gender,
       };
 
-      await dbconn.updateClientDetails(objectCleaner(companyDetails));
-    } else if (user.account_type === "freelancer") {
-      const freelancerDetails = {
-        education,
-        skills,
-        programming_languages,
-        languages,
-        databases,
-        other_skills,
-      };
+      const uid = user.uid;
+      await dbconn.updateUserDetails(uid, objectCleaner(basicObject));
 
-      await dbconn.updateFreelancingDetails(objectCleaner(freelancerDetails));
-    } else return res.status(405).end();
-  } catch (E) {
-    console.log(E);
-    return res.status(500).json({
-      error: true,
-      message: "Something went wrong",
-    });
+      if (user.account_type === "client") {
+        const companyDetails = {
+          company_name,
+          company_website,
+          industry,
+          company_size,
+        };
+
+        await dbconn.updateClientDetails(uid, objectCleaner(companyDetails));
+        return res.json({
+          error: false,
+          message: "User details updated successfully",
+        });
+      } else if (user.account_type === "freelancer") {
+        const freelancerDetails = {
+          education,
+          skills,
+          programming_languages,
+          languages,
+          databases,
+          other_skills,
+        };
+
+        await dbconn.updateFreelancingDetails(
+          uid,
+          objectCleaner(freelancerDetails)
+        );
+
+        return res.json({
+          error: false,
+          message: "User details updated successfully",
+        });
+      } else return res.status(405).end();
+    } catch (E) {
+      console.log(E);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
   }
-});
+);
 
 router.get("/user/get-verified", authenticateSession, async (req, res) => {
   try {
@@ -303,7 +343,7 @@ router.get("/jobs/:id", async (req, res) => {
   return res.json(jobDetails);
 });
 
-// TODO Implement transaction routes
+// TODO Implement transaction , contracts , payments routes
 
 // Catcher
 router.use("*", (_, res) => {

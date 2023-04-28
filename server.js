@@ -7,8 +7,8 @@ const session = require("express-session");
 
 const ApiRoutes = require("./routes/api");
 const app = express();
-app.set(express.static("public"));
 app.set("view engine", "ejs");
+app.use(express.static("public"));
 app.use(
   session({
     secret: process.env.SECRET,
