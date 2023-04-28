@@ -8,6 +8,7 @@ const { objectCleaner } = require("../utils/object_cleaner");
 
 const router = express.Router();
 
+// Auth Routes
 router.post("/login", async (req, res) => {
   try {
     const { email = null, password = null } = req.body;
@@ -137,6 +138,7 @@ router.get("/logout", (req, res) => {
   return res.end();
 });
 
+// User Routes
 router.post("/user/change-password", authenticateSession, async (req, res) => {
   try {
     const user = req.session.user;
@@ -277,6 +279,7 @@ router.get("/user/verify", async (req, res) => {
   }
 });
 
+// Jobs Routes
 router.get("/jobs", async (_, res) => {
   const jobs = await dbconn.listJobs();
   return res.json(jobs);
@@ -300,6 +303,9 @@ router.get("/jobs/:id", async (req, res) => {
   return res.json(jobDetails);
 });
 
+// TODO Implement transaction routes
+
+// Catcher
 router.use("*", (_, res) => {
   return res.status(405).end();
 });
