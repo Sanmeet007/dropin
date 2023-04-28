@@ -765,7 +765,25 @@ class DataBase {
   async getAllProposalsByJobId(job_id) {
     /** @type {Array} */
     const users = await this.#query(
-      `SELECT * FROM proposals where job_id = ?`,
+      `
+      SELECT  *,
+      proposal_id,
+      u.user_id,
+      p.job_id,
+      cover_letter,
+      p.created_at,
+      p.timeframe,
+      j.title,
+      p.status,
+      freelancer_id,
+      concat(first_name , " ", last_name) as name,
+      profile_image
+      FROM proposals p
+      join freelancers f on f.user_id = p.user_id
+      join users u on u.user_id = f.user_id
+      join jobs j on j.job_id = p.job_id
+      where p.job_id = ?;
+      `,
       [job_id]
     );
 
