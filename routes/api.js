@@ -176,7 +176,6 @@ router.post("/user/change-password", authenticateSession, async (req, res) => {
   }
 });
 
-// Uploader
 router.post(
   "/user/update-details",
   authenticateSession,
@@ -324,7 +323,109 @@ router.get("/jobs", async (_, res) => {
   return res.json(jobs);
 });
 
-router.get("/jobs/:id", async (req, res) => {
+router.post("/jobs/create", authenticateSession, async (req, res) => {
+  try {
+    const user = req.session.user;
+    const uid = user.uid;
+
+    const {
+      title = null,
+      description = null,
+      budget = null,
+      skillset = null,
+    } = req.body;
+
+    if (
+      !title ||
+      !description ||
+      !budget ||
+      !skillset ||
+      !Array.isArray(skillset)
+    )
+      return res.status(400).json({
+        error: true,
+        message: "Bad request",
+      });
+
+    if (user.account_type === "client") {
+      await dbconn.createJob(uid, {
+        title,
+        description,
+        budget,
+        skillset,
+      });
+      return res.json({
+        error: false,
+        message: "Job Created successfully",
+      });
+    } else {
+      return res.status(403).json({
+        error: true,
+        message: "Only a client can creat jobs",
+      });
+    }
+  } catch (E) {
+    console.log(E);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
+
+router.post(
+  "/jobs/update-details/:id",
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const user = req.session.user;
+      const uid = user.uid;
+      const jobId = parseInt(req.params.id);
+      if (!jobId || jobId === NaN) return res.status(400).end();
+
+      const {
+        title = null,
+        description = null,
+        budget = null,
+        skillset = null,
+      } = req.body;
+
+      if (skillset != null && !Array.isArray(skillset)) {
+        return res.status(400).json({
+          error: true,
+          message: "Bad request",
+        });
+      }
+
+      if (user.account_type === "client") {
+        const obj = {
+          title,
+          description,
+          budget,
+          skillset,
+        };
+        obj.skillset = obj?.skillset?.join(",") ?? null;
+        await dbconn.updateJobDetails(uid, jobId, objectCleaner(obj));
+        return res.json({
+          error: false,
+          message: "Job updated successfully",
+        });
+      } else
+        return res.status(400).json({
+          error: true,
+          message: "Only Specific client can update a job",
+        });
+    } catch (E) {
+      console.log(E);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+router.get("/jobs/get-details/:id", async (req, res) => {
   const jobId = req.params.id;
   if (!jobId)
     return res.status(400).json({
