@@ -98,7 +98,7 @@ class DataBase {
       `SELECT account_type FROM users WHERE user_id = ? `,
       [uid]
     );
-    if (results && results.length === 0) return null;
+    if (!results || (results && results.length === 0)) return null;
     const user_type = results[0].account_type;
     if (user_type === "freelancer") {
       const fullDetails = await this.#query(
@@ -169,6 +169,36 @@ class DataBase {
   /**
    * Fetches details of user
    * @param {number} uid
+   * @returns {Promise<User?>}
+   */
+  async getUserDetailsFromClientId(uid) {
+    /** @type {Array} */
+    const results = await this.#query(
+      `SELECT * FROM users u join clients c on c.user_id = u.user_id WHERE u.user_id = ? `,
+      [uid]
+    );
+    if (results && results.length > 0) return User.fromData(results[0]);
+    return null;
+  }
+
+  /**
+   * Fetches details of user
+   * @param {number} uid
+   * @returns {Promise<User?>}
+   */
+  async getUserDetailsFromFeelancerId(uid) {
+    /** @type {Array} */
+    const results = await this.#query(
+      `SELECT * FROM users u join freelancers c on c.user_id = u.user_id WHERE u.user_id = ? `,
+      [uid]
+    );
+    if (results && results.length > 0) return User.fromData(results[0]);
+    return null;
+  }
+
+  /**
+   * Fetches details of user
+   * @param {number} uid
    * @returns {Promise<Client|Freelancer?>}
    */
   async getUserDetailsById(uid) {
@@ -177,7 +207,7 @@ class DataBase {
       `SELECT account_type FROM users WHERE user_id = ? `,
       [uid]
     );
-    if (results && results.length === 0) return null;
+    if (!results || (results && results.length === 0)) return null;
     const user_type = results[0].account_type;
     if (user_type === "freelancer") {
       const fullDetails = await this.#query(
@@ -701,6 +731,7 @@ class DataBase {
     j.title , 
     u.user_id , 
     p.proposal_id,
+    p.bid_amount,
     p.user_id,
     p.job_id,
     p.cover_letter,
@@ -810,6 +841,7 @@ class DataBase {
       p.job_id,
       cover_letter,
       p.created_at,
+      p.bid_amount,
       p.timeframe,
       u.email,
       j.title,

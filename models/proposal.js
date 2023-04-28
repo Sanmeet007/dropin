@@ -11,6 +11,7 @@ class ProposalsDetails {
   /** @type  {string}*/ freelancer_email;
   /** @type  {string}*/ freelancer_profile_image;
   /** @type  {string}*/ job_title;
+  /** @type  {string}*/ payment_amount;
 
   constructor(d) {
     this.cover_letter = d.cover_letter;
@@ -25,6 +26,7 @@ class ProposalsDetails {
     this.freelancer_profile_image = d.profile_image;
     this.freelancer_name = d.name;
     this.freelancer_email = d.email;
+    this.payment_amount = d.bid_amount;
   }
 
   static fromData(json) {
