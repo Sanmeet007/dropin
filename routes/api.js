@@ -295,32 +295,48 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
 });
 
 router.get("/user/verify", async (req, res) => {
-  const { token = null } = req.query;
-  if (!token) return res.status(400).end();
+  try {
+    const { token = null } = req.query;
+    if (!token) return res.status(400).end();
 
-  const tokenDetails = await dbconn.getVerifcationDetails(token);
-  const isExpired =
-    new Date(tokenDetails.creation_time.getTime() + 1.08e7) < Date.now();
+    const tokenDetails = await dbconn.getVerifcationDetails(token);
+    const isExpired =
+      new Date(tokenDetails.creation_time.getTime() + 1.08e7) < Date.now();
 
-  if (!isExpired) {
-    await dbconn.verifyUser(token);
+    if (!isExpired) {
+      await dbconn.verifyUser(token);
 
-    return res.json({
-      error: false,
-      message: "User verified successfully",
-    });
-  } else {
-    return res.status(400).json({
+      return res.json({
+        error: false,
+        message: "User verified successfully",
+      });
+    } else {
+      return res.status(400).json({
+        error: true,
+        message: "Token Expired",
+      });
+    }
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
       error: true,
-      message: "Token Expired",
+      message: "Something went wrong",
     });
   }
 });
 
 // Jobs Routes
 router.get("/jobs", async (_, res) => {
-  const jobs = await dbconn.listJobs();
-  return res.json(jobs);
+  try {
+    const jobs = await dbconn.listJobs();
+    return res.json(jobs);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
 });
 
 router.post("/jobs/create", authenticateSession, async (req, res) => {
@@ -426,24 +442,229 @@ router.post(
 );
 
 router.get("/jobs/get-details/:id", async (req, res) => {
-  const jobId = req.params.id;
-  if (!jobId)
-    return res.status(400).json({
-      error: true,
-      message: "Invalid request",
-    });
+  try {
+    const jobId = parseInt(req.params.id);
 
-  const jobDetails = await dbconn.getJobDetails(jobId);
-  if (!jobDetails)
-    return res.status(400).json({
-      error: true,
-      message: "Job not found",
-    });
+    if (!jobId || jobId === NaN)
+      return res.status(400).json({
+        error: true,
+        message: "Invalid request",
+      });
 
-  return res.json(jobDetails);
+    const jobDetails = await dbconn.getJobDetails(jobId);
+    if (!jobDetails)
+      return res.status(400).json({
+        error: true,
+        message: "Job not found",
+      });
+
+    return res.json(jobDetails);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
 });
 
-// TODO Implement transaction , contracts , payments routes
+// Proposals Routes
+
+router.get(
+  "/jobs/get-proposals/:id", // get all proposals for job_id
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const user = req.session.user;
+      if (user.account_type !== "client")
+        return res.status(403).json({
+          error: true,
+          message: "Only client can read proposals for a job",
+        });
+
+      const jobId = parseInt(req.params.id);
+      if (!jobId || jobId === NaN) return res.status(400).end();
+      const results = await dbconn.getAllProposalsByJobId(user.uid, jobId);
+      return res.json(results ? results : []);
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+router.post(
+  "/proposals/create/:job_id", // create proposal for job  using  job_id
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const user = req.session.user;
+      const jobId = parseInt(req.params.job_id);
+      if (!jobId || jobId === NaN) return res.status(400).end();
+
+      if (user.account_type !== "freelancer")
+        return res.status(400).json({
+          error: true,
+          message: "Only freelancers can submit proposals to a job",
+        });
+
+      const {
+        cover_letter = null,
+        timeframe = null,
+        bid_amount = null,
+      } = req.body;
+
+      if (!cover_letter || !timeframe || !bid_amount)
+        return res.status(400).json({
+          error: true,
+          message: "Bad request",
+        });
+
+      await dbconn.createProposal(uid, jobId, objectCleaner(obj));
+      return res.json({
+        error: false,
+        message: "Proposal created for job successfully",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+router.post(
+  "/proposals/update-details/:id", // updates proposal details using  proposal_id
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const user = req.session.user;
+      if (user.account_type !== "freelancer")
+        return res.status(403).json({
+          error: true,
+          message: "Invalid request",
+        });
+      const id = parseInt(req.params.id);
+      if (!id || id === NaN) return res.status(400).end();
+
+      const obj = {
+        cover_letter,
+        timeframe,
+        bid_amount,
+      };
+
+      await dbconn.updateProposalDetails(user.uid, id, objectCleaner(obj));
+      return res.json({
+        error: false,
+        message: "Proposal details updated successfully",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+// Submit job
+
+router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
+  try {
+    const jobId = parseInt(req.params.id);
+    if (!jobId || jobId === NaN) return res.status(400).end();
+
+    const uid = req.session.user.uid;
+    await dbconn.updateJobDetails(uid, jobId, {
+      status: "closed",
+    });
+    return res.json({
+      error: false,
+      message: "Job submitted successfully",
+    });
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
+
+// Contract routes
+
+router.post(
+  "/jobs/create-contract/:id",
+  authenticateSession, // creates a contract using proposal_id
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (!id || id === NaN) return res.status(400).end();
+      const user = req.session.user;
+      if (user.account_type !== "client")
+        return res.status(403).json({
+          error: false,
+          message: "Only clients can create contracts",
+        });
+      await dbconn.createContract(id);
+      return res.json({
+        error: false,
+        message: "Contract created successfully",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+router.post(
+  "/jobs/end-contract/:id", // ends contract for job using contract_id
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (!id || id === NaN) return res.status(400).end();
+
+      await dbconn.endContract(id);
+      return res.json({
+        error: false,
+        message: "Contract ended successfully",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
+
+// Transaction details for user
+router.get(
+  "/user/transaction-history",
+  authenticateSession,
+  async (req, res) => {
+    const user = req.session.user;
+    if (user.account_type === "client") {
+      const history = await dbconn.getPaymentsHistoryByUserId(user.uid);
+      return res.json(history);
+    } else if (user.account_type === "freelancer") {
+      const history = await dbconn.getWithdrawalHistoryByUserId(user.uid);
+      return res.json(history);
+    } else return res.status(400).end();
+  }
+);
 
 // Catcher
 router.use("*", (_, res) => {
