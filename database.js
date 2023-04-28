@@ -693,6 +693,7 @@ class DataBase {
    *
    * Updates proposal details for a specific proposal
    *
+   * @param {number} uid
    * @param {number} proposal_id
    *
    * @param {object} details
@@ -702,7 +703,7 @@ class DataBase {
    *
    * @returns {Promise<void>}
    */
-  async updateProposalDetails(proposal_id, details) {
+  async updateProposalDetails(uid, proposal_id, details) {
     let query = "UPDATE proposals SET ";
     const entries = Object.entries(details);
     const params = [];
@@ -717,8 +718,9 @@ class DataBase {
       params.push(v);
     });
 
-    query += " WHERE proposal_id = ?";
+    query += " WHERE proposal_id = ? AND user_id = ?";
     params.push(proposal_id);
+    params.push(uid);
 
     await this.#query(query, params);
     return;
