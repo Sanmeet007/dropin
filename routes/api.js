@@ -7,7 +7,6 @@ const { sendMail } = require("../utils/sendmail");
 const { objectCleaner } = require("../utils/object_cleaner");
 const multer = require("multer");
 const path = require("path");
-const { User } = require("../models/users");
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
