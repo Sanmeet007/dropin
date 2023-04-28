@@ -760,11 +760,12 @@ class DataBase {
    *
    * Returns all proposals to a specific job
    *
+   * @param {number} uid
    * @param {number} job_id
    * @returns {Promise<Array<ProposalsDetails>?>}
    */
 
-  async getAllProposalsByJobId(job_id) {
+  async getAllProposalsByJobId(uid, job_id) {
     /** @type {Array} */
     const users = await this.#query(
       `
@@ -784,9 +785,9 @@ class DataBase {
       join freelancers f on f.user_id = p.user_id
       join users u on u.user_id = f.user_id
       join jobs j on j.job_id = p.job_id
-      where p.job_id = ?;
+      where p.job_id = ? and u.user_id = ? ;
       `,
-      [job_id]
+      [job_id, uid]
     );
 
     if (users && users.length > 0) {
