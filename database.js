@@ -846,7 +846,7 @@ class DataBase {
   async getPaymentsHistoryByUserId(user_id) {
     const result = await this.#query(
       `
-      select p.status , p.created_at , p.updated_at , j.job_id , id , amount from payments p inner join jobs j on j.job_id = p.job_id 
+      select p.status , p.created_at , p.updated_at , j.job_id , id , amount ,  j.title , j.description from payments p inner join jobs j on j.job_id = p.job_id 
       inner join clients c on c.client_id = j.client_id
       inner join users u on u.user_id = c.user_id 
       where c.user_id = ?;
