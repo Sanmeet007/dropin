@@ -771,7 +771,7 @@ class DataBase {
       `
       SELECT  *,
       proposal_id,
-      u.user_id,
+      p.user_id,
       p.job_id,
       cover_letter,
       p.created_at,
@@ -785,7 +785,8 @@ class DataBase {
       join freelancers f on f.user_id = p.user_id
       join users u on u.user_id = f.user_id
       join jobs j on j.job_id = p.job_id
-      where p.job_id = ? and u.user_id = ? ;
+      join clients c on j.client_id = c.client_id
+      where p.job_id = ? and  c.user_id = ?;
       `,
       [job_id, uid]
     );
