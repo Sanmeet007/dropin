@@ -8,6 +8,7 @@ class ProposalsDetails {
   /** @type {status} */ status;
   /** @type  {string}*/ freelancer_id;
   /** @type  {string}*/ freelancer_name;
+  /** @type  {string}*/ freelancer_email;
   /** @type  {string}*/ freelancer_profile_image;
   /** @type  {string}*/ job_title;
 
@@ -23,6 +24,7 @@ class ProposalsDetails {
     this.freelancer_id = d.freelancer_id;
     this.freelancer_profile_image = d.profile_image;
     this.freelancer_name = d.name;
+    this.freelancer_email = d.email;
   }
 
   static fromData(json) {

@@ -707,6 +707,7 @@ class DataBase {
     p.created_at,
     p.timeframe,
     p.status,
+    u.email,
     f.freelancer_id,
     concat(first_name , " " ,last_name) as name,
     profile_image
@@ -810,6 +811,7 @@ class DataBase {
       cover_letter,
       p.created_at,
       p.timeframe,
+      u.email,
       j.title,
       p.status,
       freelancer_id,

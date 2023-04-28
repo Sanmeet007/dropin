@@ -7,6 +7,7 @@ const { sendMail } = require("../utils/sendmail");
 const { objectCleaner } = require("../utils/object_cleaner");
 const multer = require("multer");
 const path = require("path");
+const { User } = require("../models/users");
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -593,8 +594,8 @@ router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
       recieverName: jobDetails.client_name,
       templateName: "jobcompletion",
       templateParams: {
-        title: jobDetails.title,
-        description: jobDetails.description,
+        job_title: jobDetails.title,
+        job_description: jobDetails.description,
         freelancer_name: user._name,
         freelancer_profile_image: user.profile_image,
         closed_at: jobDetails.closed_at,
@@ -623,6 +624,7 @@ router.post(
     try {
       const id = parseInt(req.params.id);
       if (!id || id === NaN) return res.status(400).end();
+      /** @type {User} */
       const user = req.session.user;
       if (user.account_type !== "client")
         return res.status(403).json({
@@ -630,6 +632,23 @@ router.post(
           message: "Only clients can create contracts",
         });
       await dbconn.createContract(id);
+      const proposalDetails = await dbconn.getProposalDetailsById(id);
+
+      await sendMail({
+        subject: "Proposal accepted",
+        recieverName: proposalDetails.freelancer_name,
+        recieverEmailId: proposalDetails.freelancer_email,
+        templateName: "proposal_accepted",
+        templateParams: {
+          job_title: proposalDetails.job_title,
+          job_description: proposalDetails.job_description,
+          client_name: user._name,
+          client_email: user.email,
+          client_profile_image: user.profile_image,
+          freelancer_name: proposalDetails.freelancer_name,
+        },
+      });
+
       return res.json({
         error: false,
         message: "Contract created successfully",
