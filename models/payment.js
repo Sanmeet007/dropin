@@ -5,6 +5,8 @@ class Payment {
   /** @type {string} */ status;
   /** @type {Date} */ created_at;
   /** @type {Date} */ updated_at;
+  /** @type {string} */ job_title;
+  /** @type {string} */ job_description;
 
   constructor(d) {
     this.id = d.id;
@@ -13,6 +15,8 @@ class Payment {
     this.status = d.status;
     this.created_at = d.created_at;
     this.updated_at = d.updated_at;
+    this.job_description = d.description;
+    this.job_title = d.title;
   }
 
   static fromData(json) {
