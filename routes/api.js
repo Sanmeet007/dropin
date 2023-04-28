@@ -592,7 +592,7 @@ router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
       senderName: "Team Dropin",
       recieverEmailId: jobDetails.client_email,
       recieverName: jobDetails.client_name,
-      templateName: "jobcompletion",
+      templateName: "job_completion",
       templateParams: {
         job_title: jobDetails.title,
         job_description: jobDetails.description,
@@ -635,6 +635,7 @@ router.post(
       const proposalDetails = await dbconn.getProposalDetailsById(id);
 
       await sendMail({
+        senderName: "Team Dropin",
         subject: "Proposal accepted",
         recieverName: proposalDetails.freelancer_name,
         recieverEmailId: proposalDetails.freelancer_email,
@@ -646,6 +647,7 @@ router.post(
           client_email: user.email,
           client_profile_image: user.profile_image,
           freelancer_name: proposalDetails.freelancer_name,
+          payment_amount: proposalDetails.payment_amount,
         },
       });
 
@@ -668,10 +670,31 @@ router.post(
   authenticateSession,
   async (req, res) => {
     try {
+      const user = req.session.user;
+
       const id = parseInt(req.params.id);
       if (!id || id === NaN) return res.status(400).end();
 
       await dbconn.endContract(id);
+      const details = await dbconn.getContractsDetailsById(id);
+      const userDetails = await dbconn.getUserDetailsFromFeelancerId(
+        details.freelancer_id
+      );
+      await sendMail({
+        senderName: "Team Dropin",
+        subject: "Contract Ended",
+        recieverName: userDetails.fullname,
+        recieverEmailId: userDetails.email,
+        templateName: "contract_end",
+        templateParams: {
+          job_title: details.job_title,
+          job_description: details.job_description,
+          client_name: user._name,
+          client_email: user.email,
+          client_profile_image: user.profile_image,
+          payment_amount: details.payment_amount,
+        },
+      });
       return res.json({
         error: false,
         message: "Contract ended successfully",
