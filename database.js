@@ -688,6 +688,40 @@ class DataBase {
     ]);
     return;
   }
+  /**
+   * @param {number} proposal_id
+   *
+   * @return {Promise<ProposalsDetails>}
+   */
+
+  async getProposalDetailsById(proposal_id) {
+    const result = await this.#query(
+      `
+    select 
+    j.title , 
+    u.user_id , 
+    p.proposal_id,
+    p.user_id,
+    p.job_id,
+    p.cover_letter,
+    p.created_at,
+    p.timeframe,
+    p.status,
+    f.freelancer_id,
+    concat(first_name , " " ,last_name) as name,
+    profile_image
+    from proposals p
+    join jobs j on j.job_id = p.job_id
+    join users  u on  u.user_id = p.user_id
+    join freelancers f on u.user_id = f.user_id
+    where proposal_id = ?;    
+    `,
+      [proposal_id]
+    );
+    if (result && result.length > 0)
+      return ProposalsDetails.fromData(result[0]);
+    return null;
+  }
 
   /**
    *
