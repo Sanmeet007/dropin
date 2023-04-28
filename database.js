@@ -389,6 +389,7 @@ class DataBase {
    * @returns {Promise<void>}
    */
   async updateUserDetails(uid, details) {
+    if (!details) return;
     let query = "UPDATE users SET ";
     const entries = Object.entries(details);
     const params = [];
@@ -422,6 +423,7 @@ class DataBase {
    * @returns
    */
   async updateClientDetails(uid, details) {
+    if (!details) return;
     let query = "UPDATE clients SET ";
     const entries = Object.entries(details);
     const params = [];
@@ -458,6 +460,7 @@ class DataBase {
    * @returns {Promise<void>}
    */
   async updateFreelancingDetails(uid, details) {
+    if (!details) return;
     let query = "UPDATE freelancers SET ";
     const entries = Object.entries(details);
     const params = [];
