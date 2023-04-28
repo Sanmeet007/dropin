@@ -618,6 +618,7 @@ class DataBase {
    *
    * Updates Job Details.
    *
+   * @param {number} uid
    * @param {number} job_id
    * @param {Object} job_details
    * @param {string} job_details.title
@@ -627,8 +628,7 @@ class DataBase {
    * @param {('closed'|'open'|'progress')} job_details.status
    * @returns {Promise<void>}
    */
-  async updateJobDetails(job_id, job_details) {
-    job_details.skillset = job_details?.skillset?.join(",") ?? null;
+  async updateJobDetails(uid, job_id, job_details) {
     let query = "UPDATE jobs SET ";
     const entries = Object.entries(job_details);
     const params = [];
@@ -643,8 +643,10 @@ class DataBase {
       params.push(v);
     });
 
-    query += " WHERE job_id = ?";
+    query +=
+      " WHERE job_id = ? and client_id = (select client_id from clients where user_id = ?)";
     params.push(job_id);
+    params.push(uid);
 
     await this.#query(query, params);
     return;
