@@ -4,6 +4,7 @@ const { passwordHasher } = require("../utils/password_hasher");
 const { authenticateSession } = require("../middlewares/auth");
 const { generateToken } = require("../utils/generate_token");
 const { sendMail } = require("../utils/sendmail");
+const { objectCleaner } = require("../utils/object_cleaner");
 
 const router = express.Router();
 
@@ -136,13 +137,93 @@ router.get("/logout", (req, res) => {
   return res.end();
 });
 
-// router.post("/user/change-password", (req, res) => {});
+router.post("/user/change-password", authenticateSession, async (req, res) => {
+  try {
+    const user = req.session.user;
+    const { password = null } = req.body;
+    if (password) {
+      await dbconn.updateUserPassword(user.uid, password);
+      return res.json({
+        error: false,
+        message: "Password changed successfully",
+      });
+    }
+    return res.status(400).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  } catch (E) {
+    console.log(E);
+    return res.status(400).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
 
-// router.post("/user/update-details", (req, res) => {});
+router.post("/user/update-details", authenticateSession, async (req, res) => {
+  try {
+    const {
+      first_name = null,
+      last_name = null,
+      location = null,
+      bio = null,
+      profile_image = null,
+      gender = null,
+      company_name = null,
+      company_website = null,
+      industry = null,
+      company_size = null,
+      education = null,
+      skills = null,
+      programming_languages = null,
+      languages = null,
+      databases = null,
+      other_skills = null,
+    } = req.body;
 
-// router.post("/user/verify", (req, res) => {});
+    const user = req.session.user;
 
-// router.post("/user/get-full-details", (req, res) => {});
+    const basicObject = {
+      first_name,
+      last_name,
+      location,
+      bio,
+      profile_image,
+      gender,
+    };
+
+    await dbconn.updateUserDetails(objectCleaner(basicObject));
+
+    if (user.account_type === "client") {
+      const companyDetails = {
+        company_name,
+        company_website,
+        industry,
+        company_size,
+      };
+
+      await dbconn.updateClientDetails(objectCleaner(companyDetails));
+    } else if (user.account_type === "freelancer") {
+      const freelancerDetails = {
+        education,
+        skills,
+        programming_languages,
+        languages,
+        databases,
+        other_skills,
+      };
+
+      await dbconn.updateFreelancingDetails(objectCleaner(freelancerDetails));
+    } else return res.status(405).end();
+  } catch (E) {
+    console.log(E);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
+});
 
 router.get("/user/get-verified", authenticateSession, async (req, res) => {
   try {
