@@ -428,7 +428,7 @@ router.post(
           message: "Job updated successfully",
         });
       } else
-        return res.status(400).json({
+        return res.status(403).json({
           error: true,
           message: "Only Specific client can update a job",
         });
@@ -507,7 +507,7 @@ router.post(
       if (!jobId || jobId === NaN) return res.status(400).end();
 
       if (user.account_type !== "freelancer")
-        return res.status(400).json({
+        return res.status(403).json({
           error: true,
           message: "Only freelancers can submit proposals to a job",
         });
@@ -711,12 +711,95 @@ router.post(
 
 // Payment & Withdrawal Routes
 
-router.post("/pay-money", authenticateSession, (req, res) => {});
+router.post(
+  "/pay-money/:contract_id", // client pays for the contract
+  authenticateSession,
+  async (req, res) => {
+    try {
+      const user = req.session.user;
+      const contract_id = parseInt(req.params.contract_id);
+      if (!contract_id || contract_id === NaN) return res.status(400).end();
+
+      const { amount = null } = req.body;
+      if (!amount) {
+        await dbconn.setPaymentStatusByContractId(contract_id, "failed");
+        // Payment fail
+        // await sendMail({
+        //   senderName : "Team Dropin",
+
+        // })
+        return res.status(400).json({
+          error: true,
+          message: "Payment failed",
+        });
+      }
+
+      await dbconn.setPaymentStatusByContractId(contract_id, "success");
+      // Payment success
+      // sendMail
+      return res.json({
+        error: false,
+        message: "Payment processed successfully",
+      });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({
+        error: true,
+        message: "Something went wrong",
+      });
+    }
+  }
+);
 
 router.post("/withdraw-money", authenticateSession, async (req, res) => {
-  /** @type {User} */
-  const user = req.session.user;
-  await dbconn.withdrawMoney(user.uid, balance);
+  try {
+    /** @type {User} */
+    const user = req.session.user;
+    if (user.account_type !== "freelancer")
+      return res.status(403).json({
+        error: true,
+        message: "Only freelancers can withdraw money",
+      });
+
+    const amount = req.body.amount;
+
+    if (amount < 10)
+      return res.status(400).json({
+        error: true,
+        message: "Cannot withdraw amount less than $10",
+      });
+
+    await dbconn.withdrawMoney(user.uid, amount);
+    // send mail for success withdrawal of money
+    return res.json({
+      error: false,
+      message: "Money withdraw successfully",
+    });
+  } catch (e) {
+    if (e.sqlState === "45000") {
+      if (e.sqlMessage === "INS_BAL") {
+        return res.status(400).json({
+          error: true,
+          message: "Insufficient Balance",
+        });
+      } else if (e.sqlMessage === "INV_USR") {
+        return res.status(400).json({
+          error: true,
+          message: "Invalid User",
+        });
+      } else if (e.sqlMessage === "MIN_BAL") {
+        return res.status(400).json({
+          error: true,
+          message: "Can't withdraw amount lesser than $10",
+        });
+      }
+    }
+    console.log(e);
+    return res.status(500).json({
+      error: true,
+      message: "Something went wrong",
+    });
+  }
 });
 
 // Transaction details for user
