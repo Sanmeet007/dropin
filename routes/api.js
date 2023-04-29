@@ -709,6 +709,16 @@ router.post(
   }
 );
 
+// Payment & Withdrawal Routes
+
+router.post("/pay-money", authenticateSession, (req, res) => {});
+
+router.post("/withdraw-money", authenticateSession, async (req, res) => {
+  /** @type {User} */
+  const user = req.session.user;
+  await dbconn.withdrawMoney(user.uid, balance);
+});
+
 // Transaction details for user
 router.get(
   "/user/transaction-history",

@@ -47,10 +47,14 @@ class DataBase {
 
   async #query(query, fillvalue = []) {
     return new Promise((res, rej) => {
-      this.#conn.query(query, fillvalue, (e, d) => {
-        if (e instanceof Error) return rej(e);
-        return res(d);
-      });
+      try {
+        this.#conn.query(query, fillvalue, (e, d) => {
+          if (e instanceof Error) return rej(e);
+          return res(d);
+        });
+      } catch (e) {
+        return rej(e);
+      }
     });
   }
 
