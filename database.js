@@ -338,66 +338,60 @@ class DataBase {
    * */
 
   async createUser(account_type, details) {
-    try {
-      const hashedPassword = passwordHasher(details.password);
-      const date = new Date(details.dob);
+    const hashedPassword = passwordHasher(details.password);
+    const date = new Date(details.dob);
 
-      if (account_type === "freelancer") {
-        await this.#query(
-          `
+    if (account_type === "freelancer") {
+      await this.#query(
+        `
        CALL create_freelancer(?,?,?,?,?,?,?,?,?
       ,?, ? , ? , ? , ? , ?, ?);
       `,
-          [
-            details.first_name,
-            details?.last_name ?? null,
-            details.email,
-            hashedPassword,
-            details.location,
-            details.bio,
-            details.profile_image,
-            details.gender,
-            account_type,
-            `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-            details?.skills?.join(",") ?? null,
-            details?.programming_languages?.join(",") ?? null,
-            details?.databases?.join(",") ?? null,
-            details?.languages?.join(",") ?? null,
-            details?.other_skills?.join(",") ?? null,
-            details?.education ?? null,
-          ]
-        );
-        return true;
-      } else if (account_type === "client") {
-        await this.#query(
-          `
+        [
+          details.first_name,
+          details?.last_name ?? null,
+          details.email,
+          hashedPassword,
+          details.location,
+          details.bio,
+          details.profile_image,
+          details.gender,
+          account_type,
+          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+          details?.skills?.join(",") ?? null,
+          details?.programming_languages?.join(",") ?? null,
+          details?.databases?.join(",") ?? null,
+          details?.languages?.join(",") ?? null,
+          details?.other_skills?.join(",") ?? null,
+          details?.education ?? null,
+        ]
+      );
+      return true;
+    } else if (account_type === "client") {
+      await this.#query(
+        `
         call create_client(?,?,?,?,?,?,?,?,?,?,?,?,?,?);
       `,
-          [
-            details.first_name,
-            details?.last_name ?? null,
-            details.email,
-            hashedPassword,
-            details.location,
-            details.bio,
-            details.profile_image,
-            details.gender,
-            account_type,
-            `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
-            details.company_name,
-            details.company_website,
-            details.company_size,
-            details.industry,
-          ]
-        );
-        return true;
-      }
-      return false;
-    } catch (e) {
-      const error = new Error(e.sqlMessage);
-      Object.assign(error, e);
-      throw error;
+        [
+          details.first_name,
+          details?.last_name ?? null,
+          details.email,
+          hashedPassword,
+          details.location,
+          details.bio,
+          details.profile_image,
+          details.gender,
+          account_type,
+          `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`,
+          details.company_name,
+          details.company_website,
+          details.company_size,
+          details.industry,
+        ]
+      );
+      return true;
     }
+    return false;
   }
 
   /**
@@ -426,7 +420,6 @@ class DataBase {
     if (!details) return;
     let query = "UPDATE users SET ";
     const entries = Object.entries(details);
-    const params = [];
     if (entries.length === 0) return;
 
     entries.map(([k, v], i) => {
