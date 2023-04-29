@@ -780,9 +780,9 @@ router.post(
 );
 
 router.post("/withdraw-money", authenticateSession, async (req, res) => {
+  /** @type {User} */
+  const user = req.session.user;
   try {
-    /** @type {User} */
-    const user = req.session.user;
     if (user.account_type !== "freelancer")
       return res.status(403).json({
         error: true,
@@ -791,14 +791,39 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
 
     const amount = req.body.amount;
 
-    if (amount < 10)
+    if (amount < 10) {
+      await sendMail({
+        senderName: "Team Dropin",
+        subject: "Withdraw Failure",
+        recieverEmailId: user.email,
+        recieverName: user._name,
+        templateName: "withdraw_failure",
+        templateParams: {
+          name: user._name,
+          email: user.email,
+          reason: "Amount lesser than minimum withdrawal amount",
+        },
+      });
+
       return res.status(400).json({
         error: true,
         message: "Cannot withdraw amount less than $10",
       });
+    }
 
     await dbconn.withdrawMoney(user.uid, amount);
-    // send mail for success withdrawal of money
+    await sendMail({
+      senderName: "Team Dropin",
+      subject: "Withdraw Success",
+      recieverEmailId: user.email,
+      recieverName: user._name,
+      templateName: "withdraw_success",
+      templateParams: {
+        name: user._name,
+        email: user.email,
+        amount,
+      },
+    });
     return res.json({
       error: false,
       message: "Money withdraw successfully",
@@ -806,6 +831,19 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
   } catch (e) {
     if (e.sqlState === "45000") {
       if (e.sqlMessage === "INS_BAL") {
+        await sendMail({
+          senderName: "Team Dropin",
+          subject: "Withdraw Failure",
+          recieverEmailId: user.email,
+          recieverName: user._name,
+          templateName: "withdraw_failure",
+          templateParams: {
+            name: user._name,
+            email: user.email,
+            reason: "Insufficient Balance",
+          },
+        });
+
         return res.status(400).json({
           error: true,
           message: "Insufficient Balance",
@@ -828,6 +866,55 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
       message: "Something went wrong",
     });
   }
+});
+
+// TODO Implement payment failure and withdraw failure routes
+
+router.post("/payment-failure", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+  const amount = req.body.amount;
+
+  await sendMail({
+    senderName: "Team Dropin",
+    subject: "Payment failure",
+    recieverEmailId: user.email,
+    recieverName: user._name,
+    templateParams: {
+      client_name: user._name,
+      client_email: user.email,
+      client_profile_image: user.profile_image,
+      amount: amount,
+      timestamp: new Date().toJSON(),
+      amount: amount ?? 0,
+    },
+    templateName: "payment_failure",
+  });
+
+  return res.json({
+    error: false,
+    message: "Mail sent successfully",
+  });
+});
+
+router.post("/withdraw-failure", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+  const amount = req.body.amount;
+
+  await sendMail({
+    senderName: "Team Dropin",
+    subject: "Withdraw failure",
+    recieverEmailId: user.email,
+    recieverName: user._name,
+    templateParams: {
+      amount: amount ?? 0,
+    },
+    templateName: "withdraw_failure",
+  });
+
+  return res.json({
+    error: false,
+    message: "Mail sent successfully",
+  });
 });
 
 // Transaction details for user
