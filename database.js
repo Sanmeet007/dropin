@@ -1,4 +1,3 @@
-const md5 = require("crypto-md5");
 const mysql = require("mysql2");
 const conn = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -41,10 +40,20 @@ class DataBase {
     this.#conn = conn;
   }
 
+  /**
+   * Closes Database connection
+   */
   close() {
     this.#conn.end();
   }
 
+  /**
+   * Queries databse
+   *
+   * @param {string} query
+   * @param {Array<any>} fillvalue
+   * @returns
+   */
   async #query(query, fillvalue = []) {
     return new Promise((res, rej) => {
       try {
@@ -896,6 +905,11 @@ class DataBase {
     return;
   }
 
+  /**
+   *
+   * @param {number} contract_id
+   * @returns {Promise<Contract?>}
+   */
   async getContractsDetailsById(contract_id) {
     const result = await this.#query(
       `select * from contracts c 
@@ -905,6 +919,12 @@ class DataBase {
     if (result && result.length > 0) return Contract.fromData(result[0]);
     return null;
   }
+
+  /**
+   *
+   * @param {number} user_id
+   * @returns {Promise<Array<Contract>?>}
+   */
   async getAllContractsByUserId(user_id) {
     const result = await this.#query(
       `
@@ -919,6 +939,11 @@ class DataBase {
     return null;
   }
 
+  /**
+   *
+   * @param {number} user_id
+   * @returns {Promise<Array<Withdraw>?>}
+   */
   async getWithdrawalHistoryByUserId(user_id) {
     const result = await this.#query(
       `
@@ -930,6 +955,12 @@ class DataBase {
     if (result && result.length > 0) return result.map(Withdraw.fromData);
     return null;
   }
+
+  /**
+   *
+   * @param {number} user_id
+   * @returns {Promise<Array<Payment>?>}
+   */
   async getPaymentsHistoryByUserId(user_id) {
     const result = await this.#query(
       `
@@ -943,6 +974,12 @@ class DataBase {
     if (result && result.length > 0) return result.map(Payment.fromData);
     return null;
   }
+
+  /**
+   *
+   * @param {number} payment_id
+   * @returns {Promise<Payment?>}
+   */
   async getPaymentDetailsById(payment_id) {
     const result = await this.#query("SELECT * FROM payments WHERE id = ?", [
       payment_id,
@@ -951,6 +988,11 @@ class DataBase {
     return null;
   }
 
+  /**
+   *
+   * @param {number} user_id
+   * @returns {Promise<JobDetails>}
+   */
   async getAllJobsByUserId(user_id) {
     const result = await this.#query(
       `
