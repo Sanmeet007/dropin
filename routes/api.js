@@ -272,6 +272,7 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
     const userId = user.uid;
     const token = generateToken();
     await dbconn.setUserVerificationDetails(userId, token);
+
     await sendMail({
       subject: "User Verification",
       senderName: "Team Dropin",
@@ -281,7 +282,8 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
       templateParams: {
         verification_link: "http://localhost/api/user/verify?token=" + token,
       },
-    });
+    }); // working
+
     return res.json({
       error: false,
       message: "Verification link sent successfully to registered email id",
@@ -599,8 +601,11 @@ router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
         freelancer_name: user._name,
         freelancer_profile_image: user.profile_image,
         closed_at: jobDetails.closed_at,
+        client_name: jobDetails.client_name,
+        client_profile_image: jobDetails.client_profile_image,
+        client_email: jobDetails.client_email,
       },
-    });
+    }); // working
 
     return res.json({
       error: false,
@@ -649,7 +654,7 @@ router.post(
           freelancer_name: proposalDetails.freelancer_name,
           payment_amount: proposalDetails.payment_amount,
         },
-      });
+      }); // working
 
       return res.json({
         error: false,
@@ -680,6 +685,7 @@ router.post(
       const userDetails = await dbconn.getUserDetailsFromFeelancerId(
         details.freelancer_id
       );
+
       await sendMail({
         senderName: "Team Dropin",
         subject: "Contract Ended",
@@ -694,7 +700,8 @@ router.post(
           client_profile_image: user.profile_image,
           payment_amount: details.payment_amount,
         },
-      });
+      }); // working
+
       return res.json({
         error: false,
         message: "Contract ended successfully",
@@ -723,11 +730,20 @@ router.post(
       const { amount = null } = req.body;
       if (!amount) {
         await dbconn.setPaymentStatusByContractId(contract_id, "failed");
-        // Payment fail
-        // await sendMail({
-        //   senderName : "Team Dropin",
 
-        // })
+        await sendMail({
+          senderName: "Team Dropin",
+          subject: "Payment Failure",
+          templateName: "payment_failure",
+          templateParams: {
+            client_name: user._name,
+            client_email: user.email,
+            client_profile_image: user.profile_image,
+            amount: amount,
+            timestamp: new Date().toJSON(),
+          },
+        }); // working
+
         return res.status(400).json({
           error: true,
           message: "Payment failed",
@@ -735,8 +751,20 @@ router.post(
       }
 
       await dbconn.setPaymentStatusByContractId(contract_id, "success");
-      // Payment success
-      // sendMail
+
+      await sendMail({
+        senderName: "Team Dropin",
+        subject: "Payment Success",
+        templateName: "payment_success",
+        templateParams: {
+          client_name: user._name,
+          client_email: user.email,
+          client_profile_image: user.profile_image,
+          amount: amount,
+          timestamp: new Date().toJSON(),
+        },
+      }); // working
+
       return res.json({
         error: false,
         message: "Payment processed successfully",
