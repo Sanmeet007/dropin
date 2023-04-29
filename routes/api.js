@@ -868,8 +868,6 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
   }
 });
 
-// TODO Implement payment failure and withdraw failure routes
-
 router.post("/payment-failure", authenticateSession, async (req, res) => {
   const user = req.session.user;
   const amount = req.body.amount;
