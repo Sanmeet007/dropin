@@ -1023,6 +1023,17 @@ class DataBase {
     );
     return;
   }
+
+  /**
+   *
+   * @param {number} uid
+   * @param {number} amount
+   * @returns {Promise<void>}
+   */
+  async withdrawMoney(uid, amount) {
+    await this.#query("call withdraw_balance(? , ?)", [uid, amount]);
+    return;
+  }
 }
 
 module.exports = DataBase;
