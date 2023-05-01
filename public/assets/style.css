@@ -195,6 +195,12 @@ nav {
 .flex {
   display: block;
 }
+.spaced {
+  justify-content: space-between;
+}
+.align-end {
+  align-items: flex-end;
+}
 .gap {
   gap: 1rem;
 }
@@ -550,6 +556,148 @@ section.trusted-by .sources {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+}
+
+footer {
+  background-color: #311b3478;
+}
+
+footer .footer-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+footer .footer-top a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.2rem;
+  border-radius: 100px;
+  transform: scale(1);
+  transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+footer .footer-top a:hover {
+  background-color: #58506186;
+}
+
+footer .footer-top a:active {
+  transform: scale(0.9);
+}
+
+footer .footer-top .logo {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+footer .footer-top .logo h4 {
+  font-size: 1.1rem;
+}
+
+footer .footer-end {
+  background-color: #120314;
+}
+
+footer .footer-credits {
+  border-top: 1px solid #57455a;
+}
+
+footer .footer-credits p {
+  margin: 0;
+  color: rgb(120, 120, 120);
+}
+
+footer .footer-credits h5 {
+  margin: 0;
+  margin-top: 1rem;
+  margin-bottom: 0.7rem;
+  font-size: 1.2rem;
+  color: rgb(148, 148, 148);
+}
+
+footer .footer-credits {
+  padding-bottom: 1rem;
+}
+
+footer .footer-credits .credit {
+  color: #84898a;
+}
+
+footer .footer-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+}
+
+footer .footer-grid a {
+  display: block;
+}
+
+footer .footer-grid .content {
+  margin-top: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+}
+
+footer .footer-grid .grid-item {
+  margin: 2rem 0;
+}
+
+footer .footer-grid .title {
+  color: #d7aeff;
+}
+
+footer .footer-grid a {
+  color: rgb(128, 122, 129);
+  transition: color 0.2s ease-in;
+}
+
+footer .footer-grid a:hover {
+  color: rgb(159, 149, 161);
+}
+
+@media screen and (max-width: 700px) {
+  footer .flex {
+    display: flex;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  footer .footer-top {
+    gap: 1rem;
+  }
+
+  footer .flex {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  footer .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 0rem;
+  }
+
+  footer .footer-grid .grid-item {
+    margin: 1rem 0;
+  }
+
+  footer .extra-credits {
+    display: none;
+  }
+
+  footer .credit {
+    margin-top: 1rem;
+    margin-inline: auto;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  footer .flex {
+    gap: 0.5rem;
+  }
 }
 
 @media screen and (min-width: 900px) {
