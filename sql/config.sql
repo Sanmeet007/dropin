@@ -93,11 +93,11 @@ CREATE TABLE `freelancers` (
   `languages` set('punjabi','hindi','english','spanish') DEFAULT 'english',
   `other_skills` varchar(255) DEFAULT NULL,
   `education` longtext,
-  `balance` int unsigned NOT NULL DEFAULT '0',
+  `balance` double NOT NULL DEFAULT '0',
   PRIMARY KEY (`freelancer_id`),
   KEY `fk_user_key` (`user_id`),
   CONSTRAINT `fk_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `freelancers` (
 
 LOCK TABLES `freelancers` WRITE;
 /*!40000 ALTER TABLE `freelancers` DISABLE KEYS */;
-INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english','\"supe,man\"','+2',0),(20,1005,NULL,NULL,NULL,NULL,NULL,NULL,0),(21,1006,NULL,NULL,NULL,NULL,NULL,NULL,0);
+INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english','\"supe,man\"','+2',800),(20,1005,NULL,NULL,NULL,NULL,NULL,NULL,1000),(21,1006,NULL,NULL,NULL,NULL,NULL,NULL,1000),(22,1007,NULL,NULL,NULL,NULL,NULL,NULL,1000);
 /*!40000 ALTER TABLE `freelancers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +244,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world','http://localhost/uploads/1682690502957-api.js','male','freelancer','2002-01-01',1,NULL,NULL),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0,NULL,NULL),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1,NULL,NULL),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0,NULL,NULL),(1004,'super sam',NULL,'supersam@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2012-04-30',0,NULL,NULL),(1005,'super sam',NULL,'supersam123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0,NULL,NULL),(1006,'Binit',NULL,'binit123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2023-04-27',0,NULL,NULL);
+INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'hello world','http://localhost/uploads/1682690502957-api.js','male','freelancer','2002-01-01',1,NULL,NULL),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0,NULL,NULL),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1,NULL,NULL),(1003,'Bunny',NULL,'honeybunny@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-25',0,NULL,NULL),(1004,'super sam',NULL,'supersam@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2012-04-30',0,NULL,NULL),(1005,'super sam',NULL,'supersam123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0,NULL,NULL),(1006,'Binit',NULL,'binit123@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2023-04-27',0,NULL,NULL),(1007,'fname','lname','someone@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','freelancer','2012-04-30',0,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -607,6 +607,44 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `withdraw_balance` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `withdraw_balance`(
+	in _uid int,
+    in _withdraw_amount int
+)
+BEGIN
+	declare _x int;
+    declare _b int;
+	select user_id , balance into _x , _b from freelancers where user_id = _uid ;
+    
+    if _x is not null then 
+    	if _withdraw_amount > _b then 
+			signal sqlstate '45000' set message_text = "INS_BAL";
+        else 
+			if _withdraw_amount >= 10 then
+				update freelancers set balance =  (_b - _withdraw_amount) where user_id = _uid;
+			else 
+				signal sqlstate '45000' set message_text = "MIN_BAL";
+			end if;
+         end if;   
+    else 
+		signal sqlstate '45000' set message_text = "INV_USR";
+    end if ;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -617,4 +655,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-29  1:24:40
+-- Dump completed on 2023-05-01 15:47:26
