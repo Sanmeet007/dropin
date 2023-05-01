@@ -499,7 +499,7 @@ section.need .sidebar {
   align-items: center;
   background-color: #261144;
   background-repeat: no-repeat;
-  background-image: url(/assets/images/sprinkle-1.svg);
+  background-image: url(/assets/images/sprinkle.svg);
 }
 
 @media screen and (max-width: 700px) {
