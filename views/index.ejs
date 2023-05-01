@@ -5,16 +5,247 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Document</title>
+  <title>Dropin</title>
+  <meta name="color-scheme" content="dark" />
+  <link rel="stylesheet" href="/assets/style.css">
+  <link rel="shortcut icon" href="/favicon.png" type="image/png">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 </head>
 
-<body>
+<body class="dark">
+  <%- include('./partials/header.ejs') %>
+  <div class="container">
+    <div class="container">
+      <section class="hero hero-section">
+        <h1>
+          Connecting freelancers with businesses
+        </h1>
+        <p>
+          Dropin is a user-friendly platform that connects businesses with skilled freelancers across various
+          industries.
+          Whether you're a freelancer looking for job opportunities or a company seeking talent, Dropin makes it easy to
+          find and get hired. Join our community today to take your career or business to the next level.
+        </p>
 
-  <% if( user){  %>
-  Hello <%= user.first_name + " "+  user.last_name %>! Welcome to dropin.
-  <%  }else { %>
-  Please login
-  <%  } %>
+        <form class="hero-form">
+          <div class="form-element">
+            <input type="email" placeholder="Email Address" />
+          </div>
 
+          <button type="submit">Sign up for Dropin</button>
+        </form>
+      </section>
+      <style>
+
+      </style>
+      <section class="trusted-by">
+        <h2>Trusted By</h2>
+        <div class="sources">
+          <div class="image">
+            <img src="/assets/images/microsoft.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/airbnb.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/tcs.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/lenovo.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/asus.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/forbes.svg" alt="">
+          </div>
+          <div class="image">
+            <img src="/assets/images/google.png" alt="">
+          </div>
+        </div>
+      </section>
+
+      <section class="brand-details">
+        <div class="image">
+          <img src="/assets/images/hero.webp" alt="Image" width="100%" height="100%">
+        </div>
+        <div class="content">
+          <h2>Level up your freelancing game with Dropin, it's free!</h2>
+          <div class="feature">
+            <div class="icon"> <span class="material-symbols-outlined">
+                edit_square
+              </span></div>
+            <div class="content">
+              <div class="content-heading">No cost to join.</div>
+              <div class="content-desc">Register and browse professionals, explore projects, or even book a
+                consultation.
+              </div>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="icon">
+              <span class="material-symbols-outlined">
+                push_pin
+              </span>
+            </div>
+            <div class="content">
+              <div class="content-heading">Post a job and hire top talent.
+              </div>
+              <div class="content-desc">Finding talent doesn't have to be a chore. Post a job or we can search for you!
+              </div>
+            </div>
+          </div>
+          <div class="feature">
+            <div class="icon"><span class="material-symbols-outlined">
+                auto_awesome
+              </span></div>
+            <div class="content">
+              <div class="content-heading">Work with the best—without breaking the bank.
+              </div>
+              <div class="content-desc">
+                Dropin makes it affordable to up your work and take advantage of low transaction rates.
+              </div>
+            </div>
+          </div>
+          <div class="flex gap mt2 button-flex">
+            <a href="#" class="hero-btn">Sign Up for free</a>
+            <a href="" class="hero-btn">Learn how to hire</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="for-clients">
+        <div class="client-content-container">
+          <div class="side-title">For Clients</div>
+          <div class="content">
+            <h2>Find talent
+              your way</h2>
+            <p>Work with the largest network of independent professionals and get things done—from quick turnarounds to
+              big transformations.</p>
+          </div>
+          <div class="cols">
+            <div>
+              <div class="content">
+                Post a job and hire a pro
+              </div>
+              <div class="arrow">→</div>
+            </div>
+            <div>
+              <div class="content">Browse and choose what is best for you</div>
+              <div class="arrow">→</div>
+            </div>
+            <div>
+              <div class="content">Let us help you find the right talent</div>
+              <div class="arrow">
+                →
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <section class="need">
+        <div class="main-content">
+          <h2>Why businesses need to turn to Dropin?</h2>
+          <div class="features">
+            <div class="feature">
+              <div class="icon">
+                <span class="material-symbols-outlined">
+                  grade
+                </span>
+              </div>
+              <div class="content">
+                <h3>Proof of quality</h3>
+                <p>Check any pro's profile , identity verification</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="icon">
+                <span class="material-symbols-outlined">
+                  payments
+                </span>
+              </div>
+              <div class="content">
+                <h3>No cost until you hire</h3>
+                <p>Interview potential fits for your job, negotiate
+                  rates, and only pay for work you approve.</p>
+              </div>
+            </div>
+            <div class="feature">
+              <div class="icon">
+                <span class="material-symbols-outlined">
+                  check_circle
+                </span>
+              </div>
+              <div class="content">
+                <h3>Safe and secure</h3>
+                <p>Focus on your wor nowng we e p protect your
+                  data and privacy. We're here with 24/7 support if
+                  you need it.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sidebar">
+          <h3>
+            We're
+            the world's work
+            marketplace</h3>
+        </div>
+      </section>
+      <section class="for-talent">
+        <div class="hero-card">
+          <div class="hero-card-image">
+            <img src="/assets/images/work.webp" width="100%" height="100%" alt="Image">
+          </div>
+          <div class="hero-card-content">
+            <div class="start">
+              <div class="side-title">
+                For Talent
+              </div>
+              <h2>
+                Find great
+                work
+              </h2>
+              <p>Meet clients you're excited to work with and take your career or business to new heights.</p>
+            </div>
+            <div class="end">
+              <div class="cols">
+                <div>
+                  Find opportunities for every stage of your freelance career
+                </div>
+                <div>
+                  Control when, where, and how you work
+                </div>
+                <div>
+                  Explore different ways to earn
+                </div>
+              </div>
+              <div>
+                <a href="#" class="hero-btn">Find opportunities</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="support">
+        <div>
+
+          <h2>We Support Ukraine</h2>
+          <p>We are taking action to help our freelancers, our clients, and the people of Ukraine—and so can you.</p>
+          <a href="#" class="hero-btn">Learn more</a>
+        </div>
+        <div>
+          <img src="/assets/images/ukraine-help.svg" alt="Ukraine help" width="200" height="200">
+        </div>
+
+      </section>
+    </div>
+  </div>
+  <%- include('./partials/footer.ejs') %>
+  <script src="/assets/script.js"></script>
 </body>
+
 </html>
