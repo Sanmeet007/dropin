@@ -733,6 +733,15 @@ footer .footer-grid a:hover {
     display: flex;
     gap: 1rem;
   }
+
+  @media screen and (max-width: 699px) {
+    section.brand-details .button-flex {
+      flex-direction: column;
+    }
+    section.brand-details .button-flex .hero-btn {
+      width: 100%;
+    }
+  }
   section.for-talent .hero-card {
     display: block;
   }
