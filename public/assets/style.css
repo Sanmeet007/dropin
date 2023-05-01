@@ -848,7 +848,7 @@ footer .footer-grid a:hover {
     opacity: 1;
   }
   .nav-backdrop-sheet {
-    position: absolute;
+    position: fixed;
     inset: 0;
   }
   .burger {
