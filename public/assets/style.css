@@ -26,7 +26,7 @@ body {
   font-size: 1rem;
   font-family: "Robotto", sans-serif;
   margin: 0;
-  background-image: url(http://localhost/assets/images/hero-bg.webp);
+  background-image: url(/assets/images/hero-bg.webp);
   background-repeat: no-repeat;
   background-size: contain;
   background-color: #0d1116;
@@ -214,7 +214,7 @@ section.for-clients {
 
 section.for-clients .client-content-container {
   background-image: radial-gradient(at top right, transparent, rgba(0, 42, 13)),
-    url(http://localhost/assets/images/talent.jpg);
+    url(/assets/images/talent.jpg);
   display: grid;
   background-repeat: no-repeat;
   background-size: cover;
@@ -499,7 +499,7 @@ section.need .sidebar {
   align-items: center;
   background-color: #261144;
   background-repeat: no-repeat;
-  background-image: url(http://localhost/assets/images/sprinkle-1.svg);
+  background-image: url(/assets/images/sprinkle-1.svg);
 }
 
 @media screen and (max-width: 700px) {
