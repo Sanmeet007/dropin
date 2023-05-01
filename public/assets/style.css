@@ -734,11 +734,14 @@ footer .footer-grid a:hover {
     gap: 1rem;
   }
 
-  @media screen and (max-width: 699px) {
+  @media screen and (max-width: 500px) {
     section.brand-details .button-flex {
       flex-direction: column;
     }
+  }
+  @media screen and (max-width: 500px) {
     section.brand-details .button-flex .hero-btn {
+      text-align: center;
       width: 100%;
     }
   }
