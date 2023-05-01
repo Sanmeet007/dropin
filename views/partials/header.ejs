@@ -6,16 +6,48 @@
         Dropin.
       </a>
     </div>
-    <ul class="nav-links">
-      <li><a href="#">Home</a></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Services</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <div class="burger">
-      <div class="line"></div>
-      <div class="line"></div>
-      <div class="line"></div>
+    <div class="nav-backdrop open" id="nav-drawer">
+      <div class="nav-backdrop-sheet" id="nav-backdrop-sheet"></div>
+      <ul class="nav-links">
+        <li>
+          <a href="#">
+            <span class="material-symbols-outlined">
+              home
+            </span>
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="material-symbols-outlined">
+              info
+            </span>
+            About
+          </a>
+        </li>
+        <li class="active">
+          <a href="#">
+            <span class="material-symbols-outlined">
+              settings
+            </span>
+            Services
+          </a>
+        </li>
+        <li>
+          <a href="#">
+            <span class="material-symbols-outlined">
+              support_agent
+            </span>
+            Contact
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="burger" id="nav-trigger">
+      <span class="material-symbols-outlined">
+        menu
+      </span>
     </div>
   </nav>
 </header>

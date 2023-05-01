@@ -71,6 +71,9 @@ nav {
   list-style: none;
   width: auto;
 }
+.nav-links > li span {
+  display: none;
+}
 
 .nav-links li a {
   font-size: 1rem;
@@ -84,6 +87,23 @@ nav {
 
 .burger {
   display: none;
+  position: relative;
+  isolation: isolate;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 2px;
+  justify-content: center;
+  padding: 0.1rem;
+  user-select: none;
+  cursor: pointer;
+  transform: scale(1);
+}
+.burger:active {
+  transform: scale(0.9);
+}
+.burger span {
+  display: block;
 }
 
 .hero {
@@ -582,5 +602,100 @@ section.trusted-by .sources {
   section.trusted-by .sources {
     flex-wrap: wrap;
     gap: 1rem;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .nav-links {
+    position: fixed;
+    left: 0;
+    top: 0;
+    margin: 0;
+    margin: 1rem;
+    height: calc(100vh - 2rem);
+    backdrop-filter: none;
+    background-color: rgba(43, 0, 123, 0.593);
+    backdrop-filter: blur(15px);
+    padding: 1rem;
+    width: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    transform: translateX(-100%);
+    transition: 0.2s ease-in-out;
+    z-index: 2;
+  }
+  .nav-backdrop.open .nav-links {
+    transform: translateX(0);
+  }
+
+  .nav-links > li {
+    display: flex;
+    gap: 1rem;
+    padding: 0.5rem 0.2rem;
+    align-items: center;
+    color: white;
+    position: relative;
+  }
+  .nav-links > li a {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .nav-links > li:hover a {
+    color: #dec7ff;
+  }
+  .nav-links > li.active {
+    color: #d0b1ff;
+  }
+  .nav-links > li.active::after {
+    content: "";
+    display: block;
+    position: absolute;
+    background-color: #7843c8;
+    width: 4px;
+    height: 100%;
+    left: -1rem;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .nav-links > li span {
+    display: block;
+  }
+  .nav-links > li a {
+    color: inherit;
+  }
+  .nav-backdrop {
+    isolation: isolate;
+    z-index: 100;
+  }
+  .nav-backdrop::after {
+    content: "";
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.6);
+    inset: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease-in;
+  }
+  .nav-backdrop.open::after {
+    opacity: 1;
+  }
+  .nav-backdrop-sheet {
+    position: absolute;
+    inset: 0;
+  }
+  .burger {
+    display: flex;
+  }
+  .nav-backdrop {
+    visibility: hidden;
+  }
+  .nav-backdrop.open {
+    visibility: visible;
   }
 }
