@@ -2,7 +2,7 @@ const express = require("express");
 
 const router = express.Router();
 
-router.get("/app", (req, res) => {
+router.get("/", (req, res) => {
   if (req.session.user) {
     return res.render("app", {
       user: req.session.user,
