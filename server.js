@@ -6,6 +6,8 @@ const express = require("express");
 const session = require("express-session");
 
 const ApiRoutes = require("./routes/api");
+const AppRoutes = require("./routes/app");
+
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -33,6 +35,7 @@ app.get("/", (req, res) => {
   }
 });
 
+app.use("/app", AppRoutes);
 app.use("/api", ApiRoutes);
 
 process.on("SIGINT", () => {
