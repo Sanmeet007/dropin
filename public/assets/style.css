@@ -196,6 +196,9 @@ nav {
 .flex {
   display: block;
 }
+.align-center {
+  align-items: center;
+}
 .spaced {
   justify-content: space-between;
 }
@@ -762,6 +765,61 @@ footer .footer-grid a:hover {
   display: block;
 }
 
+.mob-auth-links {
+  display: none;
+}
+
+.auth-modal {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  transition: backdrop-filter 0.2s;
+  backdrop-filter: blur(4px) opacity(0);
+}
+
+.auth-modal.open {
+  visibility: visible;
+  backdrop-filter: blur(4px) opacity(1);
+}
+
+.side {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.mob-auth-links button,
+.side button {
+  background-color: transparent;
+  padding: 0.8rem 1rem;
+  border: none;
+  font-size: 1rem;
+  border-radius: 100px;
+  transform: scale(1);
+  transition: transform 0.2s ease-in;
+}
+
+.mob-auth-links button,
+.side button:last-child {
+  background-color: #9756ff7a;
+  backdrop-filter: blur(10px);
+}
+
+.side button:active,
+.mob-auth-links button:active {
+  transform: scale(0.9);
+}
+
+.mob-auth-links {
+  margin-top: auto;
+}
+
+.mob-auth-links button {
+  width: 100%;
+}
+
 @media screen and (max-width: 500px) {
   .nav-panel .text {
     display: none;
@@ -881,7 +939,18 @@ footer .footer-grid a:hover {
   }
 }
 
-@media screen and (max-width: 550px) {
+@media screen and (max-width: 700px) {
+  header .side {
+    display: none;
+  }
+  .mob-auth-links {
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+  }
+  .nav-backdrop {
+    position: fixed;
+  }
   .nav-links {
     position: fixed;
     left: 0;
