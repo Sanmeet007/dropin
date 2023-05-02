@@ -49,7 +49,7 @@ class User {
    * */ #dob;
 
   get age() {
-    return new Date().getFullYear - this.#dob.getFullYear();
+    return new Date().getFullYear() - this.#dob.getFullYear();
   }
 
   get fullname() {
