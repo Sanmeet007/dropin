@@ -3,49 +3,64 @@
 <%- include('./partials/head.ejs'  , { title }) %>
 
 <body>
+
+  <style>
+    @media screen and (max-width : 500px) {
+      .nav-panel .text {
+        display: none;
+      }
+
+      .nav-panel {
+        width: 60px;
+        overflow-y: auto;
+      }
+
+      .body-panel {}
+    }
+  </style>
   <div class="app">
     <div class="nav-panel">
       <a href="/" class="block">
         <div class="logo">
           <img src="/assets/images/logo.svg" alt="LOGO" width="30" height="30">
-          <span>Dropin</span>
+          <span class="text">Dropin</span>
         </div>
       </a>
       <a href="/app" class="nav-item <%- view === 'index' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           dashboard
         </span>
-        Dashboard
+        <span class="text">Dashboard</span>
       </a>
       <a href="/app/my-account" class="nav-item <%- view === 'my-account' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           manage_accounts
         </span>
-        My Account
+        <span class="text">My Account</span>
       </a>
       <a href="/app/jobs" class="nav-item <%- view === 'jobs' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           work
         </span>
-        Jobs
+        <span class="text">Jobs</span>
       </a>
       <a href="/app/contracts" class="nav-item <%- view === 'contracts' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           description
         </span>
-        Contracts
+        <span class="text">Contracts</span>
       </a>
       <a href="/app/proposals" class="nav-item <%- view === 'proposals' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           receipt_long
         </span>
-        Proposals
+        <span class="text">Proposals</span>
       </a>
       <a href="/app/balance" class="nav-item <%- view === 'balance' ? 'active' : '' %>">
         <span class="material-symbols-outlined">
           attach_money
         </span>
-        Balance
+        <span class="text">Balance</span>
       </a>
     </div>
     <div class="body-panel">

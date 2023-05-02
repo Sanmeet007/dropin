@@ -670,11 +670,12 @@ footer .footer-grid a:hover {
   flex-direction: column;
   background-color: rgba(32, 18, 51, 0.787);
   height: 100vh;
-  flex-basis: 200px;
   background-image: url(/assets/images/rect.svg);
   background-size: cover;
+  width: 200px;
   background-position: bottom;
   background-repeat: no-repeat;
+  transition: 0.2s ease-in;
 }
 
 .nav-panel .nav-item,
