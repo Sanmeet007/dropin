@@ -762,6 +762,17 @@ footer .footer-grid a:hover {
   display: block;
 }
 
+@media screen and (max-width: 500px) {
+  .nav-panel .text {
+    display: none;
+  }
+
+  .nav-panel {
+    width: 60px;
+    overflow-y: auto;
+  }
+}
+
 @media screen and (max-width: 700px) {
   footer .flex {
     display: flex;
