@@ -855,7 +855,7 @@ footer .footer-grid a:hover {
   border-radius: 4px;
 }
 
-form input {
+.form input {
   background-color: rgba(255, 255, 255, 0.08);
   border: 0;
   padding: 0.5rem;
@@ -867,11 +867,11 @@ form input {
   transition: background-color 0.2s ease;
 }
 
-form input:focus-visible {
+.form input:focus-visible {
   background-color: #292929;
 }
 
-form h3 {
+.form h3 {
   color: var(--accent-clr-light);
   margin: 0;
   margin-bottom: 1rem;

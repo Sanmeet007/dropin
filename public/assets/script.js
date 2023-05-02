@@ -7,6 +7,7 @@ const deskSignInButton = document.querySelector("#desk-sign-in-btn");
 const signInButton = document.querySelector("#sign-in-btn");
 const signUpButton = document.querySelector("#sign-up-btn");
 const authBackdop = document.querySelector("#auth-backdrop");
+const loginForm = document.querySelector("#login-form");
 
 navTrigger.addEventListener("click", (e) => {
   navDrawer.classList.add("open");
@@ -35,14 +36,16 @@ if (signUpButton) {
 }
 
 if (deskSignInButton) {
-  deskSignInButton.addEventListener("click", () => {});
+  deskSignInButton.addEventListener("click", () => {
+    authModal.classList.add("open");
+  });
 }
 
 if (deskSignUpButton) {
-  deskSignUpButton.addEventListener("click", () => {});
+  deskSignUpButton.addEventListener("click", () => {
+    authModal.classList.add("open");
+  });
 }
-
-const loginForm = document.querySelector("#login-form");
 
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();

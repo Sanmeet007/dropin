@@ -24,13 +24,18 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.get("/", (req, res) => {
+  let login = false;
+  const action = req.query.action;
+  if (action === "login") login = true;
   if (req.session.user) {
     return res.render("index", {
       user: req.session.user,
+      login,
     });
   } else {
     return res.render("index", {
       user: null,
+      login,
     });
   }
 });

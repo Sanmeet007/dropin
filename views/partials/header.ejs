@@ -1,9 +1,9 @@
 <header class="container">
-  <div class="auth-modal open" id="auth-modal">
+  <div class="auth-modal <%= login ? 'open' : '' %>" id="auth-modal">
     <div class="auth-backdrop" id="auth-backdrop"></div>
     <div class="auth-modal-content">
       <div class="content">
-        <form id="login-form">
+        <form id="login-form" class="form">
           <h3>Login</h3>
           <input type="email" name="email" placeholder="Email Address" />
           <input type="password" name="password" placeholder="Password" />
