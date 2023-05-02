@@ -196,6 +196,10 @@ nav {
 .flex {
   display: block;
 }
+
+.fullwidth {
+  width: 100%;
+}
 .align-center {
   align-items: center;
 }
@@ -769,22 +773,6 @@ footer .footer-grid a:hover {
   display: none;
 }
 
-.auth-modal {
-  position: fixed;
-  z-index: 200;
-  inset: 0;
-  visibility: hidden;
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  transition: backdrop-filter 0.2s;
-  backdrop-filter: blur(4px) opacity(0);
-}
-
-.auth-modal.open {
-  visibility: visible;
-  backdrop-filter: blur(4px) opacity(1);
-}
-
 .side {
   display: flex;
   gap: 0.5rem;
@@ -818,6 +806,99 @@ footer .footer-grid a:hover {
 
 .mob-auth-links button {
   width: 100%;
+}
+
+.auth-modal {
+  position: fixed;
+  z-index: 200;
+  inset: 0;
+  visibility: hidden;
+  background-color: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(10px);
+  backdrop-filter: blur(4px) opacity(0);
+  transition: backdrop-filter 0.2s, visibility 0.2s;
+}
+
+.auth-modal.open {
+  visibility: visible;
+  backdrop-filter: blur(4px) opacity(1);
+}
+
+.auth-modal .auth-backdrop {
+  inset: 0;
+  position: absolute;
+}
+
+.side button {
+  cursor: pointer;
+}
+
+.auth-modal-content {
+  opacity: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  width: 300px;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s;
+}
+
+.auth-modal.open .auth-modal-content {
+  opacity: 1;
+}
+
+.auth-modal-content .content {
+  background-color: #0e0817;
+  border: 1px solid var(--accent-clr);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+form input {
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 0;
+  padding: 0.5rem;
+  border-radius: 4px;
+  width: 100%;
+  font-size: 1rem;
+  margin: 0.5rem 0;
+  outline: none;
+  transition: background-color 0.2s ease;
+}
+
+form input:focus-visible {
+  background-color: #292929;
+}
+
+form h3 {
+  color: var(--accent-clr-light);
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+.btn {
+  background-color: var(--accent-clr);
+  border: none;
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+  border-radius: 4px;
+  transform: scale(1);
+  transition: background-color 0.2s, transform 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background-color: #9d5bff;
+}
+
+.btn:active {
+  transform: scale(0.9);
+}
+
+.upper {
+  text-transform: uppercase;
 }
 
 @media screen and (max-width: 500px) {

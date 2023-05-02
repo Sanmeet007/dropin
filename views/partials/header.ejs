@@ -1,73 +1,91 @@
-  <header class="container">
-    <div class="auth-modal">
-      Hello world
+<header class="container">
+  <div class="auth-modal open" id="auth-modal">
+    <div class="auth-backdrop" id="auth-backdrop"></div>
+    <div class="auth-modal-content">
+      <div class="content">
+        <form id="login-form">
+          <h3>Login</h3>
+          <input type="email" name="email" placeholder="Email Address" />
+          <input type="password" name="password" placeholder="Password" />
+          <button class="btn mt1" type="submit">
+            Login
+          </button>
+        </form>
+      </div>
     </div>
-    <nav>
-      <div class="logo">
-        <a href="#">
-          <img src="/assets/images/logo.svg" alt="LOGO" width="38" height="38">
-          Dropin.
+  </div>
+  <nav>
+    <div class="logo">
+      <a href="#">
+        <img src="/assets/images/logo.svg" alt="LOGO" width="38" height="38">
+        Dropin.
+      </a>
+    </div>
+    <div class="flex align-center gap">
+      <div class="nav-backdrop" id="nav-drawer">
+        <div class="nav-backdrop-sheet" id="nav-backdrop-sheet"></div>
+        <ul class="nav-links">
+          <li>
+            <a href="#">
+              <span class="material-symbols-outlined">
+                home
+              </span>
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="material-symbols-outlined">
+                info
+              </span>
+              About
+            </a>
+          </li>
+          <li class="active">
+            <a href="#">
+              <span class="material-symbols-outlined">
+                settings
+              </span>
+              Services
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="material-symbols-outlined">
+                support_agent
+              </span>
+              Contact
+            </a>
+          </li>
+          <li class="mob-auth-links">
+            <% if (user != null) { %>
+            <a href="/app" class="block fullwidth">
+              <button>Go to Dashboard</button>
+            </a>
+            <% } else { %>
+            <button id="sign-in-btn">Sign in</button>
+            <button id="sign-up-btn">Sign up</button>
+            <% } %>
+
+          </li>
+        </ul>
+      </div>
+      <div class="side">
+        <% if (user != null) { %>
+        <a href="/app">
+          <button id="desk-sign-out-btn">Go to Dashboard</button>
         </a>
+        <% } else { %>
+        <button id="desk-sign-up-btn">Sign in</button>
+        <button id="desk-sign-in-btn">Sign up</button>
+        <% } %>
       </div>
-      <div class="flex align-center gap">
-        <div class="nav-backdrop" id="nav-drawer">
-          <div class="nav-backdrop-sheet" id="nav-backdrop-sheet"></div>
-          <ul class="nav-links">
-            <li>
-              <a href="#">
-                <span class="material-symbols-outlined">
-                  home
-                </span>
-                Home
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span class="material-symbols-outlined">
-                  info
-                </span>
-                About
-              </a>
-            </li>
-            <li class="active">
-              <a href="#">
-                <span class="material-symbols-outlined">
-                  settings
-                </span>
-                Services
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <span class="material-symbols-outlined">
-                  support_agent
-                </span>
-                Contact
-              </a>
-            </li>
-            <li class="mob-auth-links">
-              <% if (user != null) { %>
-              <button id="sign-out-btn">Sign out</button>
-              <% } else { %>
-              <button id="sign-in-btn">Sign in</button>
-              <button id="sign-up-btn">Sign up</button>
-              <% } %>
+    </div>
 
-            </li>
-          </ul>
-        </div>
-        <div class="side">
-          <button>Sign in</button>
-          <button>Sign up</button>
-        </div>
-      </div>
-
-      <div class="burger" id="nav-trigger">
-        <span class="material-symbols-outlined">
-          menu
-        </span>
-      </div>
-    </nav>
-  </header>
-
-  <script></script>
+    <div class="burger" id="nav-trigger">
+      <span class="material-symbols-outlined">
+        menu
+      </span>
+    </div>
+  </nav>
+</header>
