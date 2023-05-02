@@ -1,11 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<%- include('./partials/head.ejs'  , { title : "App"}) %>
+<%- include('./partials/head.ejs'  , { title }) %>
 
 <body>
   <div class="app">
-    <div class="nav-panel"></div>
-    <div class="body-panel"></div>
+    <div class="nav-panel">
+      <a href="/" class="block">
+        <div class="logo">
+          <img src="/assets/images/logo.svg" alt="LOGO" width="30" height="30">
+          <span>Dropin</span>
+        </div>
+      </a>
+      <a href="/app" class="nav-item <%- view === 'index' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          dashboard
+        </span>
+        Dashboard
+      </a>
+      <a href="/app/my-account" class="nav-item <%- view === 'my-account' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          manage_accounts
+        </span>
+        My Account
+      </a>
+      <a href="/app/jobs" class="nav-item <%- view === 'jobs' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          work
+        </span>
+        Jobs
+      </a>
+      <a href="/app/contracts" class="nav-item <%- view === 'contracts' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          description
+        </span>
+        Contracts
+      </a>
+      <a href="/app/proposals" class="nav-item <%- view === 'proposals' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          receipt_long
+        </span>
+        Proposals
+      </a>
+      <a href="/app/balance" class="nav-item <%- view === 'balance' ? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          attach_money
+        </span>
+        Balance
+      </a>
+    </div>
+    <div class="body-panel">
+      <div class="body-head">
+        <div class="heading">
+          <%= heading %>
+        </div>
+        <%- include('./partials/avatar.ejs' , { user }) %>
+      </div>
+      <div class="body">
+        <%- include(`./app-pages/${view}.ejs`) %>
+      </div>
+    </div>
   </div>
 </body>
 
