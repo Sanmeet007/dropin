@@ -422,6 +422,7 @@ class DataBase {
    * @param {string?} details.bio
    * @param {string?} details.profile_image
    * @param {string?} details.gender
+   * @param {string?} details.summary
    *
    * @returns {Promise<void>}
    */

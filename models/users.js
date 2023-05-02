@@ -40,6 +40,7 @@ class User {
   /** @type {string} */ profile_image;
   /** @type {string} */ account_type;
   /** @type {string} */ gender;
+  /** @type {string} */ summary;
   /** @type {boolean} */ verified;
 
   /**
@@ -66,6 +67,7 @@ class User {
     account_type,
     gender,
     dob,
+    summary,
     profile_image = null,
     verified = false,
   }) {
@@ -81,6 +83,7 @@ class User {
     this.hashedPassword = password;
     this.location = location;
     this.verified = Boolean(verified);
+    this.summary = summary;
   }
   /**
    *
