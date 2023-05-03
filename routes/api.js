@@ -29,7 +29,7 @@ router.post("/login", async (req, res) => {
     const { email = null, password = null } = req.body;
     if (!email || !password) return res.status(400).end();
 
-    const user = await dbconn.getUserByEmailId(email);
+    const user = await dbconn.getUserDetailsByEmailId(email);
 
     if (user) {
       if (user.hashedPassword !== passwordHasher(password)) {
