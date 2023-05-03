@@ -8,6 +8,7 @@ const { objectCleaner } = require("../utils/object_cleaner");
 const multer = require("multer");
 const path = require("path");
 const { User } = require("../models/users");
+const { isEmailValid } = require("../utils/email_validator");
 
 const storage = multer.diskStorage({
   destination: (_, __, cb) => {
@@ -98,6 +99,12 @@ router.post("/sign-up", async (req, res) => {
         });
       }
     }
+    const emailValidator = await isEmailValid(email);
+    if (!emailValidator.valid)
+      return res.status(400).json({
+        error: true,
+        message: "Suspicious Email detected",
+      });
 
     const createdSuccessFully = await dbconn.createUser(account_type, {
       email: email,
