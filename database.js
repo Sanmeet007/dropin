@@ -604,7 +604,6 @@ class DataBase {
       "SELECT * FROM proposals WHERE user_id = ?",
       [uid]
     );
-    console.log(result);
     if (result && result.length > 0)
       return result.map(ProposalsDetails.fromData);
     return null;
