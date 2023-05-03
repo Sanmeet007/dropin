@@ -130,9 +130,10 @@ class DataBase {
         [uid]
       );
       const jobProposals = await this.#query(
-        "select * from proposals where user_id =?",
+        "select  proposal_id , j.job_id , j.title , user_id ,cover_letter  , timeframe , bid_amount , p.status  , p.created_at from proposals p join jobs j on  j.job_id = p.job_id where user_id = ?",
         [uid]
       );
+
       if (fullDetails)
         return Freelancer.fromData({
           ...fullDetails[0],
@@ -239,9 +240,10 @@ class DataBase {
         [uid]
       );
       const jobProposals = await this.#query(
-        "select * from proposals where user_id =?",
+        "select  proposal_id , j.job_id , j.title , user_id ,cover_letter  , timeframe , bid_amount , p.status  , p.created_at from proposals p join jobs j on  j.job_id = p.job_id where user_id = ?",
         [uid]
       );
+
       if (fullDetails)
         return Freelancer.fromData({
           ...fullDetails[0],
