@@ -618,10 +618,10 @@ class DataBase {
       return null;
     } else {
       const result = await this.#query(
-        `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users ORDER BY created_at ${
+        `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users WHERE status = ? ORDER BY created_at ${
           latest ? "DESC" : "ASC"
-        } LIMIT ?,? WHERE status = ?`,
-        [offset, limit, type]
+        } LIMIT ?,? `,
+        [type, offset, limit]
       );
       if (result && result.length > 0) return result.map(JobDetails.fromData);
       return null;
