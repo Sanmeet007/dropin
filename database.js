@@ -596,16 +596,31 @@ class DataBase {
 
   /**
    *
+   * @param {number} uid
+   * @returns {Promise<ProposalsDetails?>}
+   */
+  async getAllProposalsByUserId(uid) {
+    const result = this.#query("SELECT * FROM proposals WHERE user_id = ?", [
+      uid,
+    ]);
+
+    if (result && result.length > 0)
+      return result.map(ProposalsDetails.fromData);
+    return null;
+  }
+  /**
+   *
    * Returns an Array of Jobs in database.
    * NOTE : It doesn't returns jobs based on status you need to filter it by yourself.
-   * @param {number} limit
-   * @param {number} offset
-   * @param {boolean} latest
-   * @param {('open' | 'closed' | 'progress' | 'any')} type
+   * @param {Object} o
+   * @param {number} o.limit
+   * @param {number} o.offset
+   * @param {boolean} o.latest
+   * @param {('open' | 'closed' | 'progress' | 'any')} o.type
    *
    * @returns {Promise<Array<JobDetails>?>}
    */
-  async listJobs(limit = 10, offset = 0, latest = true, type = "any") {
+  async listJobs({ type = "any", limit = 10, offset = 0, latest = true }) {
     /** @type {Array?} */
     if (type === "any") {
       const result = await this.#query(
