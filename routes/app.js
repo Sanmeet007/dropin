@@ -47,7 +47,7 @@ router.get("/jobs/:id", authenticateSession, async (req, res) => {
 
   return res.render("app", {
     user: req.session.user,
-    title: "How to make chicken - Dropin",
+    title: jobDetails.title + " - Dropin",
     heading: "Job Details",
     view: "job-details",
     jobDetails,
