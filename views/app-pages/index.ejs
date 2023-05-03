@@ -1,3 +1,43 @@
-This is index page
-Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam quae dolorem autem aliquam unde, quod maiores labore sapiente voluptas vel! Quos dignissimos, cum assumenda laborum quisquam qui a tempore nisi!
-Lorem ipsum, dolor sit amet consectetur adipisicing elit. Rerum minima delectus recusandae odio voluptatum, ut mollitia unde incidunt? Asperiores quisquam reiciendis aperiam provident neque numquam est et. Magnam, repellat sequi.
+<div class="details">
+  <h3>
+    Howdy <%= user._name %>, Welcome to Dropin!</h3>
+  <p>Thank you for choosing Dropin as your staffing partner. We're excited to work with you and help you achieve your business goals.</p>
+
+</div>
+
+<div class="grid">
+  <div class="balance card card-bg">
+    <h2>Balance</h2>
+    <div class="gold">
+      $ <%= user.balance %>
+    </div>
+  </div>
+  <div class="proposals card">
+    <h2>Proposals</h2>
+    <div class="success"><%= user.proposals?.length ??  0 %></div>
+  </div>
+  <div class="contracts card">
+    <h2>Contracts</h2>
+    <div class="orange"><%= user.contracts?.length ??  0 %></div>
+  </div>
+  <div class="about-me card card-bg ">
+    <h2>Email Verified</h2>
+    <% if(user.verified) {%>
+    <div class="flex-centered verify">
+      <span class="material-symbols-outlined">
+        verified
+      </span><span>Verified</span>
+    </div>
+    <% }else { %>
+    <a href="#" class="orange">Verify Now</a>
+    <% } %>
+  </div>
+</div>
+
+<div class="card rflex align-center">
+  Checkout jobs that may suit your skills.
+
+  <a href="/app/jobs" class="inline-block btn">
+    View Jobs
+  </a>
+</div>

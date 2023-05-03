@@ -1,1 +1,290 @@
-This is accounts page
+<% console.log(user) %>
+<style>
+  .user-account .image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 0 10px 4px rgba(255, 255, 255, 0.2);
+
+  }
+
+  .user-account .atext {
+    background-color: orangered;
+    display: flex;
+    width: inherit;
+    height: inherit;
+    align-items: center;
+    font-size: 2rem;
+    justify-content: center;
+    pointer-events: none;
+  }
+
+  .user-account .image {
+    flex-shrink: 0;
+  }
+
+  .user-account .image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .user-account .meta {
+    display: flex;
+  }
+
+  .user-account .top {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .user-account .top .name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .user-account .top .email {
+    font-size: 0.8rem;
+    color: silver;
+  }
+
+  .user-account .top .summary {
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  .user-account .split {
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .user-account .bio {
+    margin-top: 1rem;
+  }
+
+  .user-account .skillset {
+    margin-top: 1rem;
+  }
+
+  .spacer {
+    flex-grow: 1;
+  }
+
+  .user-account h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .user-account h3 span {
+    display: block;
+  }
+
+  .iconbtn {
+    width: 50px;
+    height: 50px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+
+  .user-account .skills {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .user-account .skill {
+    background-color: rgba(255, 68, 0, 0.246);
+    border-radius: 4px;
+    padding: 0.3rem 0.5rem;
+  }
+</style>
+
+<div class="user-account">
+  <div class="top">
+
+    <div class="image">
+      <% if (user.profile_image) { %>
+      <img src="<%= user.profile_image %>" alt="Avatar Image">
+      <% } else { %>
+      <div class="atext">
+        S
+      </div>
+      <% } %>
+    </div>
+    <div class="meta">
+      <div>
+        <div class="name">
+          <% if (user.verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= user._name %>
+        </div>
+        <div class="email">
+          <%= user.email %>
+        </div>
+        <div class="summary">
+          <q><%= user.summary %></q>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div>
+      <button class="btn iconbtn">
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="bio split">
+    <h3>About me</h3>
+    <p>
+      <%= user.bio %>
+    </p>
+  </div>
+  <div class="education split">
+    <h3>
+      <span class="material-symbols-outlined">
+        school
+      </span>
+      <span>
+        Education
+      </span>
+    </h3>
+    <p>
+      <%= user.details.education %>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        pin_drop
+      </span>
+      <span>
+        Location
+      </span>
+    </h3>
+    <p>
+      <%= user.location ?? "Unknown"%>
+    </p>
+  </div>
+
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        list_alt
+      </span>
+      <span>
+        Skills
+      </span>
+    </h3>
+
+    <div class="skills">
+
+      <% if (user.details?.skills != null) { %>
+      <% for( const skillset of user.details.skills) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        code
+      </span>
+      <span>
+        Programming Languages
+      </span>
+    </h3>
+    <div class="skills">
+
+      <% if (user.details?.programming_languages != null) { %>
+      <% for( const skillset of user.details.programming_languages) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+
+  </div>
+
+
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        database
+      </span>
+      <span>
+        Databases
+      </span>
+    </h3>
+
+    <div class="skills">
+
+      <% if (user.details?.languages != null) { %>
+      <% for( const skillset of user.details.databases) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        dynamic_feed
+      </span>
+      <span>
+        Other Skills
+      </span>
+    </h3>
+
+    <div class="skills">
+
+
+      <% if (user.details?.other_skills != null) { %>
+      <% for( const skillset of user.details.other_skills) { %>
+      <div class="skill">
+        <%= skillset.replaceAll("\"" , "") %>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        abc
+      </span>
+      <span>
+        Languages
+      </span>
+    </h3>
+    <div class="skills">
+
+      <% if (user.details?.languages != null) { %>
+      <% for( const skillset of user.details.languages) { %>
+      <div class="skill">
+        <%= skillset.toUpperCase() %>
+      </div>
+      <% } %>
+      <% } %>
+    </div>
+
+  </div>
+
+</div>
