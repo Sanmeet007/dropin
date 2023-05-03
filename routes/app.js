@@ -54,57 +54,41 @@ router.get("/jobs/:id", authenticateSession, async (req, res) => {
   });
 });
 
-router.get("/proposals", (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "Proposals - Dropin",
-      heading: "Proposals",
-      view: "proposals",
-    });
-  } else {
-    return res.redirect("/?action=login");
-  }
+router.get("/proposals", authenticateSession, (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "Proposals - Dropin",
+    heading: "Proposals",
+    view: "proposals",
+  });
 });
 
-router.get("/my-account", (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "My Account - Dropin",
-      heading: "Mange Account",
-      view: "my-account",
-    });
-  } else {
-    return res.redirect("/?action=login");
-  }
+router.get("/my-account", authenticateSession, (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "My Account - Dropin",
+    heading: "Mange Account",
+    view: "my-account",
+  });
 });
 
-router.get("/balance", async (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "Balance - Dropin",
-      heading: "Balance",
-      view: "balance",
-      balance: req.session.user.balance,
-    });
-  } else {
-    return res.redirect("/?action=login");
-  }
+router.get("/balance", authenticateSession, async (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "Balance - Dropin",
+    heading: "Balance",
+    view: "balance",
+    balance: req.session.user.balance,
+  });
 });
 
 router.get("/contracts", (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "Contracts - Dropin",
-      heading: "Contracts",
-      view: "contracts",
-    });
-  } else {
-    return res.redirect("/?action=login");
-  }
+  return res.render("app", {
+    user: req.session.user,
+    title: "Contracts - Dropin",
+    heading: "Contracts",
+    view: "contracts",
+  });
 });
 
 module.exports = router;
