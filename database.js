@@ -601,19 +601,31 @@ class DataBase {
    * @param {number} limit
    * @param {number} offset
    * @param {boolean} latest
+   * @param {('open' | 'closed' | 'progress' | 'any')} type
    *
    * @returns {Promise<Array<JobDetails>?>}
    */
-  async listJobs(limit = 10, offset = 0, latest = true) {
+  async listJobs(limit = 10, offset = 0, latest = true, type = "any") {
     /** @type {Array?} */
-    const result = await this.#query(
-      `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users ORDER BY created_at ${
-        latest ? "DESC" : "ASC"
-      } LIMIT ?,?`,
-      [offset, limit]
-    );
-    if (result && result.length > 0) return result.map(JobDetails.fromData);
-    return null;
+    if (type === "any") {
+      const result = await this.#query(
+        `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users ORDER BY created_at ${
+          latest ? "DESC" : "ASC"
+        } LIMIT ?,?`,
+        [offset, limit]
+      );
+      if (result && result.length > 0) return result.map(JobDetails.fromData);
+      return null;
+    } else {
+      const result = await this.#query(
+        `SELECT * FROM jobs NATURAL JOIN clients NATURAL JOIN users ORDER BY created_at ${
+          latest ? "DESC" : "ASC"
+        } LIMIT ?,? WHERE status = ?`,
+        [offset, limit, type]
+      );
+      if (result && result.length > 0) return result.map(JobDetails.fromData);
+      return null;
+    }
   }
 
   /**
