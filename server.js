@@ -15,6 +15,7 @@ app.use(
   session({
     secret: process.env.SECRET,
     resave: true,
+    secure: false,
     saveUninitialized: true,
     maxAge: 8.64e7,
   })

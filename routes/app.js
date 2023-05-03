@@ -54,7 +54,7 @@ router.get("/jobs/:id", authenticateSession, async (req, res) => {
   });
 });
 
-router.get("/proposals", authenticateSession, (req, res) => {
+router.get("/proposals", authenticateSession, async (req, res) => {
   return res.render("app", {
     user: req.session.user,
     title: "Proposals - Dropin",
@@ -82,12 +82,30 @@ router.get("/balance", authenticateSession, async (req, res) => {
   });
 });
 
-router.get("/contracts", (req, res) => {
+router.get("/contracts", authenticateSession, async (req, res) => {
+  const contracts = await dbconn.getAllContractsByUserId(req.session.user.uid);
+
   return res.render("app", {
     user: req.session.user,
     title: "Contracts - Dropin",
     heading: "Contracts",
     view: "contracts",
+    contracts: contracts,
+  });
+});
+router.get("/contracts/:id", authenticateSession, async (req, res) => {
+  const contract_id = parseInt(req.params.id);
+
+  if (!contract_id) return res.redirect("/app/contracts");
+
+  const contractDetails = await dbconn.getContractsDetailsById(contract_id);
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "Contracts - Dropin",
+    heading: "Contracts",
+    view: "contract-details",
+    contractDetails,
   });
 });
 

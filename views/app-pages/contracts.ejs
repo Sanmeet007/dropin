@@ -1,1 +1,34 @@
-This is contract page
+<% if (contracts) { %>
+<div class="contracts">
+  <% for( let index = 0; index < contracts.length; index++ ) { %>
+  <div class="contract card">
+    <div class="title">
+      <a href="/app/jobs/<%= contracts[index].job_id %>?status=<%= contracts[index].end_date?  "closed" : "open"   %>">
+        <%= contracts[index].job_title %>
+      </a>
+    </div>
+    <div class="desc">
+      <%= contracts[index].job_description.slice(0,255) %>
+    </div>
+    <div class="contract-details">
+      <div class="amount">
+        <%= contracts[index].payment_amount %>
+      </div>
+      <div class="status <%= contracts[index].end_date?  "closed" : "open"   %>">
+        <% if (contracts[index].end_date) { %>
+        ENDED
+        <% } else { %>
+        PROGRESS
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+<% } %>
+
+
+
+<% if (contracts.length === 0 || contracts === null) { %>
+<div class="empty">Nothing to display</div>
+<% } %>

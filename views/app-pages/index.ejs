@@ -14,7 +14,7 @@
   </div>
   <div class="proposals card">
     <h2>Proposals</h2>
-    <div class="success"><%= user.proposals?.length ??  0 %></div>
+    <div class="success"><%= user.job_proposals.filter(x => x.status != "accepted")?.length ??  0 %></div>
   </div>
   <div class="contracts card">
     <h2>Contracts</h2>

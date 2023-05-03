@@ -131,7 +131,6 @@ class Freelancer extends User {
     this.details = new FreelancerDetails(d);
   }
   static fromData(d) {
-    this.balance = d.balance;
     return new Freelancer(d);
   }
 }
