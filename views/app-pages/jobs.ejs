@@ -1,1 +1,59 @@
-This is job listing page
+<div class="jobs">
+  <% for(const job of jobs ) { %>
+  <div class="job">
+    <div class="job-details">
+      <div class="job-top">
+        <div class="client-image">
+          <img src="<%= job.client_profile_image ?? "/assets/images/user.jpg"%>" alt="User" width="40" height="40">
+        </div>
+        <div class="box">
+          <div>
+            <a class="block" href="/app/jobs/<%= job.id %>">
+              <div class="title"><%= job.title %></div>
+
+            </a>
+            <div class="desc"><%= job.description %></div>
+          </div>
+          <button class="proposal btn <%=  job.proposal_sent ? "sent" : "" %>" <%=  job.proposal_sent ? "disabled" : "" %>>
+            <span class="material-symbols-outlined">
+              assignment_turned_in
+            </span>
+          </button>
+        </div>
+      </div>
+      <div class="skillset">
+        <% if (job.required_skillset != null) { %>
+        <% for( const skillset of job.required_skillset) { %>
+        <div class="skill">
+          <%= skillset %>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+    <div class="details">
+      <div class="budget">
+        <%= job.budget%>
+      </div>
+      <div class="client-details">
+        <div class="company-name">
+          <% if (job.is_user_verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= job.client_details.company_name%>
+        </div>
+      </div>
+    </div>
+    <div class="time">
+      <div>Posted on</div>
+      <div>
+        <%= job.created_at.toLocaleString() %>
+      </div>
+    </div>
+  </div>
+
+
+  <% } %>
+</div>

@@ -888,6 +888,11 @@ footer .footer-grid a:hover {
   cursor: pointer;
   text-decoration: none;
 }
+.icon-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
 .btn:hover {
   background-color: #9d5bff;
@@ -895,6 +900,17 @@ footer .footer-grid a:hover {
 
 .btn:active {
   transform: scale(0.9);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  background-color: gray;
+}
+.btn:disabled:active {
+  transform: none;
+}
+.btn:disabled:hover {
+  background-color: gray;
 }
 
 .upper {
@@ -1008,6 +1024,237 @@ footer .footer-grid a:hover {
   transform: scale(1);
 }
 
+.jobs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.jobs .job {
+  background-color: #221832;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.jobs .job .title {
+  color: #cabfd9;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.jobs .job .desc {
+  color: silver;
+}
+
+.jobs .job .client-image img {
+  border-radius: 50%;
+}
+
+.jobs .job .job-top {
+  display: flex;
+  gap: 1rem;
+}
+.gold {
+  color: gold;
+}
+.job-details .skillset,
+.jobs .job .skillset {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+.job-details .skillset {
+  margin: 1rem 0;
+}
+.job-details .skillset .skill,
+.jobs .job .skillset .skill {
+  background-color: black;
+  padding: 0.3rem 0.5rem;
+  border-radius: 4px;
+  color: var(--accent-clr-light);
+}
+.job-details .skillset .skill {
+  color: rgba(255, 255, 255, 0.7);
+  background-color: rgb(38, 34, 48);
+}
+
+.jobs .job .box {
+  display: flex;
+  flex-basis: 100%;
+  gap: 1rem;
+}
+
+.jobs .job .box > *:first-child {
+  flex-grow: 1;
+}
+
+.jobs .job .box > *:last-child {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-shrink: 0;
+  border-radius: 4px;
+  border: 1px solid gray;
+  align-items: center;
+  justify-content: center;
+  background-color: black;
+}
+
+.jobs .job .proposal {
+  cursor: pointer;
+}
+
+.jobs .job .proposal.sent {
+  border-color: transparent;
+  border: 1px solid gray;
+  cursor: not-allowed;
+}
+
+.jobs .job .desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.jobs .job .details {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: space-between;
+}
+.job-details .budget::before,
+.jobs .job .details .budget::before {
+  content: "$";
+}
+
+.job-details .budget,
+.jobs .job .details .budget {
+  color: gold;
+}
+
+.jobs .job .details .client-details {
+  font-style: italic;
+}
+
+.success {
+  --clr: #28a745;
+  color: #28a745;
+}
+.jobs .job .company-name span {
+  color: gold;
+}
+
+.jobs .job .company-name {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.jobs .job .time {
+  color: rgb(193, 148, 206);
+  padding-top: 0.5rem;
+  margin-top: 1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.503);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.justify-right {
+  justify-content: right;
+}
+
+.job-details .title {
+  font-size: 1.5rem;
+  color: #d5b8ff;
+}
+
+.job-details .desc {
+  color: silver;
+}
+
+.job-details .budget {
+  font-size: 1.1rem;
+}
+
+.job-details .meta {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.job-details .status {
+  padding: 0.3rem 0.5rem;
+  border-radius: 100px;
+  background-color: white;
+  color: black;
+}
+
+.job-details .status.open {
+  background-color: #207d36;
+  color: white;
+}
+
+.job-details .status.closed {
+  background-color: black;
+  color: white;
+}
+
+.job-details .status.progress {
+  background-color: orange;
+  color: white;
+}
+
+.job-details img {
+  border-radius: 50%;
+}
+
+.job-details .client-details .company-name {
+  font-size: 1.2rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.job-details .client-details {
+  display: flex;
+  margin-top: 1rem;
+  gap: 1rem;
+}
+
+.job-details .client-details .detail {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.job-details .client-details .name span {
+  color: var(--accent-clr-light);
+}
+
+.job-details .client-details .name,
+.job-details .client-details .email {
+  color: silver;
+}
+
+@media screen and (min-width: 1000px) {
+  .jobs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (min-width: 1500px) {
+  .jobs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
 @media screen and (max-width: 500px) {
   .nav-panel .text {
     display: none;

@@ -1,31 +1,57 @@
 const express = require("express");
-
 const router = express.Router();
+const { dbconn } = require("../utils/dbconnect");
+const authenticateSession = require("../middlewares/front_auth");
 
-router.get("/", (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "Dashboard - Dropin",
-      heading: "Dashboard",
-      view: "index",
-    });
-  } else {
-    return res.redirect("/?action=login");
-  }
+router.get("/", authenticateSession, (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "Dashboard - Dropin",
+    heading: "Dashboard",
+    view: "index",
+  });
 });
 
-router.get("/jobs", (req, res) => {
-  if (req.session.user) {
-    return res.render("app", {
-      user: req.session.user,
-      title: "Jobs - Dropin",
-      heading: "Job Listings",
-      view: "jobs",
-    });
+router.get("/jobs", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+  let jobs = await dbconn.listJobs({ type: "open" });
+  const proposals = await dbconn.getAllProposalsByUserId(user.uid);
+
+  const jobProposals = proposals.map((x) => x.job_id);
+
+  jobs = jobs.map((job) => {
+    return { ...job, proposal_sent: jobProposals.includes(job.id) };
+  });
+  return res.render("app", {
+    user: req.session.user,
+    title: "Jobs - Dropin",
+    heading: "Job Listings",
+    view: "jobs",
+    jobs: jobs,
+  });
+});
+
+router.get("/jobs/:id", authenticateSession, async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!id) return res.redirect("/jobs");
+  const user = req.session.user;
+
+  const proposals = await dbconn.getAllProposalsByUserId(user.uid);
+
+  const jobDetails = await dbconn.getJobDetails(id);
+  if (proposals.map((x) => x.job_id).includes(jobDetails.id)) {
+    jobDetails.proposal_sent = true;
   } else {
-    return res.redirect("/?action=login");
+    jobDetails.proposal_sent = false;
   }
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "How to make chicken - Dropin",
+    heading: "Job Details",
+    view: "job-details",
+    jobDetails,
+  });
 });
 
 router.get("/proposals", (req, res) => {
