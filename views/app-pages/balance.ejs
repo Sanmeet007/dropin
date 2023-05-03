@@ -1,1 +1,112 @@
-This is balance page
+<style>
+  .balance {
+    padding: 1rem;
+    border: 1px solid var(--accent-clr);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .balance-hint {
+    padding: 1rem;
+    background-color: #333;
+    margin: 1rem 0;
+    color: rgb(171, 171, 171);
+  }
+
+  .withdraw-modal {
+    visibility: hidden;
+    backdrop-filter: blur(0px) opacity(0);
+    position: fixed;
+    z-index: 2000;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    isolation: isolate;
+    transition: visibility 0.2s,
+      backdrop-filter 0.2s;
+  }
+
+  .withdraw-modal.open {
+    visibility: visible;
+    backdrop-filter: blur(5px) opacity(1);
+  }
+
+  .withdraw-modal .backdrop {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .withdraw-modal .content {
+    visibility: hidden;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    background-color: #0e0817;
+    border: 1px solid var(--accent-clr);
+    padding: 1rem;
+    border-radius: 4px;
+    opacity: 0;
+  }
+
+  .withdraw-modal.open .content {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 0.2s, opacity 0.2s;
+  }
+
+  .silver {
+    color: silver;
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  @media screen and (max-width : 550px) {
+    .balance {
+      flex-direction: column;
+    }
+  }
+</style>
+
+
+<div>
+  <div class="withdraw-modal" id="withdraw-modal">
+    <div class="backdrop" id="withdraw-backdrop"></div>
+    <div class="content">
+      <form class="form" id="withdraw-form">
+        <h3>Enter the amount to withdraw</h3>
+        <p class="silver italic">Please ensure you have sufficient balance</p>
+        <input type="number" min="10" value="10" />
+        <button class="btn" type="submit">Withdraw</button>
+      </form>
+    </div>
+  </div>
+  <div class="balance">
+    <div class="text">Your balance is $<%= balance  %></div>
+    <button class="btn" id="withdraw-modal-opener">Get Paid</button>
+  </div>
+  <div class="balance-hint">
+    Note : You cannot withdraw money if your balance is less than $10
+  </div>
+</div>
+
+<script>
+  const withdrawBackdrop = document.querySelector("#withdraw-backdrop");
+  const withdrawModal = document.querySelector("#withdraw-modal");
+  const withdrawModalButton = document.querySelector("#withdraw-modal-opener");
+
+  if (withdrawModalButton)
+    withdrawModalButton.addEventListener("click", () => {
+      withdrawModal.classList.add("open");
+
+    })
+  if (withdrawBackdrop)
+    withdrawBackdrop.addEventListener("click", () => {
+      withdrawModal.classList.remove("open");
+    })
+</script>

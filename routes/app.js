@@ -80,13 +80,14 @@ router.get("/my-account", (req, res) => {
   }
 });
 
-router.get("/balance", (req, res) => {
+router.get("/balance", async (req, res) => {
   if (req.session.user) {
     return res.render("app", {
       user: req.session.user,
       title: "Balance - Dropin",
       heading: "Balance",
       view: "balance",
+      balance: req.session.user.balance,
     });
   } else {
     return res.redirect("/?action=login");
