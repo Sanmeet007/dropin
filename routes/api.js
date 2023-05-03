@@ -338,7 +338,7 @@ router.get("/user/verify", async (req, res) => {
 // Jobs Routes
 router.get("/jobs", async (_, res) => {
   try {
-    const jobs = await dbconn.listJobs();
+    const jobs = await dbconn.listJobs({});
     return res.json(jobs);
   } catch (e) {
     console.log(e);
