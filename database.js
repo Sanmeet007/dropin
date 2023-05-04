@@ -610,6 +610,30 @@ class DataBase {
       return result.map(ProposalsDetails.fromData);
     return null;
   }
+
+  /**
+   *
+   */
+
+  async getAllProposalsForPostedJobs(user_id) {
+    const result = await this.#query(
+      `
+      select 
+      concat(u.first_name , " " , u.last_name ) as 'name',
+      u.email,freelancer_id, u.profile_image,
+      j.title , j.description,
+      p.proposal_id, p.user_id, p.job_id, p.cover_letter, p.bid_amount, p.created_at, p.timeframe, p.status 
+      from proposals p join  jobs j on j.job_id = p.job_id 
+      join users u on u.user_id = p.user_id
+      join freelancers f on f.user_id = p.user_id
+      join clients c on c.client_id = j.client_id where c.user_id = ?;
+    `,
+      [uid]
+    );
+    if (result && result.length > 0)
+      return result.map(ProposalsDetails.fromData);
+    return null;
+  }
   /**
    *
    * Returns an Array of Jobs in database.
