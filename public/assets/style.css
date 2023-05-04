@@ -32,6 +32,71 @@ body {
   background-size: contain;
   background-color: #0d1116;
 }
+
+.loader {
+  position: fixed;
+  z-index: 3000;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  backdrop-filter: blur(10px);
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s, visibility 0.2s;
+}
+
+.loader.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.form label {
+  cursor: pointer;
+}
+
+.svg-loader {
+  display: flex;
+  position: relative;
+  align-content: space-around;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+}
+.loader-svg {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  fill: none;
+  stroke-width: 5px;
+  stroke-linecap: round;
+  stroke: rgb(64, 0, 148);
+}
+.loader-svg.bg {
+  stroke-width: 8px;
+  stroke: rgb(207, 205, 245);
+}
+.animate {
+  stroke-dasharray: 242.6;
+  animation: fill-animation 1s cubic-bezier(1, 1, 1, 1) 0s infinite;
+}
+
+@keyframes fill-animation {
+  0% {
+    stroke-dasharray: 40 242.6;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 141.3;
+    stroke-dashoffset: 141.3;
+  }
+  100% {
+    stroke-dasharray: 40 242.6;
+    stroke-dashoffset: 282.6;
+  }
+}
+
 .material-symbols-outlined {
   font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
 }
@@ -852,6 +917,11 @@ footer .footer-grid a:hover {
   cursor: pointer;
 }
 
+.modal {
+  padding: 0.5rem;
+  overflow-y: auto;
+}
+
 .modal-content,
 .auth-modal-content {
   opacity: 0;
@@ -881,6 +951,11 @@ footer .footer-grid a:hover {
   border-radius: 4px;
 }
 
+.form select option {
+  background-color: #333;
+}
+
+.form select,
 .form input {
   background-color: rgba(255, 255, 255, 0.08);
   border: 0;
@@ -901,6 +976,62 @@ footer .footer-grid a:hover {
   color: var(--accent-clr-light);
   margin: 0;
   margin-bottom: 1rem;
+}
+
+.form {
+  accent-color: var(--accent-clr-light);
+}
+
+.form .form-element:has(input[type="radio"]) {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0rem;
+}
+
+.form .form-element:has(input[type="radio"]:not(:checked)) label {
+  color: grey;
+}
+
+.form input[type="radio"] {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  width: max-content;
+}
+
+.form .form-element-wrapper {
+  margin: 0.5rem 0;
+}
+
+.form .form-element-wrapper .label {
+  font-size: 0.9rem;
+  color: silver;
+  margin-bottom: 0.5rem;
+}
+
+.form-flex {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.modal-content {
+  min-width: 400px;
+}
+.hidden {
+  display: none;
+}
+
+@media screen and (max-width: 480px) {
+  .modal-content {
+    min-width: 300px;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .form-flex {
+    flex-direction: column;
+  }
 }
 
 .btn {
@@ -1558,6 +1689,18 @@ footer .footer-grid a:hover {
 }
 .line {
   border-top: 1px solid rgba(255, 255, 255, 0.336);
+}
+.accent {
+  color: var(--accent-clr);
+}
+.accent-bg {
+  background-color: var(--accent-clr);
+}
+.accent-light {
+  color: var(--accent-clr-light);
+}
+.accent-light-bg {
+  background-color: var(--accent-clr-light);
 }
 .pt1 {
   padding-top: 1rem;

@@ -1,0 +1,88 @@
+<div class="loader" id="loader">
+  <div class="svg-loader">
+    <svg class="svg-container" height="100" width="100" viewBox="0 0 100 100">
+      <circle class="loader-svg bg" cx="50" cy="50" r="45"></circle>
+      <circle class="loader-svg animate" cx="50" cy="50" r="45"></circle>
+    </svg>
+  </div>
+</div>
+
+<style>
+  .snackbar {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 1rem;
+    backdrop-filter: blur(10px);
+    background-color: white;
+    color: black;
+    box-shadow: 0 0 10px 2px rgba(62, 0, 156, 0.2);
+    border-radius: 4px;
+    padding: 0.5rem;
+    z-index: 2001;
+    max-width: 250px;
+    visibility: hidden;
+    opacity: 0;
+    transform: scale(0.7);
+    transform-origin: bottom right;
+    transition: transform 0.2s, opacity 0.2s, visibility 0.2s;
+  }
+
+  .snackbar.visible {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  .snackbar.success {
+    background-color: rgb(0, 73, 0);
+    color: rgb(138, 255, 138);
+  }
+
+  .snackbar.error {
+    background-color: rgb(74, 0, 0);
+    color: rgb(255, 153, 153);
+  }
+
+  .snackbar.warning {
+    background-color: rgb(87, 57, 0);
+    color: rgb(255, 234, 196);
+  }
+</style>
+
+<div class="snackbar warning" id="snackbar">
+  Message sent successfully
+</div>
+<script>
+  const loader = document.querySelector("#loader");
+  const snackbar = document.querySelector("#snackbar");
+
+  const showLoader = () => {
+    loader.classList.add("open");
+  }
+  const hideLoader = () => {
+    loader.classList.remove("open");
+  }
+
+  const showSnackBar = (content, type = "normal", useHTML = false, timeout = 2000) => {
+    snackbar.classList.remove("success");
+    snackbar.classList.remove("error");
+    snackbar.classList.remove("warning");
+
+    snackbar.classList.add(type);
+
+    if (useHTML) {
+      snackbar.innerHTML = content;
+    } else {
+      snackbar.textContent = content;
+    }
+    snackbar.classList.add("visible");
+
+    setTimeout(() => {
+      hideSnackBar();
+    }, timeout);
+  }
+  const hideSnackBar = () => {
+    snackbar.classList.remove("visible");
+  }
+</script>

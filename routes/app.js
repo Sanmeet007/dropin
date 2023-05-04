@@ -17,10 +17,10 @@ router.get("/jobs", authenticateSession, async (req, res) => {
   let jobs = await dbconn.listJobs({ type: "open" });
   const proposals = await dbconn.getAllProposalsByUserId(user.uid);
 
-  const jobProposals = proposals.map((x) => x.job_id);
+  const jobProposals = proposals?.map((x) => x.job_id);
 
-  jobs = jobs.map((job) => {
-    return { ...job, proposal_sent: jobProposals.includes(job.id) };
+  jobs = jobs?.map((job) => {
+    return { ...job, proposal_sent: jobProposals?.includes(job.id) };
   });
   return res.render("app", {
     user: req.session.user,

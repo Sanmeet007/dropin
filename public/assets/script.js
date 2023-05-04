@@ -1,4 +1,6 @@
 const authModal = document.querySelector("#auth-modal");
+const signUpModal = document.querySelector("#sign-up-modal");
+
 const navTrigger = document.querySelector("#nav-trigger");
 const navDrawer = document.querySelector("#nav-drawer");
 const navBackdropSheet = document.querySelector("#nav-backdrop-sheet");
@@ -17,7 +19,6 @@ navBackdropSheet.addEventListener("click", (e) => {
 });
 
 authBackdop.addEventListener("click", () => {
-  console.log("clicked ");
   authModal.classList.remove("open");
 });
 
@@ -31,9 +32,35 @@ if (signInButton) {
 if (signUpButton) {
   signUpButton.addEventListener("click", (e) => {
     navDrawer.classList.remove("open");
-    authModal.classList.add("open");
+    signUpModal.classList.add("open");
   });
 }
+
+const openSignUpModal = ({ email = null, account_type = null }) => {
+  navDrawer.classList.remove("open");
+  signUpModal.classList.add("open");
+  signUpModal.querySelector("form").reset();
+
+  signUpModal.querySelector("#email").value = email ?? "";
+
+  if (account_type === "client") {
+    signUpModal.querySelector("#client").checked = true;
+    signUpModal.querySelector("#company-select").classList.remove("hidden");
+    signUpModal.querySelector("#company-select").required = true;
+  } else if (account_type === "freelancer") {
+    signUpModal.querySelector("#company-select").classList.add("hidden");
+    signUpModal.querySelector("#company-select").required = false;
+    signUpModal.querySelector("#freelancer").checked = true;
+  } else {
+    signUpModal.querySelector("#company-select").classList.add("hidden");
+    signUpModal.querySelector("#company-select").required = false;
+  }
+};
+
+const closeSignUpMoal = () => {
+  signUpModal.classList.remove("open");
+  signUpModal.querySelector("form").reset();
+};
 
 if (deskSignInButton) {
   deskSignInButton.addEventListener("click", () => {

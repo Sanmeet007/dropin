@@ -3,6 +3,7 @@
 <%- include('./partials/head.ejs'  , { title : "Dropin" , login }) %>
 
 <body class="dark">
+  <%- include('./partials/loader.ejs') %>
   <%- include('./partials/header.ejs'  , { login }) %>
   <div class="container">
     <section class="hero hero-section">
@@ -16,13 +17,24 @@
         find and get hired. Join our community today to take your career or business to the next level.
       </p>
 
-      <form class="hero-form">
+      <form class="hero-form" id="hero-form">
         <div class="form-element">
-          <input type="email" placeholder="Email Address" />
+          <input type="email" placeholder="Email Address" name="email" required />
         </div>
 
         <button type="submit">Sign up for Dropin</button>
       </form>
+
+      <script>
+        const heroForm = document.querySelector("#hero-form");
+        heroForm.addEventListener("submit", (e) => {
+          e.preventDefault()
+          const email = heroForm.email.value;
+          openSignUpModal({
+            email
+          });
+        })
+      </script>
     </section>
     <style>
 
@@ -84,7 +96,7 @@
             </div>
           </div>
         </div>
-        <div class="feature">
+        <div class="feature ">
           <div class="icon"><span class="material-symbols-outlined">
               auto_awesome
             </span></div>
@@ -97,7 +109,7 @@
           </div>
         </div>
         <div class="flex gap mt2 button-flex">
-          <a href="#" class="hero-btn">Sign Up for free</a>
+          <button onclick="openSignUpModal({})" class="hero-btn">Sign Up for free</button>
           <a href="#" class="hero-btn">Learn how to hire</a>
         </div>
       </div>
@@ -113,17 +125,17 @@
             big transformations.</p>
         </div>
         <div class="cols">
-          <div>
+          <div onclick="openSignUpModal({account_type: 'client'})">
             <div class="content">
               Post a job and hire a pro
             </div>
             <div class="arrow">→</div>
           </div>
-          <div>
+          <div onclick="openSignUpModal({account_type: 'client'})">
             <div class="content">Browse and choose what is best for you</div>
             <div class="arrow">→</div>
           </div>
-          <div>
+          <div onclick="openSignUpModal({account_type: 'client'})">
             <div class="content">Let us help you find the right talent</div>
             <div class="arrow">
               →
@@ -212,7 +224,7 @@
               </div>
             </div>
             <div>
-              <a href="#" class="hero-btn">Find opportunities</a>
+              <button onclick="openSignUpModal({ account_type : 'freelancer'})" class="hero-btn">Find opportunities</button>
             </div>
           </div>
         </div>

@@ -14,6 +14,105 @@
       </div>
     </div>
   </div>
+
+  <div class="sign-up-modal modal" id="sign-up-modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <div class="content">
+        <h3 class="accent-light">Sign Up</h3>
+        <form id="sign-up-form" class="form">
+          <div class="form-flex">
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="email" class="label">Email Address</label>
+                <input required type="text" name="email" id="email" placeholder="hunter@hunter.com">
+              </div>
+            </div>
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="email" class="label">Password</label>
+                <input required type="password" name="password" id="password" placeholder="#!s321tr3ong">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-flex">
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="fname" class="label">First Name</label>
+                <input required type="text" placeholder="Power" id="fname" name="fname">
+              </div>
+            </div>
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="lname" class="label">Last Name</label>
+                <input required type="text" placeholder="hunter" id="lname" name="lname">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-flex">
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="gender" class="label">
+                  Gender
+                </label>
+
+                <select required name="gender" id="gender">
+                  <option disabled> Choose </option>
+                  <option value="male">Male</option>
+                  <option value="male">Female</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-element-wrapper">
+              <div class="form-element">
+                <label for="dob" class="label">
+                  Date of birth
+                </label>
+                <input required type="date" name="dob" id="dob" />
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="form-element-wrapper">
+            <div class="label">Please choose an account type</div>
+            <div class="form-element">
+              <input type="radio" name="account_type" value="freelancer" id="freelancer" required />
+              <label for="freelancer">
+                Freelancer
+              </label>
+            </div>
+            <div class="form-element">
+              <input type="radio" name="account_type" value="client" id="client" required />
+              <label for="client">
+                Client
+              </label>
+            </div>
+          </div>
+          <div class="form-element-wrapper hidden" id="company-select">
+            <div class="form-element">
+              <label for="cname" class="label">
+                Company Name
+              </label>
+              <input type="text" id="cname" name="company_name" placeholder="My Company" />
+            </div>
+          </div>
+          <div class="form-element-wrapper">
+            <div class="form-element">
+              <button type="submit" class="btn fullwidth">
+                Register
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
   <nav>
     <div class="logo">
       <a href="#">
@@ -89,3 +188,79 @@
     </div>
   </nav>
 </header>
+
+<script>
+  const signUpForm = document.querySelector("#sign-up-form");
+  const companySelect = document.querySelector("#company-select");
+
+
+
+  signUpForm.account_type.forEach(radio => {
+    radio.addEventListener("input", (e) => {
+      if (e.target.value === "client") {
+        companySelect.classList.remove("hidden");
+        companySelect.querySelector("input").required = true;
+      } else {
+        companySelect.classList.add("hidden");
+        companySelect.querySelector("input").removeAttribute("required")
+        companySelect.querySelector("input").required = false;
+      }
+    })
+  });
+
+  signUpForm.addEventListener("submit", async (e) => {
+    const {
+      fname,
+      lname,
+      dob,
+      account_type,
+      gender,
+      email,
+      password,
+    } = signUpForm;
+
+    e.preventDefault();
+    const obj = {
+      gender: gender.value,
+      email: email.value,
+      account_type: account_type.value,
+      first_name: fname.value,
+      last_name: lname.value,
+      dob: new Date(dob.value),
+      password: password.value
+    }
+    showLoader();
+    try {
+      const res = await fetch("/api/sign-up", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(obj)
+      });
+
+      const d = await res.json();
+      if (res.status === 200) {
+        hideLoader();
+        closeSignUpMoal();
+        showSnackBar(d.message, "success");
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
+      } else {
+        hideLoader();
+        closeSignUpMoal();
+        showSnackBar(d.message, "error");
+      }
+
+
+
+    } catch (e) {
+      hideLoader();
+      closeSignUpMoal();
+      showSnackBar("Something went wrong", "error");
+    }
+
+
+  });
+</script>

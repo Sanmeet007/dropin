@@ -31,7 +31,7 @@
           <%= user.email %>
         </div>
         <div class="summary">
-          <q><%= user.summary %></q>
+          <q><%= user?.summary ?? "Feeling Awesome" %></q>
         </div>
       </div>
     </div>
@@ -47,7 +47,7 @@
   <div class="bio split">
     <h3>About me</h3>
     <p>
-      <%= user.bio %>
+      <%= user?.bio ?? "N/A" %>
     </p>
   </div>
 
@@ -61,7 +61,7 @@
       </span>
     </h3>
     <p>
-      <%= user.location ?? "Unknown"%>
+      <%= user?.location ?? "Unknown"%>
     </p>
   </div>
   <div class="location split">
@@ -74,7 +74,7 @@
       </span>
     </h3>
     <p>
-      <%= user.details.company_website ?? "Unknown"%>
+      <%= user?.details?.company_website ?? "Unknown"%>
 
     </p>
   </div>
@@ -88,7 +88,7 @@
       </span>
     </h3>
     <p>
-      <%= user.details.company_size ?? "Unknown"%>
+      <%= user?.details?.company_size ?? "Unknown"%>
     </p>
   </div>
   <div class="location split">
@@ -101,7 +101,7 @@
       </span>
     </h3>
     <p>
-      <%= user.details.company_industry ?? "Unknown"%>
+      <%= user?.details?.company_industry ?? "Unknown"%>
     </p>
   </div>
 </div>
@@ -133,7 +133,7 @@
           <%= user.email %>
         </div>
         <div class="summary">
-          <q><%= user.summary %></q>
+          <q><%= user?.summary ?? "Feeling Lucky" %></q>
         </div>
       </div>
     </div>
@@ -149,7 +149,7 @@
   <div class="bio split">
     <h3>About me</h3>
     <p>
-      <%= user.bio %>
+      <%= user?.bio ?? "N/A" %>
     </p>
   </div>
   <div class="education split">
@@ -162,7 +162,7 @@
       </span>
     </h3>
     <p>
-      <%= user.details.education %>
+      <%= user?.details?.education ?? "N/A" %>
     </p>
   </div>
   <div class="location split">
@@ -175,7 +175,7 @@
       </span>
     </h3>
     <p>
-      <%= user.location ?? "Unknown"%>
+      <%= user?.location ?? "Unknown"%>
     </p>
   </div>
 
@@ -197,6 +197,8 @@
         <%= skillset %>
       </div>
       <% } %>
+      <% } else { %>
+      <div>N/A</div>
       <% } %>
     </div>
   </div>
@@ -217,6 +219,8 @@
         <%= skillset %>
       </div>
       <% } %>
+      <% } else { %>
+      <div>N/A</div>
       <% } %>
     </div>
 
@@ -241,6 +245,8 @@
         <%= skillset %>
       </div>
       <% } %>
+      <% } else { %>
+      <div>N/A</div>
       <% } %>
     </div>
 
@@ -264,6 +270,8 @@
         <%= skillset.replaceAll("\"" , "") %>
       </div>
       <% } %>
+      <% } else { %>
+      <div>N/A</div>
       <% } %>
     </div>
 
@@ -285,6 +293,8 @@
         <%= skillset.toUpperCase() %>
       </div>
       <% } %>
+      <% } else { %>
+      <div>N/A</div>
       <% } %>
     </div>
 
