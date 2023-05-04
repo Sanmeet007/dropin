@@ -967,7 +967,7 @@ class DataBase {
    */
   async getContractsDetailsById(contract_id) {
     const result = await this.#query(
-      `select * from contracts c 
+      `select * , j.status as 'job_status' from contracts c 
       inner join jobs j  on j.job_id = c.job_id where contract_id = ?`,
       [contract_id]
     );
@@ -983,7 +983,7 @@ class DataBase {
   async getAllContractsByUserId(user_id) {
     const result = await this.#query(
       `
-      select * from contracts c inner join jobs j on c.job_id = j.job_id 
+      select * , j.status as 'job_status' from contracts c inner join jobs j on c.job_id = j.job_id 
       join clients cl on cl.client_id = j.client_id
       join freelancers f on f.freelancer_id = c.freelancer_id
       where cl.user_id = ? OR  f.user_id  = ?

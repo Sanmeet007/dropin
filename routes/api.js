@@ -533,7 +533,13 @@ router.post(
           message: "Bad request",
         });
 
-      await dbconn.createProposal(uid, jobId, objectCleaner(obj));
+      const obj = {
+        cover_letter,
+        timeframe,
+        bid_amount,
+      };
+
+      await dbconn.createProposal(user.uid, jobId, objectCleaner(obj));
       return res.json({
         error: false,
         message: "Proposal created for job successfully",
