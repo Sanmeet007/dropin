@@ -32,7 +32,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`client_id`),
   KEY `fk_client_user_key` (`user_id`),
   CONSTRAINT `fk_client_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,1001,'Rohit productions',NULL,NULL,NULL),(2,1002,'cant be null',NULL,NULL,NULL);
+INSERT INTO `clients` VALUES (1,1001,'Rohit productions',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `contracts` (
   KEY `fk_job_key` (`job_id`),
   CONSTRAINT `fk_freelancer_key` FOREIGN KEY (`freelancer_id`) REFERENCES `freelancers` (`freelancer_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `contracts` (
 
 LOCK TABLES `contracts` WRITE;
 /*!40000 ALTER TABLE `contracts` DISABLE KEYS */;
-INSERT INTO `contracts` VALUES (1,1,9,76,'2023-04-25 18:30:00','2023-04-25 18:30:00');
+INSERT INTO `contracts` VALUES (2,1,1,100,'2023-05-03 18:30:00','2023-05-03 18:30:00');
 /*!40000 ALTER TABLE `contracts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,7 +97,7 @@ CREATE TABLE `freelancers` (
   PRIMARY KEY (`freelancer_id`),
   KEY `fk_user_key` (`user_id`),
   CONSTRAINT `fk_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -131,7 +131,7 @@ CREATE TABLE `jobs` (
   KEY `fk_job_client_key` (`client_id`),
   CONSTRAINT `fk_job_client_key` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`) ON DELETE CASCADE,
   CONSTRAINT `min_job_price` CHECK ((`budget` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +140,7 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'open','2023-04-25 17:15:02',NULL,'react-native,react,flutter,next.js'),(9,2,'Hello World app in Python','Create me a hello world app in python programming language',100.32,'closed','2023-04-25 18:11:28','2023-04-26 15:27:29','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'open','2023-04-28 15:16:17',NULL,'react-native,react,flutter,next.js');
+INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'open','2023-04-28 15:16:17',NULL,'react-native,react,flutter,next.js');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +162,7 @@ CREATE TABLE `payments` (
   UNIQUE KEY `id` (`id`),
   KEY `fk_job_payment_key` (`job_id`),
   CONSTRAINT `fk_job_payment_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +171,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (1,9,76,'success','2023-04-26 14:42:50','2023-04-26 18:39:06');
+INSERT INTO `payments` VALUES (2,1,100,'pending','2023-05-04 12:48:02','2023-05-04 12:48:02');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +197,7 @@ CREATE TABLE `proposals` (
   CONSTRAINT `fk_propoals_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_proposals_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `min_bid_amount` CHECK ((`bid_amount` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `proposals` (
 
 LOCK TABLES `proposals` WRITE;
 /*!40000 ALTER TABLE `proposals` DISABLE KEYS */;
-INSERT INTO `proposals` VALUES (2,1000,9,'This is a sample cover letter',76,'2023-04-26 13:28:23',2,'accepted');
+INSERT INTO `proposals` VALUES (3,1000,1,'I want to earn money so please give me this job',100,'2023-05-04 05:18:02',2,'accepted');
 /*!40000 ALTER TABLE `proposals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -236,7 +236,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `verification_token` (`verification_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -245,7 +245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora ullam aliquid. Deserunt eligendi dolore eos inventore maiores, ab quia nemo excepturi porro accusamus, et nostrum laborum laudantium, animi exercitationem! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa beatae consequatur facilis, facere corrupti veniam soluta totam quasi, maiores nostrum veritatis, ad itaque iusto. Culpa nulla necessitatibus vitae repudiandae provident?','http://localhost/uploads/profile-image.jpg','male','freelancer','2002-01-01',1,NULL,NULL,'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, numquam!'),(1001,'Rohit','Kumar','rohit_kuman@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky',NULL,'male','client','1998-09-23',0,NULL,NULL,NULL),(1002,'Gaurav',NULL,'gaurav@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,NULL,NULL,'male','client','2023-04-24',1,NULL,NULL,NULL);
+INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora ullam aliquid. Deserunt eligendi dolore eos inventore maiores, ab quia nemo excepturi porro accusamus, et nostrum laborum laudantium, animi exercitationem! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa beatae consequatur facilis, facere corrupti veniam soluta totam quasi, maiores nostrum veritatis, ad itaque iusto. Culpa nulla necessitatibus vitae repudiandae provident?','http://localhost/uploads/profile-image.jpg','male','freelancer','2002-01-01',1,NULL,NULL,'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, numquam!'),(1001,'Super','Sam','torrentboy007@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky','http://localhost/uploads/profile-image.jpg','male','client','1998-09-23',1,NULL,NULL,'Super happy client');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +267,7 @@ CREATE TABLE `withdrawals` (
   UNIQUE KEY `id` (`id`),
   KEY `fk_freelancer_withdrawal_key` (`freelancer_id`),
   CONSTRAINT `fk_freelancer_withdrawal_key` FOREIGN KEY (`freelancer_id`) REFERENCES `freelancers` (`freelancer_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=urf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -293,7 +293,7 @@ UNLOCK TABLES;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -350,7 +350,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -369,9 +369,9 @@ BEGIN
     if _fid is not null then 
 		start transaction;
 		
-        insert into contracts (freelancer_id , job_id , payment_amount, start_date)
+        insert into contracts (freelancer_id , job_id , payment_amount, start_date , end_date)
 		values (
-			_fid  , _jid , amnt , current_date 
+			_fid  , _jid , amnt , current_date , null
         );
         
         update jobs set status = 'progress' where job_id = _jid;
@@ -393,7 +393,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -454,7 +454,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -488,7 +488,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -522,7 +522,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -563,7 +563,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -588,7 +588,7 @@ DELIMITER ;
 /*!50003 SET @saved_col_connection = @@collation_connection */ ;
 /*!50003 SET character_set_client  = utf8mb4 */ ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
-/*!50003 SET collation_connection  = urf8mb4_general_ai_ci */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
@@ -656,4 +656,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-04  9:30:16
+-- Dump completed on 2023-05-04 19:15:08

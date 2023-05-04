@@ -5,6 +5,6 @@ sql/data.sql
 package-lock.json
 .prettierignore 
 mail_templates/test*
-public/uploads
+public/uploads/1*
 .vscode
 testing
