@@ -27,3 +27,13 @@ if (helpButton)
     avatarContentDiv.classList.remove("active");
     window.location = "/help";
   });
+
+const modals = document.querySelectorAll(".modal");
+if (modals) {
+  modals.forEach((modal) => {
+    const modalBackdrop = modal.querySelector(".modal-backdrop");
+    modalBackdrop.addEventListener("click", (e) => {
+      modal.classList.remove("open");
+    });
+  });
+}

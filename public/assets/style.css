@@ -224,6 +224,19 @@ nav {
   margin-top: 3rem;
 }
 
+.space-between {
+  justify-content: space-between;
+}
+.mb1 {
+  margin-bottom: 1rem;
+}
+.mb2 {
+  margin-bottom: 2rem;
+}
+.mb3 {
+  margin-bottom: 3rem;
+}
+
 .pad-1 {
   padding: 1rem;
 }
@@ -811,6 +824,7 @@ footer .footer-grid a:hover {
   width: 100%;
 }
 
+.modal,
 .auth-modal {
   position: fixed;
   z-index: 200;
@@ -822,11 +836,13 @@ footer .footer-grid a:hover {
   transition: backdrop-filter 0.2s, visibility 0.2s;
 }
 
+.modal.open,
 .auth-modal.open {
   visibility: visible;
   backdrop-filter: blur(4px) opacity(1);
 }
 
+.modal .modal-backdrop,
 .auth-modal .auth-backdrop {
   inset: 0;
   position: absolute;
@@ -836,6 +852,7 @@ footer .footer-grid a:hover {
   cursor: pointer;
 }
 
+.modal-content,
 .auth-modal-content {
   opacity: 0;
   position: fixed;
@@ -847,10 +864,16 @@ footer .footer-grid a:hover {
   transition: opacity 0.2s;
 }
 
+.circular {
+  border-radius: 50%;
+}
+
+.modal.open .modal-content,
 .auth-modal.open .auth-modal-content {
   opacity: 1;
 }
 
+.modal-content .content,
 .auth-modal-content .content {
   background-color: #0e0817;
   border: 1px solid var(--accent-clr);
@@ -1430,6 +1453,13 @@ footer .footer-grid a:hover {
 
 .user-account .image {
   flex-shrink: 0;
+}
+
+@media screen and (max-width: 550px) {
+  .user-account .image {
+    width: 40px;
+    height: 40px;
+  }
 }
 
 .user-account .image img {
