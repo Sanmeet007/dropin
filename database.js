@@ -183,30 +183,30 @@ class DataBase {
   /**
    * Fetches details of user
    * @param {number} uid
-   * @returns {Promise<User?>}
+   * @returns {Promise<Client?>}
    */
   async getUserDetailsFromClientId(uid) {
     /** @type {Array} */
     const results = await this.#query(
-      `SELECT * FROM users u join clients c on c.user_id = u.user_id WHERE u.user_id = ? `,
+      `SELECT * FROM users u join clients c on c.user_id = u.user_id WHERE c.client_id = ? `,
       [uid]
     );
-    if (results && results.length > 0) return User.fromData(results[0]);
+    if (results && results.length > 0) return Client.fromData(results[0]);
     return null;
   }
 
   /**
    * Fetches details of user
    * @param {number} uid
-   * @returns {Promise<User?>}
+   * @returns {Promise<Freelancer?>}
    */
   async getUserDetailsFromFeelancerId(uid) {
     /** @type {Array} */
     const results = await this.#query(
-      `SELECT * FROM users u join freelancers c on c.user_id = u.user_id WHERE u.user_id = ? `,
+      `SELECT * FROM users u join freelancers c on c.user_id = u.user_id WHERE c.freelancer_id = ? `,
       [uid]
     );
-    if (results && results.length > 0) return User.fromData(results[0]);
+    if (results && results.length > 0) return Freelancer.fromData(results[0]);
     return null;
   }
 
