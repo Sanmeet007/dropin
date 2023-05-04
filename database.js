@@ -613,9 +613,10 @@ class DataBase {
 
   /**
    *
+   * @param {number} uid
+   * @returns {Promise<Array<ProposalsDetails>>?}
    */
-
-  async getAllProposalsForPostedJobs(user_id) {
+  async getAllProposalsForPostedJobs(uid) {
     const result = await this.#query(
       `
       select 
