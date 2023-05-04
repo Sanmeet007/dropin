@@ -217,6 +217,7 @@
       gender,
       email,
       password,
+      company_name
     } = signUpForm;
 
     e.preventDefault();
@@ -227,7 +228,8 @@
       first_name: fname.value,
       last_name: lname.value,
       dob: new Date(dob.value),
-      password: password.value
+      password: password.value,
+      company_name: company_name.value
     }
     showLoader();
     try {
