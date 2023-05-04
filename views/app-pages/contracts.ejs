@@ -3,10 +3,19 @@
 
 <div class="contracts">
   <% for( let index = 0; index < contracts.length; index++ ) { %>
+
   <div class="contract card">
-    <div class="title">
-      <a href="/app/posted-job/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
+    <div class="title flex-centered space-between">
+      <a class="block" href="/app/posted-job/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
         <%= contracts[index].job_title %>
+      </a>
+
+      <a target="_blank" href="/app/freelancer-details?id=<%= contracts[index].freelancer_id %>" class="block">
+        <button title="Freelancer Details" class="icon-btn btn">
+          <span class="material-symbols-outlined">
+            badge
+          </span>
+        </button>
       </a>
     </div>
     <div class="desc">
