@@ -70,7 +70,8 @@ if (deskSignInButton) {
 
 if (deskSignUpButton) {
   deskSignUpButton.addEventListener("click", () => {
-    authModal.classList.add("open");
+    signUpModal.querySelector("form").reset();
+    signUpModal.classList.add("open");
   });
 }
 
