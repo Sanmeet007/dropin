@@ -597,9 +597,7 @@ router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
     if (!jobId || jobId === NaN) return res.status(400).end();
 
     const user = req.session.user;
-    await dbconn.updateJobDetails(user.uid, jobId, {
-      status: "closed",
-    });
+    await dbconn.markJobAsCompleted(jobId);
     const jobDetails = await dbconn.getJobDetails(jobId);
 
     await sendMail({
