@@ -139,6 +139,15 @@ router.get("/my-account", authenticateSession, (req, res) => {
   });
 });
 
+router.get("/my-account/edit", authenticateSession, (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "Edit Account Details - Dropin",
+    heading: "Edit account details",
+    view: "edit-user-details",
+  });
+});
+
 router.get("/balance", authenticateSession, async (req, res) => {
   return res.render("app", {
     user: req.session.user,

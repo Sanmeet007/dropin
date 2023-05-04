@@ -1,10 +1,10 @@
   <div class="avatar-content" id="avatar-content">
     <div class="backdrop-sheet" id="avatar-backdrop"></div>
     <div class="avatar">
-      <div class="image" title="<%= user._name %>" data-letter="S" id="avatar-trigger"></div>
+      <div class="image" title="<%= user._name %>" data-letter="<%= user.first_name[0]%>" id="avatar-trigger"></div>
       <div class="content">
         <div class="me">
-          <div class="image" data-letter="S"></div>
+          <div class="image" data-letter="<%= user.first_name[0]%>"></div>
           <div class="user-details">
             <div class="name"><%= user._name %></div>
             <div class="email"><%= user.email %></div>

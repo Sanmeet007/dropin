@@ -955,8 +955,17 @@ footer .footer-grid a:hover {
   background-color: #333;
 }
 
+.form input[type="checkbox"] {
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  width: max-content;
+}
+
+.form textarea,
 .form select,
 .form input {
+  font-family: inherit;
   background-color: rgba(255, 255, 255, 0.08);
   border: 0;
   padding: 0.5rem;

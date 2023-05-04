@@ -1,0 +1,337 @@
+<% if (user.account_type === "client") { %>
+
+<form class="form">
+  <div class="form-flex">
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" placeholder="Priate">
+      </div>
+    </div>
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" placeholder="Hunter">
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="cweb">Company Wesbite</label>
+      <input type="url" id="cweb" name="company_website" placeholder="https://www.example.com">
+    </div>
+  </div>
+
+  <div class="form-flex">
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="cname">Company Name</label>
+        <input type="text" id="cname" name="company_name" placeholder="Zoro Ltd.">
+      </div>
+    </div>
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="csize">Company Size</label>
+        <input type="number" id="csize" name="company_size" placeholder="0 ( average employees )">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" placeholder="Google , California ">
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="industry">Industry</label>
+      <select id="industry" name="industry">
+        <option value="" selected>Choose a industry type</option>
+        <option value="agriculture">Agriculture</option>
+        <option value="automotive">Automotive</option>
+        <option value="construction">Construction</option>
+        <option value="education">Education</option>
+        <option value="entertainment">Entertainment</option>
+        <option value="finance">Finance</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="hospitality">Hospitality</option>
+        <option value="information technology">Information Technology</option>
+        <option value="manufacturing">Manufacturing</option>
+        <option value="retail">Retail</option>
+        <option value="transportation">Software Development</option>
+        <option value="transportation">Transportation</option>
+      </select>
+    </div>
+  </div>
+
+
+
+  <div class="form-element-wrapper ">
+    <div class="form-element">
+      <input type="checkbox" id="checkbox">
+      <label class="label" for="checkbox">Change profile image</label>
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <input type="file" id="avatar" name="avatar">
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="summary">Status</label>
+      <textarea name="summary" placeholder="Feeling Awesome" id="summary" rows="4" maxlength="255"></textarea>
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="bio">About me</label>
+      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool"></textarea>
+    </div>
+  </div>
+
+  <button class="btn" type="submit">
+    Submit
+  </button>
+
+</form>
+
+
+<% } else { %>
+<form class="form">
+  <div class="form-flex">
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="fname">First Name</label>
+        <input type="text" id="fname" name="fname" placeholder="Priate">
+      </div>
+    </div>
+    <div class="form-element-wrapper">
+      <div class="form-element">
+        <label for="lname">Last Name</label>
+        <input type="text" id="lname" name="lname" placeholder="Hunter">
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="edu">Education</label>
+      <input type="url" id="edu" name="education" placeholder="One Piece College">
+    </div>
+  </div>
+
+
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="location">Location</label>
+      <input type="text" id="location" name="location" placeholder="Japan">
+    </div>
+  </div>
+
+
+  <div class="form-element-wrapper ">
+    <div class="form-element">
+      <input type="checkbox" id="checkbox">
+      <label class="label" for="checkbox">Change profile image</label>
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <input type="file" id="avatar" name="avatar">
+    </div>
+  </div>
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="skills">Skills</label>
+      <input type="text" name="skills" id="skills" placeholder="Front End,Web Scrapping , Machine Learnning">
+      <div class="label">Please enter skills seperated by comma (,)</div>
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <h4>Programming Languages</h4>
+      <div>
+        <input type="checkbox" name="skill[]" value="python" id="python">
+        <label for="python">Python</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="skill[]" value="csharp" id="csharp">
+        <label for="csharp">C#</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="skill[]" value="swift" id="swift">
+        <label for="swift">Swift</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="skill[]" value="typescript" id="typescript">
+        <label for="typescript">TypeScript</label>
+      </div>
+
+      <div>
+
+        <input type="checkbox" name="skill[]" value="java" id="java">
+        <label for="java">Java</label>
+      </div>
+
+
+      <div>
+
+        <input type="checkbox" name="skill[]" value="javascript" id="javascript">
+        <label for="javascript">JavaScript</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="html" id="html">
+        <label for="html">HTML</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="css" id="css">
+        <label for="css">CSS</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="rust" id="rust">
+        <label for="rust">Rust</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="c" id="c">
+        <label for="c">C</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="cpp" id="cpp">
+        <label for="cpp">C++</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="go" id="go">
+        <label for="go">Go</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="dart" id="dart">
+        <label for="dart">Dart</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="php" id="php">
+        <label for="php">PHP</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="skill[]" value="kotlin" id="kotlin">
+        <label for="kotlin">Kotlin</label>
+      </div>
+
+
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <h4>Databases</h4>
+      <div>
+        <input type="checkbox" name="database[]" value="mysql" id="mysql">
+        <label for="mysql">MySQL</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="database[]" value="postgres" id="postgres">
+        <label for="postgres">PostgreSQL</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="database[]" value="mongodb" id="mongodb">
+        <label for="mongodb">MongoDB</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="database[]" value="dynamodb" id="dynamodb">
+        <label for="dynamodb">DynamoDB</label>
+      </div>
+      <div>
+
+        <input type="checkbox" name="database[]" value="redis" id="redis">
+        <label for="redis">Redis</label>
+      </div>
+
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <h4>Languages</h4>
+      <div>
+        <input type="checkbox" name="language[]" value="punjabi" id="punjabi">
+        <label for="punjabi">Punjabi</label>
+      </div>
+
+      <div>
+        <input type="checkbox" name="language[]" value="hindi" id="hindi">
+        <label for="hindi">Hindi</label>
+      </div>
+
+      <div>
+
+        <input type="checkbox" name="language[]" value="english" id="english">
+        <label for="english">English</label>
+      </div>
+
+      <div>
+
+        <input type="checkbox" name="language[]" value="spanish" id="spanish">
+        <label for="spanish">Spanish</label>
+      </div>
+
+    </div>
+  </div>
+  <br>
+  <div class="form-element-wrapper mt2">
+    <div class="form-element">
+      <label for="other-skills">Other Skills</label>
+      <input type="text" id="other-skills" name="other_skills" />
+      <div class="label">Please enter skills seperated by comma (,)</div>
+    </div>
+  </div>
+
+
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="summary">Status</label>
+      <textarea name="summary" placeholder="Feeling Lucky" id="summary" rows="4" maxlength="255"></textarea>
+    </div>
+  </div>
+
+
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="bio">About me</label>
+      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool"></textarea>
+    </div>
+  </div>
+
+  <button class="btn" type="submit">
+    Submit
+  </button>
+
+</form>
+
+<% } %>
