@@ -74,25 +74,37 @@ if (deskSignUpButton) {
   });
 }
 
-loginForm.addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const { email, password } = loginForm;
-  fetch("/api/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      email: email.value,
-      password: password.value,
-    }),
-  })
-    .then(() => {
-      window.location = "/app";
-    })
-    .catch((e) => {
-      console.log(e);
+  try {
+    showLoader();
+    const res = await fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email.value,
+        password: password.value,
+      }),
     });
+    if (res.status === 200) {
+      hideLoader();
+      showSnackBar("Login successfull", "success");
+
+      setTimeout(() => {
+        window.location = "/app";
+      }, 200);
+    } else {
+      const d = await res.json();
+      hideLoader();
+      showSnackBar(d.message, "error");
+    }
+  } catch (e) {
+    hideLoader();
+    showSnackBar("Something went wrong", "error");
+  }
 });
 
 const modals = document.querySelectorAll(".modal");
