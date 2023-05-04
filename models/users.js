@@ -158,9 +158,9 @@ class Client extends User {
   /** @type {ClientDetails} */ details;
   constructor(d) {
     super(d);
-    this.contracts = d?.contracts.map(Contract.fromData) ?? null;
-    this.payment_history = d?.payment_history.map(Payment.fromData) ?? null;
-    this.postedJobs = d?.posted_jobs.map(PostedJob.fromData) ?? null;
+    this.contracts = d?.contracts?.map(Contract.fromData) ?? null;
+    this.payment_history = d?.payment_history?.map(Payment.fromData) ?? null;
+    this.postedJobs = d?.posted_jobs?.map(PostedJob.fromData) ?? null;
     this.details = new ClientDetails(d);
   }
   static fromData(d) {
