@@ -117,7 +117,7 @@ router.post("/sign-up", async (req, res) => {
     });
 
     if (createdSuccessFully) {
-      const user = await dbconn.getUserByEmailId(email);
+      const user = await dbconn.getUserDetailsByEmailId(email);
       if (user) {
         user.hashedPassword = null; // preventing password leakage in frontend
 
