@@ -1,3 +1,47 @@
+<% if (user.account_type === "client") { %>
+<div class="details">
+  <h3>
+    Howdy <%= user._name %>, Welcome to Dropin!</h3>
+  <p>Thank you for choosing Dropin as your staffing partner. We're excited to work with you and help you achieve your business goals.</p>
+
+</div>
+
+<div class="grid">
+  <div class="balance card card-bg">
+    <h2>Pending Payments </h2>
+    <%= user.payment_history.filter(x => x.status === "pending").length %>
+  </div>
+  <div class="proposals card">
+    <h2>Jobs Posted</h2>
+    <div class="success"><%= user.postedJobs.filter(x => x.status != "accepted")?.length ??  0 %></div>
+  </div>
+  <div class="contracts card">
+    <h2>Contracts</h2>
+    <div class="orange"><%= user.contracts?.length ??  0 %></div>
+  </div>
+  <div class="about-me card card-bg ">
+    <h2>Email Verified</h2>
+    <% if(user.verified) {%>
+    <div class="flex-centered verify">
+      <span class="material-symbols-outlined">
+        verified
+      </span><span>Verified</span>
+    </div>
+    <% }else { %>
+    <a href="#" class="orange">Verify Now</a>
+    <% } %>
+  </div>
+</div>
+
+<div class="card rflex align-center">
+  Feel like posting a new job ?
+
+  <a href="/app/post-job" class="inline-block btn">
+    Post Job
+  </a>
+</div>
+
+<% } else { %>
 <div class="details">
   <h3>
     Howdy <%= user._name %>, Welcome to Dropin!</h3>
@@ -41,3 +85,5 @@
     View Jobs
   </a>
 </div>
+
+<% } %>

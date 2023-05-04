@@ -1,6 +1,12 @@
+<% if (user.account_type === "client") { %>
 <div class="job-details <%= jobDetails.status %>">
-  <div class="posted-at"> Posted at :
+  <div class="posted-at flex-centered space-between"> Posted at :
     <%= jobDetails.created_at.toLocaleString() %>
+    <button title="edit" class="btn iconbtn">
+      <span class="material-symbols-outlined">
+        edit
+      </span>
+    </button>
   </div>
 
   <div class="client-details">
@@ -44,6 +50,59 @@
     <% } %>
   </div>
   <div class="desc"><%= jobDetails.description %></div>
+
+</div>
+<% } else { %>
+
+<div class="job-details <%= jobDetails.status %>">
+  <div class="posted-at"> Posted at :
+    <%= jobDetails.created_at.toLocaleString() %>
+  </div>
+
+  <div class="client-details">
+    <div class="client_avatar">
+      <img src="<%= jobDetails.client_profile_image ?? "/assets/images/user.jpg"%>" alt="User" width="40" height="40">
+    </div>
+
+    <div class="client-info">
+      <a href="/app/client-details/?id=<%= jobDetails.client_details.client_id %>">
+        <div class="company-name">
+          <% if (jobDetails.is_user_verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= jobDetails.client_details.company_name %>
+        </div>
+      </a>
+
+      <div class="detail">
+        <div class="name">
+          <%= jobDetails.client_name %>
+        </div>
+        <span>•</span>
+        <a class="email" href="mailto:<%= jobDetails.client_email %>">
+          <%= jobDetails.client_email %>
+        </a>
+      </div>
+    </div>
+
+  </div>
+  <div class="meta">
+    <div class="budget"><%= jobDetails.budget %></div>
+    <div class="status <%= jobDetails.status %>"><%= jobDetails.status %></div>
+  </div>
+  <div class="title"><%= jobDetails.title %></div>
+  <div class="skillset">
+    <% if (jobDetails.required_skillset != null) { %>
+    <% for( const skillset of jobDetails.required_skillset) { %>
+    <div class="skill">
+      <%= skillset %>
+    </div>
+    <% } %>
+    <% } %>
+  </div>
+  <div class="desc"><%= jobDetails.description %></div>
   <div class="mt2 icon-btn justify-right">
     <button class="btn icon-btn" <%= jobDetails.proposal_sent ? 'disabled' : '' %>>
       Send Proposal
@@ -53,3 +112,4 @@
     </button>
   </div>
 </div>
+<% } %>

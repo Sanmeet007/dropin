@@ -1,3 +1,101 @@
+<% if (user.account_type === "client") { %>
+<div class="modal" id="cover-letter-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="content">
+      <h3 style="color: var(--accent-clr-light)">Cover Letter</h3>
+      <div class="letter"></div>
+    </div>
+  </div>
+</div>
+
+<div class="proposals">
+  <% for(const proposal of  proposals ) { %>
+  <% if (proposal.status != "accepted") { %>
+  <div class="proposal card">
+    <div class="title">
+      <a href="/app/posted-job/<%= proposal.job_id %>">
+        <%= proposal.job_title %>
+      </a>
+    </div>
+    <div class="user-details flex-centered">
+      <div class="image">
+        <img class="circular" src="<%= proposal.freelancer_profile_image ? "/assets/images/user.jpg": proposal.freelancer_profile_image %>" alt="user" width="50" height="50">
+      </div>
+      <div class="info">
+        <a href="/app/freelancer-details/?id=<%= proposal.freelancer_id %>" class="block">
+          <div class="name"><%= proposal.freelancer_name %></div>
+        </a>
+
+        <div class="email silver">
+          <%= proposal.freelancer_email %>
+        </div>
+      </div>
+
+
+    </div>
+    <div class="cover-letter">
+      <h3>Cover Letter
+        <div>
+          <button id="read-cover-letter" title="Read cover letter" class="btn inline-block iconbtn">
+            <span class="material-symbols-outlined">
+              library_books
+            </span>
+          </button>
+          <button title="Approve" class="btn inline-block iconbtn">
+            <span class="material-symbols-outlined">
+              check_circle
+            </span>
+          </button>
+        </div>
+      </h3>
+      <p>
+        <%= proposal.cover_letter.slice(0,255) %>
+      </p>
+    </div>
+    <div class="details">
+      <div class="status">
+        <h3>Status</h3>
+        <p class="<%= proposal.status  %>">
+          <%= proposal.status %>
+        </p>
+      </div>
+      <div class="bid-amount">
+        <h3>Bid Amount</h3>
+        <p class="gold">
+          $ <%= proposal.payment_amount %>
+        </p>
+      </div>
+      <div class="timeframe">
+        <h3>Timeframe</h3>
+        <p>
+          <%= proposal.timeframe %> days
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const coverLetterButton = document.querySelector("#read-cover-letter");
+    const coverLetterModal = document.getElementById("cover-letter-modal");
+
+    if (coverLetterModal) {
+      coverLetterModal.querySelector(".letter").textContent = '<%= proposal.cover_letter %>';
+
+      coverLetterButton.addEventListener("click", (e) => {
+        coverLetterModal.classList.add("open");
+      })
+    }
+  </script>
+
+  <% } %>
+  <% } %>
+</div>
+
+
+
+
+<% } else { %>
 <% if(user.job_proposals) {%>
 <div class="proposals">
   <% for(const proposal of  user.job_proposals ) { %>
@@ -36,7 +134,7 @@
       <div class="timeframe">
         <h3>Timeframe</h3>
         <p>
-          <%= proposal.timeframe %>
+          <%= proposal.timeframe %> days
         </p>
       </div>
     </div>
@@ -48,4 +146,6 @@
 
 <% if (user.job_proposals?.filter(x => x.status != "accepted").length === 0) { %>
 <div class="empty">Nothing to display</div>
+<% } %>
+
 <% } %>

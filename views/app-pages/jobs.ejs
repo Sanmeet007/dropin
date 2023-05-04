@@ -1,3 +1,61 @@
+<% if (user.account_type === "client") { %>
+<div class="jobs">
+  <% for(const job of postedJobs ) { %>
+  <div class="job">
+    <div class="job-details">
+      <div class="job-top">
+        <div class="client-image">
+          <img src="<%= job.client_profile_image ?? "/assets/images/user.jpg"%>" alt="User" width="40" height="40">
+        </div>
+        <div class="box">
+          <div>
+            <a class="block" href="/app/posted-job/<%= job.id %>">
+              <div class="title"><%= job.title %></div>
+
+            </a>
+            <div class="desc"><%= job.description.slice(0,255) %></div>
+          </div>
+          <button>
+            <a href="/app/posted-job/<%= job.id %>" class="inline-block">
+              <span class="material-symbols-outlined">
+                edit
+              </span>
+            </a>
+          </button>
+        </div>
+      </div>
+      <div class="skillset">
+        <% if (job.required_skillset != null) { %>
+        <% for( const skillset of job.required_skillset) { %>
+        <div class="skill">
+          <%= skillset %>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+    <div class="details">
+      <div class="budget">
+        <%= job.budget%>
+      </div>
+      <div class="client-details">
+
+      </div>
+    </div>
+    <div class="time">
+      <div>Posted on</div>
+      <div>
+        <%= job.created_at.toLocaleString() %>
+      </div>
+    </div>
+  </div>
+
+
+  <% } %>
+</div>
+
+<% } else { %>
+
 <% if (jobs) { %>
 
 <div class="jobs">
@@ -63,6 +121,8 @@
 <% } %>
 
 
-<% if (jobs.length === 0 || jobs === null) { %>
+<% if (jobs?.length === 0 || jobs === null) { %>
 <div class="empty">Nothing to display</div>
+<% } %>
+
 <% } %>

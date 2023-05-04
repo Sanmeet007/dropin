@@ -1,3 +1,112 @@
+<% if(user.account_type === "client") {%>
+
+<div class="user-account">
+  <div class="top">
+
+    <div class="image">
+      <% if (user.profile_image) { %>
+      <img src="<%= user.profile_image %>" alt="Avatar Image">
+      <% } else { %>
+      <div class="atext">
+        S
+      </div>
+      <% } %>
+    </div>
+    <div class="meta">
+      <div>
+        <div class="silver" style="margin-bottom: 0.5rem">
+          <small>
+            <%= user._name %>
+          </small>
+        </div>
+        <div class="name">
+          <% if (user.verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= user.details.company_name %>
+        </div>
+        <div class="email">
+          <%= user.email %>
+        </div>
+        <div class="summary">
+          <q><%= user.summary %></q>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div>
+      <button class="btn iconbtn">
+        <span class="material-symbols-outlined">
+          edit
+        </span>
+      </button>
+    </div>
+  </div>
+  <div class="bio split">
+    <h3>About me</h3>
+    <p>
+      <%= user.bio %>
+    </p>
+  </div>
+
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        pin_drop
+      </span>
+      <span>
+        Location
+      </span>
+    </h3>
+    <p>
+      <%= user.location ?? "Unknown"%>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        language
+      </span>
+      <span>
+        Company Website
+      </span>
+    </h3>
+    <p>
+      <%= user.details.company_website ?? "Unknown"%>
+
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        group
+      </span>
+      <span>
+        Company Size
+      </span>
+    </h3>
+    <p>
+      <%= user.details.company_size ?? "Unknown"%>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        apartment
+      </span>
+      <span>
+        Industry
+      </span>
+    </h3>
+    <p>
+      <%= user.details.company_industry ?? "Unknown"%>
+    </p>
+  </div>
+</div>
+<% } else { %>
+
 <div class="user-account">
   <div class="top">
 
@@ -182,3 +291,4 @@
   </div>
 
 </div>
+<% } %>

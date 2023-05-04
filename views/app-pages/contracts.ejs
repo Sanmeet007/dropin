@@ -1,9 +1,51 @@
+<% if (user.account_type === "client") { %>
 <% if (contracts) { %>
+
 <div class="contracts">
   <% for( let index = 0; index < contracts.length; index++ ) { %>
   <div class="contract card">
     <div class="title">
-      <a href="/app/jobs/<%= contracts[index].job_id %>?status=<%= contracts[index].end_date?  "closed" : "open"   %>">
+      <a href="/app/posted-job/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
+        <%= contracts[index].job_title %>
+      </a>
+    </div>
+    <div class="desc">
+      <%= contracts[index].job_description.slice(0,255) %>
+    </div>
+    <div class="contract-details">
+      <div class="amount">
+        <%= contracts[index].payment_amount %>
+      </div>
+      <div class="flex-centered">
+        <div class="status <%= contracts[index].end_date?  "closed" : "open"   %>">
+          <% if (contracts[index].end_date) { %>
+          ENDED
+          <% } else { %>
+          PROGRESS
+          <% } %>
+        </div>
+        <% if (contracts[index].end_date === null) { %>
+        <button class="btn" <%= contracts[index].job_status === "closed" ? '' : 'disabled'%>>
+          End Contract
+        </button>
+        <% } %>
+      </div>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<% } %>
+
+
+<% } else { %>
+<% if (contracts) { %>
+<div class="contracts">
+  <% for( let index = 0; index < contracts.length; index++ ) { %>
+
+  <div class="contract card">
+    <div class="title">
+      <a href="/app/jobs/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
         <%= contracts[index].job_title %>
       </a>
     </div>
@@ -26,9 +68,9 @@
   <% } %>
 </div>
 <% } %>
+<% } %>
 
 
-
-<% if (contracts.length === 0 || contracts === null) { %>
+<% if (contracts?.length === 0 || contracts === null) { %>
 <div class="empty">Nothing to display</div>
 <% } %>

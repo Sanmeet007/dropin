@@ -1,3 +1,84 @@
+<% if (user.account_type === "client") { %>
+
+<div class="modal" id="payment-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="content">
+      <h3 style="color : var(--accent-clr-light)">Payment</h3>
+      <p>Note $10 is charged as service amount -- edit later</p>
+      <form class="form">
+        <input type="number" min="5" id="amount" disabled />
+        <button class="btn" type="submit">Pay</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<style>
+  .payments .status {
+    padding: 0.5rem;
+    border-radius: 100px;
+    text-transform: capitalize;
+  }
+
+  .payments .status.pending,
+  .payments .status.failed {
+    background-color: orangered;
+  }
+
+  .payments .status.success {
+    background-color: rgb(0, 86, 0);
+  }
+</style>
+<div class="payments even-grid">
+  <% for(const payment of payments) { %>
+  <div class="payment card">
+
+    <div>
+      <h3 class="title" style="color: var(--accent-clr-light)">
+        <a href="/app/posted-job/<%= payment.job_id %>"><%= payment.job_title %></a>
+      </h3>
+      <p class="desc silver"><%= payment.job_description %></p>
+    </div>
+
+    <div class="flex-centered space-between">
+      <div class="amount gold">
+        $ <%= payment.amount %>
+      </div>
+      <div class="created_at">
+        <%= payment.created_at.toLocaleString() %>
+      </div>
+    </div>
+    <div class="flex-centered space-between mt1 line pt1">
+      <div class="status <%= payment.status %>">
+        <%= payment.status %>
+      </div>
+      <button data-payment-id="<%= payment.id %>" data-amount="<%= payment.amount %>" class="payment-btn btn" <%= payment.status === "success" ? 'disabled' : '' %>>Pay Now</button>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<script>
+  const paymentModal = document.querySelector("#payment-modal");
+  const paymentButtons = document.querySelectorAll(".payment-btn")
+
+  if (paymentButtons) {
+    paymentButtons.forEach(btn => {
+      const amount = parseFloat(btn.getAttribute("data-amount"));
+      const pid = parseFloat(btn.getAttribute("data-payment-id"));
+      const numberField = paymentModal.querySelector("#amount");
+
+      btn.addEventListener("click", () => {
+        numberField.value = billAmountCalculator(amount);
+        paymentModal.classList.add("open");
+        // payment_id = pid
+      })
+    })
+  }
+</script>
+
+<% } else { %>
 <div class="balance-page">
   <div class="withdraw-modal" id="withdraw-modal">
     <div class="backdrop" id="withdraw-backdrop"></div>
@@ -34,3 +115,4 @@
       withdrawModal.classList.remove("open");
     })
 </script>
+<% } %>

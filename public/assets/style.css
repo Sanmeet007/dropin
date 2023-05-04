@@ -1050,6 +1050,7 @@ footer .footer-grid a:hover {
   transform: scale(1);
 }
 
+.even-grid,
 .proposals,
 .contracts,
 .jobs {
@@ -1555,7 +1556,27 @@ footer .footer-grid a:hover {
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
 }
-
+.line {
+  border-top: 1px solid rgba(255, 255, 255, 0.336);
+}
+.pt1 {
+  padding-top: 1rem;
+}
+.pt2 {
+  padding-top: 2rem;
+}
+.pt3 {
+  padding-top: 3rem;
+}
+.pb1 {
+  padding-bottom: 1rem;
+}
+.pb2 {
+  padding-bottom: 2rem;
+}
+.pb3 {
+  padding-bottom: 3rem;
+}
 .proposal .details > * {
   background-color: rgba(255, 255, 255, 0.1);
   padding: 0.5rem;
@@ -1606,6 +1627,7 @@ footer .footer-grid a:hover {
 }
 
 @media screen and (min-width: 1000px) {
+  .even-grid,
   .proposals,
   .contracts,
   .jobs {
@@ -1614,6 +1636,7 @@ footer .footer-grid a:hover {
 }
 
 @media screen and (min-width: 1500px) {
+  .even-grid,
   .proposals,
   .contracts,
   .jobs {

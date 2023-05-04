@@ -23,12 +23,22 @@
         </span>
         <span class="text">My Account</span>
       </a>
+
+      <% if (user.account_type  === "client") { %>
+      <a href="/app/posted-jobs" class="nav-item <%- view === 'jobs' || view === "job-details"? 'active' : '' %>">
+        <span class="material-symbols-outlined">
+          work
+        </span>
+        <span class="text">Posted Jobs</span>
+      </a>
+      <% } else { %>
       <a href="/app/jobs" class="nav-item <%- view === 'jobs' || view === "job-details"? 'active' : '' %>">
         <span class="material-symbols-outlined">
           work
         </span>
         <span class="text">Jobs</span>
       </a>
+      <% } %>
       <a href="/app/contracts" class="nav-item <%- view === 'contracts' || view === "contract-details"? 'active' : '' %>">
         <span class="material-symbols-outlined">
           description
@@ -41,11 +51,15 @@
         </span>
         <span class="text">Proposals</span>
       </a>
-      <a href="/app/balance" class="nav-item <%- view === 'balance' ? 'active' : '' %>">
+      <a href="<%= user.account_type === "client"? '/app/payments' : '/app/balance' %>" class="nav-item <%= view === 'balance'? 'active' : '' %>">
         <span class="material-symbols-outlined">
           attach_money
         </span>
+        <% if (user.account_type === "client") { %>
+        <span class="text">Payments</span>
+        <% } else { %>
         <span class="text">Balance</span>
+        <% } %>
       </a>
     </div>
     <div class="body-panel">

@@ -31,6 +31,19 @@ router.get("/jobs", authenticateSession, async (req, res) => {
   });
 });
 
+router.get("/posted-jobs", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+  const postedJobs = await dbconn.getAllJobsByUserId(user.uid);
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "Jobs - Dropin",
+    heading: "Posted Jobs",
+    view: "jobs",
+    postedJobs: postedJobs,
+  });
+});
+
 router.get("/jobs/:id", authenticateSession, async (req, res) => {
   const id = parseInt(req.params.id);
   if (!id) return res.redirect("/jobs");
@@ -54,12 +67,66 @@ router.get("/jobs/:id", authenticateSession, async (req, res) => {
   });
 });
 
+router.get("/posted-job/:id", authenticateSession, async (req, res) => {
+  const id = parseInt(req.params.id);
+  if (!id) return res.redirect("/posted-jobs");
+  const jobDetails = await dbconn.getJobDetails(id);
+  return res.render("app", {
+    user: req.session.user,
+    title: jobDetails.title + " - Dropin",
+    heading: "Job Details",
+    view: "job-details",
+    jobDetails,
+  });
+});
+
 router.get("/proposals", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+  const proposals = await dbconn.getAllProposalsForPostedJobs(user.uid);
   return res.render("app", {
     user: req.session.user,
     title: "Proposals - Dropin",
     heading: "Proposals",
     view: "proposals",
+    proposals,
+  });
+});
+
+router.get("/freelancer-details", authenticateSession, async (req, res) => {
+  const fid = parseInt(req.query.id);
+  if (!fid) return res.redirect("/app");
+
+  const user_details = await dbconn.getUserDetailsFromFeelancerId(fid);
+
+  user_details.hashedPassword = null;
+  user_details._name = user_details.fullname;
+  user_details._age = user_details.age;
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "Freelancer Details - Dropin",
+    heading: "Freelancer Details",
+    view: "user-details",
+    user_details: user_details,
+  });
+});
+
+router.get("/client-details", authenticateSession, async (req, res) => {
+  const cid = parseInt(req.query.id);
+  if (!cid) return res.redirect("/app");
+
+  const user_details = await dbconn.getUserDetailsFromClientId(cid);
+
+  user_details.hashedPassword = null;
+  user_details._name = user_details.fullname;
+  user_details._age = user_details.age;
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "Client Details - Dropin",
+    heading: "Client Details",
+    view: "user-details",
+    user_details: user_details,
   });
 });
 
@@ -79,6 +146,22 @@ router.get("/balance", authenticateSession, async (req, res) => {
     heading: "Balance",
     view: "balance",
     balance: req.session.user.balance,
+  });
+});
+
+router.get("/payments", authenticateSession, async (req, res) => {
+  const user = req.session.user;
+
+  if (user.account_type !== "client") return res.redirect("/app");
+
+  const payments = await dbconn.getPaymentsHistoryByUserId(user.uid);
+
+  return res.render("app", {
+    user: req.session.user,
+    title: "Payments - Dropin",
+    heading: "Payments",
+    view: "balance",
+    payments,
   });
 });
 
