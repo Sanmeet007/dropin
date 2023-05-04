@@ -10,6 +10,8 @@
 </div>
 
 <div class="proposals">
+  <% if (proposals) { %>
+
   <% for(const proposal of  proposals ) { %>
   <% if (proposal.status != "accepted") { %>
   <div class="proposal card">
@@ -90,6 +92,11 @@
 
   <% } %>
   <% } %>
+  <% } else { %>
+  <div class="empty">Nothing to display</div>
+
+  <% } %>
+
 </div>
 
 

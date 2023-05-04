@@ -1,5 +1,7 @@
 <% if (user.account_type === "client") { %>
 <div class="jobs">
+  <% if (postedJobs) { %>
+
   <% for(const job of postedJobs ) { %>
   <div class="job">
     <div class="job-details">
@@ -49,10 +51,15 @@
       </div>
     </div>
   </div>
-
-
+  <% } %>
   <% } %>
 </div>
+
+
+<% if (postedJobs?.length === 0 || postedJobs === null ) { %>
+<div class="empty">Nothing to display</div>
+<% } %>
+
 
 <% } else { %>
 
@@ -121,7 +128,7 @@
 <% } %>
 
 
-<% if (jobs?.length === 0 || jobs === null) { %>
+<% if (jobs?.length === 0 || jobs === null ) { %>
 <div class="empty">Nothing to display</div>
 <% } %>
 
