@@ -17,10 +17,10 @@ class PostedJob {
     this.job_id = d.job_id;
     this.title = d.title;
     this.description = d.description;
-    this.proposal_count = d.proposal_count;
+    this.proposals_count = d.proposal_count;
     this.budget = d.budget;
     this.status = d.status;
-    this.creatd_at = d.creatd_at;
+    this.creatd_at = d.created_at;
     this.closed_at = d.closed_at;
   }
 

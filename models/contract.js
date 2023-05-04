@@ -17,6 +17,7 @@ class Contract {
     this.payment_amount = d.payment_amount;
     this.end_date = d.end_date;
     this.start_date = d.start_date;
+    this.job_status = d.job_status;
   }
   static fromData(json) {
     return new Contract(json);
