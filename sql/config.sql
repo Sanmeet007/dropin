@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: localhost    Database: dopin
+-- Host: localhost    Database: dropin
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -131,7 +131,7 @@ CREATE TABLE `jobs` (
   KEY `fk_job_client_key` (`client_id`),
   CONSTRAINT `fk_job_client_key` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`) ON DELETE CASCADE,
   CONSTRAINT `min_job_price` CHECK ((`budget` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -140,7 +140,7 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'closed','2023-04-28 15:16:17','2023-05-05 06:34:10','react-native,react,flutter,next.js');
+INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'closed','2023-04-28 15:16:17','2023-05-05 06:34:10','react-native,react,flutter,next.js'),(11,1,'Tell me new episode release date','Can you please tell me when will the new episode of one piece famous anime will arrive . \n\nI know there\'s only thing you could do i.e use google but i want to waste my hard earned money on finding the new episode release date. \n\n\n\nSincerely ,\nYour hirer\n[ Super cool dude :-) ]',100,'open','2023-05-05 13:53:59',NULL,'free-person,lucky person,someone-real'),(12,1,'Hello world hi','This is a new job',10000,'open','2023-05-05 13:54:50',NULL,'someone-free');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,11 +281,11 @@ INSERT INTO `withdrawals` VALUES (1,1,76.00,'2023-04-26 16:14:32','2023-04-26 16
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'dopin'
+-- Dumping events for database 'dropin'
 --
 
 --
--- Dumping routines for database 'dopin'
+-- Dumping routines for database 'dropin'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `create_client` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -708,4 +708,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-05 14:30:32
+-- Dump completed on 2023-05-05 23:18:38
