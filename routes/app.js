@@ -208,7 +208,6 @@ router.get(
 
 router.get("/payments", authenticateSession, clientOnly, async (req, res) => {
   const user = req.session.user;
-  b;
   if (user.account_type !== "client") return res.redirect("/app");
 
   const payments = await dbconn.getPaymentsHistoryByUserId(user.uid);
