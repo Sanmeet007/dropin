@@ -407,7 +407,7 @@ router.post(
       const user = req.session.user;
       const uid = user.uid;
       const jobId = parseInt(req.params.id);
-      if (!jobId || jobId === NaN) return res.status(400).end();
+      if (!jobId || Number.isNaN(jobId)) return res.status(400).end();
 
       const {
         title = null,
@@ -455,7 +455,7 @@ router.get("/jobs/get-details/:id", async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
 
-    if (!jobId || jobId === NaN)
+    if (!jobId || Number.isNaN(jobId))
       return res.status(400).json({
         error: true,
         message: "Invalid request",
@@ -493,7 +493,7 @@ router.get(
         });
 
       const jobId = parseInt(req.params.id);
-      if (!jobId || jobId === NaN) return res.status(400).end();
+      if (!jobId || Number.isNaN(jobId)) return res.status(400).end();
       const results = await dbconn.getAllProposalsByJobId(user.uid, jobId);
       return res.json(results ? results : []);
     } catch (e) {
@@ -513,7 +513,7 @@ router.post(
     try {
       const user = req.session.user;
       const jobId = parseInt(req.params.job_id);
-      if (!jobId || jobId === NaN) return res.status(400).end();
+      if (!jobId || Number.isNaN(jobId)) return res.status(400).end();
 
       if (user.account_type !== "freelancer")
         return res.status(403).json({
@@ -566,7 +566,7 @@ router.post(
           message: "Invalid request",
         });
       const id = parseInt(req.params.id);
-      if (!id || id === NaN) return res.status(400).end();
+      if (!id || Number.isNaN(id)) return res.status(400).end();
 
       const obj = {
         cover_letter,
@@ -594,7 +594,7 @@ router.post(
 router.post("/jobs/submit/:id", authenticateSession, async (req, res) => {
   try {
     const jobId = parseInt(req.params.id);
-    if (!jobId || jobId === NaN) return res.status(400).end();
+    if (!jobId || Number.isNaN(jobId)) return res.status(400).end();
 
     const user = req.session.user;
     await dbconn.markJobAsCompleted(jobId);
@@ -639,7 +639,7 @@ router.post(
   async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      if (!id || id === NaN) return res.status(400).end();
+      if (!id || Number.isNaN(id)) return res.status(400).end();
       /** @type {User} */
       const user = req.session.user;
       if (user.account_type !== "client")
@@ -689,7 +689,7 @@ router.post(
       const user = req.session.user;
 
       const id = parseInt(req.params.id);
-      if (!id || id === NaN) return res.status(400).end();
+      if (!id || Number.isNaN(id)) return res.status(400).end();
 
       await dbconn.endContract(id);
       const details = await dbconn.getContractsDetailsById(id);
@@ -736,7 +736,8 @@ router.post(
     try {
       const user = req.session.user;
       const contract_id = parseInt(req.params.contract_id);
-      if (!contract_id || contract_id === NaN) return res.status(400).end();
+      if (!contract_id || Number.isNaN(contract_id))
+        return res.status(400).end();
 
       const details = await dbconn.getContractsDetailsById(contract_id);
 
