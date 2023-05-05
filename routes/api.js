@@ -287,7 +287,9 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
       recieverEmailId: user.email,
       templateName: "verification",
       templateParams: {
-        verification_link: "http://localhost/api/user/verify?token=" + token,
+        name: user._name,
+        verification_link:
+          `${processs.env.HOST_ADDR}/api/user/verify?token=` + token,
       },
     }); // working
 
