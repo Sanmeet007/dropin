@@ -5,13 +5,13 @@
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="fname">First Name</label>
-        <input type="text" id="fname" name="fname" placeholder="Priate">
+        <input required type="text" id="fname" name="fname" placeholder="Priate" value="<%= user.first_name %>">
       </div>
     </div>
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lname" placeholder="Hunter">
+        <input type="text" id="lname" name="lname" placeholder="Hunter" required value="<%= user.last_name %>">
       </div>
     </div>
   </div>
@@ -21,7 +21,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="cweb">Company Wesbite</label>
-      <input type="url" id="cweb" name="company_website" placeholder="https://www.example.com">
+      <input type="url" id="cweb" name="company_website" placeholder="https://www.example.com" value="<%= user.details.company_website %>">
     </div>
   </div>
 
@@ -29,13 +29,13 @@
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="cname">Company Name</label>
-        <input type="text" id="cname" name="company_name" placeholder="Zoro Ltd.">
+        <input type="text" id="cname" name="company_name" required placeholder="Zoro Ltd." value="<%= user.details.company_name %>">
       </div>
     </div>
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="csize">Company Size</label>
-        <input type="number" id="csize" name="company_size" placeholder="0 ( average employees )">
+        <input type="number" id="csize" name="company_size" placeholder="0 ( average employees )" value="<%= user.details.company_size %>">
       </div>
     </div>
   </div>
@@ -43,7 +43,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="location">Location</label>
-      <input type="text" id="location" name="location" placeholder="Google , California ">
+      <input type="text" id="location" name="location" placeholder="Google , California " value="<%= user.location %>">
     </div>
   </div>
 
@@ -60,10 +60,10 @@
         <option value="finance">Finance</option>
         <option value="healthcare">Healthcare</option>
         <option value="hospitality">Hospitality</option>
-        <option value="information technology">Information Technology</option>
+        <option value="information-technology">Information Technology</option>
         <option value="manufacturing">Manufacturing</option>
         <option value="retail">Retail</option>
-        <option value="transportation">Software Development</option>
+        <option value="software-development">Software Development</option>
         <option value="transportation">Transportation</option>
       </select>
     </div>
@@ -73,8 +73,8 @@
 
   <div class="form-element-wrapper ">
     <div class="form-element">
-      <input type="checkbox" id="checkbox">
-      <label class="label" for="checkbox">Change profile image</label>
+      <input type="checkbox" id="profile-checkbox">
+      <label class="label" for="profile-checkbox">Change profile image</label>
     </div>
   </div>
 
@@ -87,14 +87,14 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="summary">Status</label>
-      <textarea name="summary" placeholder="Feeling Awesome" id="summary" rows="4" maxlength="255"></textarea>
+      <textarea name="summary" placeholder="Feeling Awesome" id="summary" rows="4" maxlength="255" required><%= user?.summary?.trim() %></textarea>
     </div>
   </div>
 
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="bio">About me</label>
-      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool"></textarea>
+      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool" required><%= user?.bio?.trim() %></textarea>
     </div>
   </div>
 
@@ -104,6 +104,85 @@
 
 </form>
 
+<script>
+  const clientForm = document.querySelector("form");
+  const industry = clientForm.industry;
+  if (industry) {
+    industry.value = "<%= user.details.industry %>".trim();
+  }
+
+  clientForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const {
+      summary,
+      bio,
+      fname,
+      lname,
+      location,
+      avatar,
+      company_website,
+      company_size,
+      industry
+    } = clientForm;
+
+    const finalObj = {
+      location: location.value,
+      first_name: fname.value,
+      last_name: lname.value,
+      bio: bio.value,
+      summary: summary.value,
+      company_website: company_website.value,
+      industry: industry.value
+    };
+
+    const size = parseInt(company_size.value);
+    if (!Number.isNaN(size)) {
+      finalObj.company_size = size;
+    }
+
+    const formData = new FormData();
+    Object.entries(finalObj).forEach((x) => {
+      formData.append(x[0], x[1]);
+    });
+
+    const profileCheckbox = document.querySelector("#profile-checkbox");
+
+
+    if (profileCheckbox.checked) {
+      if (avatar.files) {
+        formData.append("avatar", avatar.files[0]);
+      }
+    }
+
+    const approved = confirm("Please confirm to continue");
+
+    if (approved) {
+      try {
+        const res = await fetch("/api/user/update-details", {
+          method: "POST",
+          body: formData
+        });
+
+        if (res.status === 200) {
+          hideLoader();
+          showSnackBar("User details updated successfully", "success");
+          clientForm.querySelector("button").setAttribute("disabled", "")
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
+        } else {
+          const d = await res.json();
+          hideLoader();
+          showSnackBar(d.message, "error");
+        }
+      } catch (e) {
+        console.log(e);
+        hideLoader();
+        showSnackBar("Something went wrong", "error");
+      }
+    }
+  })
+</script>
 
 <% } else { %>
 <form class="form">
@@ -111,23 +190,23 @@
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="fname">First Name</label>
-        <input type="text" id="fname" name="fname" placeholder="Priate">
+        <input type="text" id="fname" name="fname" placeholder="Priate" value="<%= user.first_name %>" required>
       </div>
     </div>
     <div class="form-element-wrapper">
       <div class="form-element">
         <label for="lname">Last Name</label>
-        <input type="text" id="lname" name="lname" placeholder="Hunter">
+        <input type="text" id="lname" name="lname" placeholder="Hunter" value="<%= user.last_name %>" required>
       </div>
     </div>
   </div>
 
 
 
-  <div class="form-element-wrapper">
+  <div class=" form-element-wrapper">
     <div class="form-element">
       <label for="edu">Education</label>
-      <input type="url" id="edu" name="education" placeholder="One Piece College">
+      <input type="text" id="edu" name="education" placeholder="One Piece College" value="<%= user.details.education %>">
     </div>
   </div>
 
@@ -136,28 +215,28 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="location">Location</label>
-      <input type="text" id="location" name="location" placeholder="Japan">
+      <input type="text" id="location" name="location" placeholder="Japan" value="<%= user.location %>">
     </div>
   </div>
 
 
   <div class="form-element-wrapper ">
     <div class="form-element">
-      <input type="checkbox" id="checkbox">
-      <label class="label" for="checkbox">Change profile image</label>
+      <input type="checkbox" id="profile-checkbox">
+      <label class="label" for="profile-checkbox">Change profile image</label>
     </div>
   </div>
 
   <div class="form-element-wrapper">
     <div class="form-element">
-      <input type="file" id="avatar" name="avatar">
+      <input type="file" id="avatar" name="avatar" accept=".jpg,.jpeg,.png">
     </div>
   </div>
 
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="skills">Skills</label>
-      <input type="text" name="skills" id="skills" placeholder="Front End,Web Scrapping , Machine Learnning">
+      <input type="text" name="skills" id="skills" placeholder="Front End,Web Scrapping , Machine Learnning" value="<%= user.details.skills %>">
       <div class="label">Please enter skills seperated by comma (,)</div>
     </div>
   </div>
@@ -165,80 +244,80 @@
     <div class="form-element">
       <h4>Programming Languages</h4>
       <div>
-        <input type="checkbox" name="skill[]" value="python" id="python">
+        <input type="checkbox" name="p_languages" value="python" id="python">
         <label for="python">Python</label>
       </div>
 
       <div>
-        <input type="checkbox" name="skill[]" value="csharp" id="csharp">
+        <input type="checkbox" name="p_languages" value="csharp" id="csharp">
         <label for="csharp">C#</label>
       </div>
 
       <div>
-        <input type="checkbox" name="skill[]" value="swift" id="swift">
+        <input type="checkbox" name="p_languages" value="swift" id="swift">
         <label for="swift">Swift</label>
       </div>
 
       <div>
-        <input type="checkbox" name="skill[]" value="typescript" id="typescript">
+        <input type="checkbox" name="p_languages" value="typescript" id="typescript">
         <label for="typescript">TypeScript</label>
       </div>
 
       <div>
 
-        <input type="checkbox" name="skill[]" value="java" id="java">
+        <input type="checkbox" name="p_languages" value="java" id="java">
         <label for="java">Java</label>
       </div>
 
 
       <div>
 
-        <input type="checkbox" name="skill[]" value="javascript" id="javascript">
+        <input type="checkbox" name="p_languages" value="javascript" id="javascript">
         <label for="javascript">JavaScript</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="html" id="html">
+        <input type="checkbox" name="p_languages" value="html" id="html">
         <label for="html">HTML</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="css" id="css">
+        <input type="checkbox" name="p_languages" value="css" id="css">
         <label for="css">CSS</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="rust" id="rust">
+        <input type="checkbox" name="p_languages" value="rust" id="rust">
         <label for="rust">Rust</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="c" id="c">
+        <input type="checkbox" name="p_languages" value="c" id="c">
         <label for="c">C</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="cpp" id="cpp">
+        <input type="checkbox" name="p_languages" value="cpp" id="cpp">
         <label for="cpp">C++</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="go" id="go">
+        <input type="checkbox" name="p_languages" value="go" id="go">
         <label for="go">Go</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="dart" id="dart">
+        <input type="checkbox" name="p_languages" value="dart" id="dart">
         <label for="dart">Dart</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="php" id="php">
+        <input type="checkbox" name="p_languages" value="php" id="php">
         <label for="php">PHP</label>
       </div>
       <div>
 
-        <input type="checkbox" name="skill[]" value="kotlin" id="kotlin">
+        <input type="checkbox" name="p_languages" value="kotlin" id="kotlin">
         <label for="kotlin">Kotlin</label>
       </div>
 
@@ -249,27 +328,27 @@
     <div class="form-element">
       <h4>Databases</h4>
       <div>
-        <input type="checkbox" name="database[]" value="mysql" id="mysql">
+        <input type="checkbox" name="databases" value="mysql" id="mysql">
         <label for="mysql">MySQL</label>
       </div>
       <div>
 
-        <input type="checkbox" name="database[]" value="postgres" id="postgres">
+        <input type="checkbox" name="databases" value="postgres" id="postgres">
         <label for="postgres">PostgreSQL</label>
       </div>
       <div>
 
-        <input type="checkbox" name="database[]" value="mongodb" id="mongodb">
+        <input type="checkbox" name="databases" value="mongodb" id="mongodb">
         <label for="mongodb">MongoDB</label>
       </div>
       <div>
 
-        <input type="checkbox" name="database[]" value="dynamodb" id="dynamodb">
+        <input type="checkbox" name="databases" value="dynamodb" id="dynamodb">
         <label for="dynamodb">DynamoDB</label>
       </div>
       <div>
 
-        <input type="checkbox" name="database[]" value="redis" id="redis">
+        <input type="checkbox" name="databases" value="redis" id="redis">
         <label for="redis">Redis</label>
       </div>
 
@@ -279,24 +358,24 @@
     <div class="form-element">
       <h4>Languages</h4>
       <div>
-        <input type="checkbox" name="language[]" value="punjabi" id="punjabi">
+        <input type="checkbox" name="languages" value="punjabi" id="punjabi">
         <label for="punjabi">Punjabi</label>
       </div>
 
       <div>
-        <input type="checkbox" name="language[]" value="hindi" id="hindi">
+        <input type="checkbox" name="languages" value="hindi" id="hindi">
         <label for="hindi">Hindi</label>
       </div>
 
       <div>
 
-        <input type="checkbox" name="language[]" value="english" id="english">
+        <input type="checkbox" name="languages" value="english" id="english">
         <label for="english">English</label>
       </div>
 
       <div>
 
-        <input type="checkbox" name="language[]" value="spanish" id="spanish">
+        <input type="checkbox" name="languages" value="spanish" id="spanish">
         <label for="spanish">Spanish</label>
       </div>
 
@@ -306,8 +385,9 @@
   <div class="form-element-wrapper mt2">
     <div class="form-element">
       <label for="other-skills">Other Skills</label>
-      <input type="text" id="other-skills" name="other_skills" />
-      <div class="label">Please enter skills seperated by comma (,)</div>
+      <input type="text" id="other-skills" name="other_skills" value="<%= user.details.other_skills %>" />
+      <div class=" label">Please enter skills seperated by comma (,)
+      </div>
     </div>
   </div>
 
@@ -316,7 +396,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="summary">Status</label>
-      <textarea name="summary" placeholder="Feeling Lucky" id="summary" rows="4" maxlength="255"></textarea>
+      <textarea name="summary" placeholder="Feeling Lucky" id="summary" rows="4" maxlength="255" required><%= user.summary.trim() %></textarea>
     </div>
   </div>
 
@@ -324,7 +404,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="bio">About me</label>
-      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool"></textarea>
+      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool" required><%= user.bio  %></textarea>
     </div>
   </div>
 
@@ -333,5 +413,107 @@
   </button>
 
 </form>
+
+<script>
+  const userDatabases = "<%= user.details.databases %>".split(",")
+  const userProgrammingLanguages = "<%= user.details.programming_languages %>".split(",")
+  const userLanguages = "<%= user.details.languages %>".split(",");
+
+  userDatabases.forEach(db => {
+    const x = document.querySelector("#" + db);
+    if (x) {
+      x.checked = true;
+    }
+  })
+  userProgrammingLanguages.forEach(db => {
+    const x = document.querySelector("#" + db);
+    if (x) {
+      x.checked = true;
+    }
+  })
+  userLanguages.forEach(db => {
+    const x = document.querySelector("#" + db);
+    if (x) {
+      x.checked = true;
+    }
+  })
+
+  const profileCheckbox = document.querySelector("#profile-checkbox");
+
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const {
+      p_languages,
+      databases,
+      languages,
+      summary,
+      bio,
+      fname,
+      lname,
+      education,
+      other_skills,
+      location,
+      avatar
+    } = form;
+
+    const user_langs = Array.from(languages)?.filter(x => x.checked)?.map(x => x.value);
+
+    const user_dbs = Array.from(databases)?.filter(x => x.checked)?.map(x => x.value);
+
+    const user_p_langs = Array.from(p_languages)?.filter(x => x.checked)?.map(x => x.value);
+
+    const finalObj = {
+      location: location.value,
+      other_skills: other_skills.value,
+      education: education.value,
+      first_name: fname.value,
+      last_name: lname.value,
+      bio: bio.value,
+      summary: summary.value,
+      programming_languages: user_p_langs,
+      databases: user_dbs,
+      languages: user_langs
+    };
+
+    const formData = new FormData();
+    Object.entries(finalObj).forEach((x) => {
+      formData.append(x[0], x[1]);
+    })
+
+
+    if (profileCheckbox.checked) {
+      if (avatar.files) {
+        formData.append("avatar", avatar.files[0]);
+      }
+    }
+
+    const approved = confirm("Please confirm to continue");
+
+    if (approved) {
+      try {
+        const res = await fetch("/api/user/update-details", {
+          method: "POST",
+          body: formData
+        });
+
+        if (res.status === 200) {
+          hideLoader();
+          showSnackBar("User details updated successfully", "success");
+          form.querySelector("button").setAttribute("disabled", "")
+        } else {
+          const d = await res.json();
+          hideLoader();
+          showSnackBar(d.message, "error");
+        }
+      } catch (e) {
+        console.log(e);
+        hideLoader();
+        showSnackBar("Something went wrong", "error");
+      }
+    }
+  })
+</script>
 
 <% } %>
