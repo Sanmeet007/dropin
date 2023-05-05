@@ -1,2 +1,288 @@
-<%= console.log(user_details) %>
-This is user details page
+<% if(user_details.account_type === "client") {%>
+
+<div class="user-account">
+  <div class="top">
+
+    <div class="image">
+      <% if (user_details.profile_image) { %>
+      <img src="<%= user_details.profile_image %>" alt="Avatar Image">
+      <% } else { %>
+      <div class="atext">
+        S
+      </div>
+      <% } %>
+    </div>
+    <div class="meta">
+      <div>
+        <div class="silver" style="margin-bottom: 0.5rem">
+          <small>
+            <%= user_details._name %>
+          </small>
+        </div>
+        <div class="name">
+          <% if (user_details.verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= user_details.details.company_name %>
+        </div>
+        <div class="email">
+          <%= user_details.email %>
+        </div>
+        <div class="summary">
+          <q><%= user_details?.summary ?? "Feeling Awesome" %></q>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bio split">
+    <h3>About me</h3>
+    <p>
+      <%= user_details?.bio ?? "N/A" %>
+    </p>
+  </div>
+
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        pin_drop
+      </span>
+      <span>
+        Location
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.location ?? "Unknown"%>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        language
+      </span>
+      <span>
+        Company Website
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.details?.company_website ?? "Unknown"%>
+
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        group
+      </span>
+      <span>
+        Company Size
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.details?.company_size ?? "Unknown"%>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        apartment
+      </span>
+      <span>
+        Industry
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.details?.company_industry ?? "Unknown"%>
+    </p>
+  </div>
+</div>
+<% } else { %>
+
+<div class="user-account">
+  <div class="top">
+
+    <div class="image">
+      <% if (user_details.profile_image) { %>
+      <img src="<%= user_details.profile_image %>" alt="Avatar Image">
+      <% } else { %>
+      <div class="atext">
+        S
+      </div>
+      <% } %>
+    </div>
+    <div class="meta">
+      <div>
+        <div class="name">
+          <% if (user_details.verified ) { %>
+          <span class="material-symbols-outlined">
+            verified
+          </span>
+          <% } %>
+          <%= user_details._name %>
+        </div>
+        <div class="email">
+          <%= user_details.email %>
+        </div>
+        <div class="summary">
+          <q><%= user_details?.summary ?? "Feeling Lucky" %></q>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bio split">
+    <h3>About me</h3>
+    <p>
+      <%= user_details?.bio ?? "N/A" %>
+    </p>
+  </div>
+  <div class="education split">
+    <h3>
+      <span class="material-symbols-outlined">
+        school
+      </span>
+      <span>
+        Education
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.details?.education ?? "N/A" %>
+    </p>
+  </div>
+  <div class="location split">
+    <h3>
+      <span class="material-symbols-outlined">
+        pin_drop
+      </span>
+      <span>
+        Location
+      </span>
+    </h3>
+    <p>
+      <%= user_details?.location ?? "Unknown"%>
+    </p>
+  </div>
+
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        list_alt
+      </span>
+      <span>
+        Skills
+      </span>
+    </h3>
+
+    <div class="skills">
+
+      <% if (user_details.details?.skills != null) { %>
+      <% for( const skillset of user_details.details.skills) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } else { %>
+      <div>N/A</div>
+      <% } %>
+    </div>
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        code
+      </span>
+      <span>
+        Programming Languages
+      </span>
+    </h3>
+    <div class="skills">
+
+      <% if (user_details.details?.programming_languages != null) { %>
+      <% for( const skillset of user_details.details.programming_languages) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } else { %>
+      <div>N/A</div>
+      <% } %>
+    </div>
+
+  </div>
+
+
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        database
+      </span>
+      <span>
+        Databases
+      </span>
+    </h3>
+
+    <div class="skills">
+
+      <% if (user_details.details?.languages != null) { %>
+      <% for( const skillset of user_details.details.databases) { %>
+      <div class="skill">
+        <%= skillset %>
+      </div>
+      <% } %>
+      <% } else { %>
+      <div>N/A</div>
+      <% } %>
+    </div>
+
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        dynamic_feed
+      </span>
+      <span>
+        Other Skills
+      </span>
+    </h3>
+
+    <div class="skills">
+
+
+      <% if (user.details?.other_skills != null) { %>
+      <% for( const skillset of user.details.other_skills) { %>
+      <div class="skill">
+        <%= skillset.replaceAll("\"" , "") %>
+      </div>
+      <% } %>
+      <% } else { %>
+      <div>N/A</div>
+      <% } %>
+    </div>
+
+  </div>
+  <div class="skillset split">
+    <h3>
+      <span class="material-symbols-outlined">
+        abc
+      </span>
+      <span>
+        Languages
+      </span>
+    </h3>
+    <div class="skills">
+
+      <% if (user_details.details?.languages != null) { %>
+      <% for( const skillset of user_details.details.languages) { %>
+      <div class="skill">
+        <%= skillset.toUpperCase() %>
+      </div>
+      <% } %>
+      <% } else { %>
+      <div>N/A</div>
+      <% } %>
+    </div>
+
+  </div>
+
+</div>
+<% } %>
