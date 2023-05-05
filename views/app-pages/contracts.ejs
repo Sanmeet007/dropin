@@ -26,7 +26,7 @@
         <%= contracts[index].payment_amount %>
       </div>
       <div class="flex-centered">
-        <div class="status <%= contracts[index].end_date?  "closed" : "open"   %>">
+        <div class="contract-status status <%= contracts[index].end_date?  "closed" : "open"   %>">
           <% if (contracts[index].end_date) { %>
           ENDED
           <% } else { %>
@@ -34,14 +34,61 @@
           <% } %>
         </div>
         <% if (contracts[index].end_date === null) { %>
-        <button class="btn" <%= contracts[index].job_status === "closed" ? '' : 'disabled'%>>
+        <button class="end-contract" data-contract-id="<%= contracts[index].contract_id %>" class="btn" <%= contracts[index].job_status === "closed" ? '' : 'disabled'%>>
           End Contract
         </button>
+
+
         <% } %>
       </div>
     </div>
   </div>
   <% } %>
+
+
+  <script>
+    const contract = document.querySelectorAll('.contract');
+    contract.forEach(contract => {
+
+      const contractEndButton = contract.querySelector(".end-contract");
+      const contractStatus = contract.querySelector(".contract-status");
+
+      contractEndButton.addEventListener("click", async (e) => {
+        const contractId = parseInt(contractEndButton.getAttribute("data-contract-id"));
+        const approved = confirm("Are you sure you want to end contract ?");
+        if (approved) {
+          try {
+            showLoader();
+            const res = await fetch(`/api/jobs/end-contract/${contractId}`, {
+              method: "POST"
+            });
+            if (res.status === 200) {
+              contractEndButton.setAttribute("disabled", "");
+              contractStatus.className = "";
+              contractStatus.className = "contract-status status closed";
+              contractStatus.textContent = "ENDED";
+
+              hideLoader();
+              showSnackBar("Contract ended successfully", "success");
+              setTimeout(() => {
+                window.location = "/app/payments"
+              }, 300)
+            } else {
+              const d = await res.json();
+              hideLoader();
+              showSnackBar(d.message, "error");
+            }
+          } catch (e) {
+            hideLoader();
+            showSnackBar("Something went wrong", "error");
+          }
+
+        }
+      })
+    })
+  </script>
+
+
 </div>
 
 <% } %>
@@ -51,12 +98,46 @@
 <% if (contracts) { %>
 <div class="contracts">
   <% for( let index = 0; index < contracts.length; index++ ) { %>
-
+  <% console.log(contracts[index]); %>
   <div class="contract card">
-    <div class="title">
+    <div class="title flex-centered space-between">
       <a href="/app/jobs/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
         <%= contracts[index].job_title %>
       </a>
+      <% if (contracts[index].job_status === "progress") { %>
+      <button title="Submit Job" data-job-id="<%=contracts[index].job_id %>" class="btn iconbtn" id="finish-job">
+        <span class="material-symbols-outlined">
+          task_alt
+        </span>
+      </button>
+      <script>
+        const finishJobButton = document.querySelector("#finish-job");
+        finishJobButton.addEventListener("click", async (e) => {
+          const approved = confirm("Mark this job as complete ?");
+          const jobId = parseInt(finishJobButton.getAttribute("data-job-id"));
+
+          if (approved) {
+            showLoader();
+            try {
+              const res = await fetch(`/api/jobs/submit/${jobId}`, {
+                method: "POST"
+              });
+              if (res.status === 200) {
+                hideLoader();
+                showSnackBar("Job ended successfully", "success")
+              } else {
+                const d = await res.json();
+                hideLoader();
+                showSnackBar(d.message, "error")
+              }
+            } catch (e) {
+              hideLoader();
+              showSnackBar("Something went wrong", "error");
+            }
+          }
+        });
+      </script>
+      <% } %>
     </div>
     <div class="desc">
       <%= contracts[index].job_description.slice(0,255) %>

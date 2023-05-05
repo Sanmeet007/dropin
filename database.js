@@ -1019,9 +1019,10 @@ class DataBase {
   async getPaymentsHistoryByUserId(user_id) {
     const result = await this.#query(
       `
-      select p.status , p.created_at , p.updated_at , j.job_id , id , amount ,  j.title , j.description from payments p inner join jobs j on j.job_id = p.job_id 
+      select  contract_id, p.status , p.created_at , p.updated_at , j.job_id , id , amount ,  j.title , j.description from payments p inner join jobs j on j.job_id = p.job_id 
       inner join clients c on c.client_id = j.client_id
       inner join users u on u.user_id = c.user_id 
+      join contracts ct on ct.job_id = p.job_id
       where c.user_id = ?;
     `,
       [user_id]
@@ -1036,9 +1037,14 @@ class DataBase {
    * @returns {Promise<Payment?>}
    */
   async getPaymentDetailsById(payment_id) {
-    const result = await this.#query("SELECT * FROM payments WHERE id = ?", [
-      payment_id,
-    ]);
+    const result = await this.#query(
+      `
+    select id , contract_id, p.job_id, amount, status, created_at, updated_at
+    from payments p 
+    join contracts c on p.job_id = c.job_id where id = ?;    
+    `,
+      [payment_id]
+    );
     if (result && result.length > 0) return Payment.fromData(result[0]);
     return null;
   }
@@ -1069,10 +1075,7 @@ class DataBase {
   async setPaymentStatusByContractId(contract_id, status) {
     await this.#query(
       `
-        update payments 
-        set status = ?
-        where  job_id  = (select j.job_id from contracts  c
-        inner join jobs j on  j.job_id = c.job_id  where c.contract_id = ?);
+      call process_payment(? , ?);
     `,
       [status, contract_id]
     );

@@ -13,7 +13,7 @@
   <% if (proposals) { %>
 
   <% for(const proposal of  proposals ) { %>
-  <% if (proposal.status != "accepted") { %>
+  <% if (proposal) { %>
   <div class="proposal card">
     <div class="title">
       <a href="/app/posted-job/<%= proposal.job_id %>">
@@ -38,13 +38,16 @@
     </div>
     <div class="cover-letter">
       <h3>Cover Letter
-        <div>
-          <button id="read-cover-letter" title="Read cover letter" class="btn inline-block iconbtn">
+        <div class="read-cover-letter">
+          <div hidden class="hidden">
+            <%= proposal.cover_letter %>
+          </div>
+          <button title="Read cover letter" class="btn inline-block iconbtn">
             <span class="material-symbols-outlined">
               library_books
             </span>
           </button>
-          <button title="Approve" class="btn inline-block iconbtn">
+          <button data-proposal-id="<%= proposal.proposal_id %>" title="Approve" class="approve-btn btn inline-block iconbtn">
             <span class="material-symbols-outlined">
               check_circle
             </span>
@@ -56,7 +59,7 @@
       </p>
     </div>
     <div class="details">
-      <div class="status">
+      <div class="status job-status">
         <h3>Status</h3>
         <p class="<%= proposal.status  %>">
           <%= proposal.status %>
@@ -77,21 +80,87 @@
     </div>
   </div>
 
+
+  <% } %>
+
+
+  <% } %>
+
   <script>
-    const coverLetterButton = document.querySelector("#read-cover-letter");
+    const coverLetterDivs = document.querySelectorAll(".read-cover-letter");
     const coverLetterModal = document.getElementById("cover-letter-modal");
 
-    if (coverLetterModal) {
-      coverLetterModal.querySelector(".letter").textContent = '<%= proposal.cover_letter %>';
+    if (coverLetterDivs)
+      coverLetterDivs.forEach(div => {
+        const letterContent = div.querySelector(".hidden").textContent;
 
-      coverLetterButton.addEventListener("click", (e) => {
-        coverLetterModal.classList.add("open");
+        const button = div.querySelector("button");
+        button.addEventListener("click", () => {
+          if (coverLetterModal) {
+            coverLetterModal.querySelector(".letter").textContent = letterContent;
+            coverLetterModal.classList.add("open");
+          }
+        });
+
       })
+
+    const proposals = document.querySelectorAll(".proposal");
+
+    if (proposals) {
+
+      proposals.forEach(proposal => {
+
+
+        const approveButton = proposal.querySelector(".approve-btn");
+        if (approveButton) {
+          approveButton.addEventListener("click", async () => {
+            const jobStatus = proposal.querySelector(".job-status > p");
+            const approved = confirm("Please confirm to continue");
+            const proposalId = parseInt(approveButton.getAttribute("data-proposal-id"))
+            if (approved) {
+              try {
+                showLoader();
+                const res = await fetch(`http://localhost/api/jobs/create-contract/${proposalId}`, {
+                  method: "POST",
+                });
+
+                if (res.status === 200) {
+                  proposals.forEach(x => {
+                    if (
+                      x.querySelectorAll(`[data-proposal-id='${proposalId}']`).length > 0) {
+                      const js = proposal.querySelector(".job-status > p");
+                      const button = proposal.querySelector(".approve-btn");
+
+                      button.setAttribute("disabled", "");
+
+                      js.className = "declined";
+                      js.textContent = "declined";
+                    };
+                  })
+
+                  approveButton.setAttribute("disabled", "");
+                  jobStatus.className = "";
+                  jobStatus.classList.add("accepted");
+                  jobStatus.textContent = "accepted";
+                  hideLoader();
+                  showSnackBar("Prosposal accepted successfully", "success")
+                } else {
+                  const d = await res.json();
+                  hideLoader();
+                  showSnackBar(d.message, "error");
+                }
+              } catch (e) {
+                console.log(e)
+                hideLoader();
+                showSnackBar("Something went wrong", "error");
+              }
+            }
+          })
+        }
+      });
     }
   </script>
 
-  <% } %>
-  <% } %>
   <% } else { %>
   <div class="empty">Nothing to display</div>
 
@@ -100,7 +169,9 @@
 </div>
 
 
-
+<% if (!proposals || proposals.length === 0) { %>
+<div class="empty">Nothing to display</div>
+<% } %>
 
 <% } else { %>
 <% if(user.job_proposals) {%>

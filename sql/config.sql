@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
 --
--- Host: localhost    Database: dropin
+-- Host: localhost    Database: dopin
 -- ------------------------------------------------------
 -- Server version	8.0.29
 
@@ -32,7 +32,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`client_id`),
   KEY `fk_client_user_key` (`user_id`),
   CONSTRAINT `fk_client_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -64,7 +64,7 @@ CREATE TABLE `contracts` (
   KEY `fk_job_key` (`job_id`),
   CONSTRAINT `fk_freelancer_key` FOREIGN KEY (`freelancer_id`) REFERENCES `freelancers` (`freelancer_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `contracts` (
 
 LOCK TABLES `contracts` WRITE;
 /*!40000 ALTER TABLE `contracts` DISABLE KEYS */;
-INSERT INTO `contracts` VALUES (2,1,1,100,'2023-05-03 18:30:00','2023-05-03 18:30:00');
+INSERT INTO `contracts` VALUES (2,1,1,100,'2023-05-03 18:30:00','2023-05-03 18:30:00'),(3,1,10,120,'2023-05-04 18:30:00','2023-05-04 18:30:00');
 /*!40000 ALTER TABLE `contracts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -88,7 +88,7 @@ CREATE TABLE `freelancers` (
   `freelancer_id` int unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int unsigned DEFAULT NULL,
   `skills` varchar(255) DEFAULT NULL,
-  `programming_languages` set('java','javascript','html','css','rust','c','c++','go','dart','php','kotlin') DEFAULT NULL,
+  `programming_languages` set('java','javascript','html','css','rust','c','c++','go','dart','php','kotlin','python','c#','swift','typescript') DEFAULT NULL,
   `databases` set('mysql','postgres','mongodb','dyanmodb','redis') DEFAULT NULL,
   `languages` set('punjabi','hindi','english','spanish') DEFAULT 'english',
   `other_skills` varchar(255) DEFAULT NULL,
@@ -97,7 +97,7 @@ CREATE TABLE `freelancers` (
   PRIMARY KEY (`freelancer_id`),
   KEY `fk_user_key` (`user_id`),
   CONSTRAINT `fk_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -106,7 +106,7 @@ CREATE TABLE `freelancers` (
 
 LOCK TABLES `freelancers` WRITE;
 /*!40000 ALTER TABLE `freelancers` DISABLE KEYS */;
-INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english','\"supe,man\"','+2',800);
+INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english','\"supe,man\"','+2',30);
 /*!40000 ALTER TABLE `freelancers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +140,7 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'open','2023-04-28 15:16:17',NULL,'react-native,react,flutter,next.js');
+INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'closed','2023-04-28 15:16:17','2023-05-05 06:34:10','react-native,react,flutter,next.js');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -162,7 +162,7 @@ CREATE TABLE `payments` (
   UNIQUE KEY `id` (`id`),
   KEY `fk_job_payment_key` (`job_id`),
   CONSTRAINT `fk_job_payment_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -171,7 +171,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (2,1,100,'pending','2023-05-04 12:48:02','2023-05-04 12:48:02');
+INSERT INTO `payments` VALUES (2,1,100,'success','2023-05-04 12:48:02','2023-05-05 08:10:38'),(3,10,120,'success','2023-05-05 06:44:33','2023-05-05 08:29:17');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +197,7 @@ CREATE TABLE `proposals` (
   CONSTRAINT `fk_propoals_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_proposals_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `min_bid_amount` CHECK ((`bid_amount` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -206,7 +206,7 @@ CREATE TABLE `proposals` (
 
 LOCK TABLES `proposals` WRITE;
 /*!40000 ALTER TABLE `proposals` DISABLE KEYS */;
-INSERT INTO `proposals` VALUES (3,1000,1,'I want to earn money so please give me this job',100,'2023-05-04 05:18:02',2,'accepted');
+INSERT INTO `proposals` VALUES (3,1000,1,'I want to earn money so please give me this job',100,'2023-05-04 05:18:02',2,'accepted'),(4,1000,10,'I want to do this job please accept my proposal',120,'2023-05-05 06:06:49',10,'accepted');
 /*!40000 ALTER TABLE `proposals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,7 +245,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora ullam aliquid. Deserunt eligendi dolore eos inventore maiores, ab quia nemo excepturi porro accusamus, et nostrum laborum laudantium, animi exercitationem! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa beatae consequatur facilis, facere corrupti veniam soluta totam quasi, maiores nostrum veritatis, ad itaque iusto. Culpa nulla necessitatibus vitae repudiandae provident?','http://localhost/uploads/profile-image.jpg','male','freelancer','2002-01-01',1,NULL,NULL,'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, numquam!'),(1001,'Super','Sam','torrentboy007@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky','http://localhost/uploads/profile-image.jpg','male','client','1998-09-23',1,NULL,NULL,'Super happy client');
+INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora ullam aliquid. Deserunt eligendi dolore eos inventore maiores, ab quia nemo excepturi porro accusamus, et nostrum laborum laudantium, animi exercitationem! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa beatae consequatur facilis, facere corrupti veniam soluta totam quasi, maiores nostrum veritatis, ad itaque iusto. Culpa nulla necessitatibus vitae repudiandae provident?','http://localhost/uploads/profile-image.jpg','male','freelancer','2002-01-01',1,NULL,NULL,'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, numquam!'),(1001,'Rohit','Kumar','torrentboy007@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky','http://localhost/uploads/profile-image.jpg','male','client','1998-09-23',1,NULL,NULL,'Super happy client');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -281,11 +281,11 @@ INSERT INTO `withdrawals` VALUES (1,1,76.00,'2023-04-26 16:14:32','2023-04-26 16
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'dropin'
+-- Dumping events for database 'dopin'
 --
 
 --
--- Dumping routines for database 'dropin'
+-- Dumping routines for database 'dopin'
 --
 /*!50003 DROP PROCEDURE IF EXISTS `create_client` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -582,6 +582,58 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `process_payment` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_general_ai_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `process_payment`(
+	in _status varchar(255),
+    in _cid int
+)
+BEGIN
+
+	declare _fid int;
+    declare _bal double;
+    select freelancer_id , payment_amount into _fid , _bal from contracts where contract_id = _cid;
+    
+    if _fid is not null then 
+		
+		if _status = 'success' then 
+			
+            
+			update payments 
+			set status = _status
+			where  job_id  = (select j.job_id from contracts  c
+			inner join jobs j on  j.job_id = c.job_id  where c.contract_id = _cid);
+            
+            update freelancers 
+            set balance = balance + _bal
+            where freelancer_id = _fid;
+            
+
+		else 
+		   update payments 
+			set status = _status
+			where  job_id  = (select j.job_id from contracts  c
+			inner join jobs j on  j.job_id = c.job_id  where c.contract_id = _cid);
+
+		end if;
+    end if;
+    
+
+      
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `verify_user` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -656,4 +708,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-04 19:15:08
+-- Dump completed on 2023-05-05 14:30:32

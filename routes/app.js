@@ -82,7 +82,11 @@ router.get("/posted-job/:id", authenticateSession, async (req, res) => {
 
 router.get("/proposals", authenticateSession, async (req, res) => {
   const user = req.session.user;
-  const proposals = await dbconn.getAllProposalsForPostedJobs(user.uid);
+  let proposals = await dbconn.getAllProposalsForPostedJobs(user.uid);
+
+  if (proposals) {
+    proposals = proposals.filter((x) => x.status !== "accepted");
+  }
   return res.render("app", {
     user: req.session.user,
     title: "Proposals - Dropin",

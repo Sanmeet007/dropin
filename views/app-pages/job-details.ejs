@@ -1,3 +1,34 @@
+<div class="modal" id="proposal-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="content">
+      <form class="form" id="proposal-form">
+        <h3>Proposal</h3>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="time_frame">Timeframe </label>
+            <input name="time_frame" id="time_frame" type="number" min="1" placeholder="1 ( in days )" />
+          </div>
+        </div>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="bid-amount">Bid amount</label>
+            <input name="bid_amount" id="bid-amount" type="number" min="5" placeholder="10 (in $)" />
+          </div>
+        </div>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="cover-letter">Cover Letter</label>
+            <textarea placeholder="Write your cover letter here " name="cover_letter" id="cover-letter" rows="5"></textarea>
+          </div>
+        </div>
+        <button class="btn" type="submit">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
 <% if (user.account_type === "client") { %>
 <div class="job-details <%= jobDetails.status %>">
   <div class="posted-at flex-centered space-between"> Posted at :
@@ -104,7 +135,7 @@
   </div>
   <div class="desc"><%= jobDetails.description %></div>
   <div class="mt2 icon-btn justify-right">
-    <button class="btn icon-btn" <%= jobDetails.proposal_sent ? 'disabled' : '' %>>
+    <button data-job-id="<%= jobDetails.id %>" id="send-proposal-btn" class="btn icon-btn" <%= jobDetails.proposal_sent ? 'disabled' : '' %>>
       Send Proposal
       <span class="material-symbols-outlined">
         send
@@ -112,4 +143,56 @@
     </button>
   </div>
 </div>
+
+
+<script>
+  const proposalBtn = document.querySelector("#send-proposal-btn");
+  const proposalModal = document.querySelector("#proposal-modal");
+  const proposalForm = document.querySelector("#proposal-form");
+
+  proposalBtn.addEventListener("click", (e) => {
+    proposalModal.classList.add("open")
+
+  });
+
+  proposalForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const jobId = parseInt(proposalBtn.getAttribute(
+      "data-job-id"
+    ));
+    const {
+      bid_amount,
+      cover_letter,
+      time_frame
+    } = proposalForm;
+    try {
+      proposalModal.classList.remove("open");
+      showLoader();
+
+      const res = await fetch(`/api/proposals/create/${jobId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          bid_amount: bid_amount.value,
+          cover_letter: cover_letter.value,
+          timeframe: time_frame.value
+        })
+      });
+      if (res.status === 200) {
+        hideLoader();
+        showSnackBar("Proposal sent successfully", "success");
+        proposalBtn.setAttribute("disabled", "");
+      } else {
+        const d = await res.json();
+        hideLoader();
+        showSnackBar(d.message, "error");
+      }
+    } catch (e) {
+      hideLoader();
+      showSnackBar("Something went wrong", "error")
+    }
+  })
+</script>
 <% } %>

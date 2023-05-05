@@ -5,9 +5,30 @@
   <div class="modal-content">
     <div class="content">
       <h3 style="color : var(--accent-clr-light)">Payment</h3>
-      <p>Note $10 is charged as service amount -- edit later</p>
+
       <form class="form">
-        <input type="number" min="5" id="amount" disabled />
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="service-amount">Service tax</label>
+            <input type="number" id="service-amount" disabled />
+          </div>
+        </div>
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="pay-amount">Amount</label>
+            <input type="number" id="pay-amount" disabled />
+          </div>
+        </div>
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="bill-amount">Total bill amount</label>
+            <input type="number" min="5" id="bill-amount" disabled />
+          </div>
+        </div>
+
         <button class="btn" type="submit">Pay</button>
       </form>
     </div>
@@ -42,7 +63,7 @@
       <h3 class="title" style="color: var(--accent-clr-light)">
         <a href="/app/posted-job/<%= payment.job_id %>"><%= payment.job_title %></a>
       </h3>
-      <p class="desc silver"><%= payment.job_description %></p>
+      <p class="desc silver one-liner"><%= payment.job_description.slice(0, 255) %></p>
     </div>
 
     <div class="flex-centered space-between">
@@ -57,7 +78,7 @@
       <div class="status <%= payment.status %>">
         <%= payment.status %>
       </div>
-      <button data-payment-id="<%= payment.id %>" data-amount="<%= payment.amount %>" class="payment-btn btn" <%= payment.status === "success" ? 'disabled' : '' %>>Pay Now</button>
+      <button data-contract-id="<%= payment.contract_id %>" data-amount="<%= payment.amount %>" class="payment-btn btn" <%= payment.status === "success" ? 'disabled' : '' %>>Pay Now</button>
     </div>
   </div>
   <% } %>
@@ -74,13 +95,58 @@
   if (paymentButtons) {
     paymentButtons.forEach(btn => {
       const amount = parseFloat(btn.getAttribute("data-amount"));
-      const pid = parseFloat(btn.getAttribute("data-payment-id"));
-      const numberField = paymentModal.querySelector("#amount");
+      const cid = parseFloat(btn.getAttribute("data-contract-id"));
+      const numberField = paymentModal.querySelector("#bill-amount");
+
+      const serviceTaxField = paymentModal.querySelector("#service-amount")
+      const amountField = paymentModal.querySelector("#pay-amount")
 
       btn.addEventListener("click", () => {
-        numberField.value = billAmountCalculator(amount);
+        const billamt = billAmountCalculator(amount);
+
+        amountField.value = amount;
+        serviceTaxField.value = billamt - amount;
+        numberField.value = billamt;
         paymentModal.classList.add("open");
-        // payment_id = pid
+
+        paymentModal.querySelector("form").addEventListener("submit", async (e) => {
+          e.preventDefault();
+          paymentModal.classList.remove("open");
+
+          try {
+            showLoader()
+            const res = await fetch(`/api/pay-money/${cid}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({
+                amount: amount,
+                bill_amount: billamt
+              })
+            });
+
+
+            if (res.status === 200) {
+              hideLoader();
+              showSnackBar("Payment success", "success");
+              setTimeout(() => {
+                window.location.reload();
+              }, 300)
+            } else {
+              const d = await res.json();
+              hideLoader();
+              showSnackBar(d.message, "error");
+              setTimeout(() => {
+                window.location.reload();
+              }, 300)
+            }
+          } catch (e) {
+            console.log(e)
+            hideLoader();
+            showSnackBar("Something went wrong", "error");
+          }
+        })
       })
     })
   }
@@ -93,14 +159,36 @@
     <div class="content">
       <form class="form" id="withdraw-form">
         <h3>Enter the amount to withdraw</h3>
-        <p class="silver italic">Please ensure you have sufficient balance</p>
-        <input type="number" min="10" value="10" />
+        <p class="silver italic">10% will be charged as service tax with maximum service tax being $100</p>
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="withdraw-amount">Withdraw amount</label>
+            <input id="withdraw-amount" type="number" min="10" value="10" />
+          </div>
+        </div>
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="service-tax">Service tax amount</label>
+            <input id="service-tax" type="number" value="1" disabled />
+          </div>
+        </div>
+
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="actual-amount">Total </label>
+            <input id="real-amount" type="number" value="9" disabled />
+          </div>
+        </div>
+
+
         <button class="btn" type="submit">Withdraw</button>
       </form>
     </div>
   </div>
   <div class="balance">
-    <div class="text">Your balance is $<%= balance  %></div>
+    <div class="text">Your balance is $<span id="doc-balance"><%= balance  %></span></div>
     <button class="btn" id="withdraw-modal-opener">Get Paid</button>
   </div>
   <div class="balance-hint">
@@ -109,9 +197,64 @@
 </div>
 
 <script>
+  const docBalance = document.querySelector("#doc-balance");
   const withdrawBackdrop = document.querySelector("#withdraw-backdrop");
   const withdrawModal = document.querySelector("#withdraw-modal");
   const withdrawModalButton = document.querySelector("#withdraw-modal-opener");
+  const withdrawAmountField = document.querySelector("#withdraw-amount");
+
+
+  withdrawAmountField.addEventListener("input", (e) => {
+    const value = withdrawAmountField.value;
+    let serviceTax = ((value / 100) * 10).toFixed(2);
+    if (serviceTax > 100) serviceTax = 100;
+
+    withdrawModal.querySelector("#real-amount").value = value - serviceTax;
+    withdrawModal.querySelector("#service-tax").value = serviceTax;
+  })
+
+  if (withdrawModal) {
+    withdrawModal.querySelector("#withdraw-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const value = withdrawAmountField.value;
+      let serviceTax = ((value / 100) * 10).toFixed(2);
+      if (serviceTax > 100) serviceTax = 100;
+
+
+      const approved = confirm("Please confirm to continue");
+
+      if (approved) {
+        withdrawModal.classList.remove("open");
+        try {
+          showLoader();
+          const res = await fetch("/api/withdraw-money", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              amount: value,
+            })
+          });
+          if (res.status === 200) {
+            docBalance.textContent = parseFloat(docBalance.textContent) - value;
+            hideLoader();
+            showSnackBar("Withdraw processed successfully", "success");
+          } else {
+            const d = await res.json()
+            hideLoader();
+            showSnackBar(d.message, "error");
+          }
+
+        } catch (e) {
+          console.log(e)
+          hideLoader();
+          showSnackBar("Something went wrong", "error");
+        }
+      }
+    })
+  }
 
   if (withdrawModalButton)
     withdrawModalButton.addEventListener("click", () => {

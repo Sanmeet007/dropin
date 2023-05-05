@@ -9,7 +9,7 @@
 <div class="grid">
   <div class="balance card card-bg">
     <h2>Pending Payments </h2>
-    <%= user.payment_history.filter(x => x.status === "pending").length %>
+    <%= user.payment_history.filter(x => x.status !== "success").length %>
   </div>
   <div class="proposals card">
     <h2>Jobs Posted</h2>

@@ -738,6 +738,12 @@ router.post(
       const contract_id = parseInt(req.params.contract_id);
       if (!contract_id || contract_id === NaN) return res.status(400).end();
 
+      const details = await dbconn.getContractsDetailsById(contract_id);
+
+      const freelancer_details = await dbconn.getUserDetailsFromFeelancerId(
+        details.freelancer_id
+      );
+
       const { amount = null } = req.body;
       if (!amount) {
         await dbconn.setPaymentStatusByContractId(contract_id, "failed");
@@ -745,6 +751,8 @@ router.post(
         await sendMail({
           senderName: "Team Dropin",
           subject: "Payment Failure",
+          recieverEmailId: user.email,
+          recieverName: user._name,
           templateName: "payment_failure",
           templateParams: {
             client_name: user._name,
@@ -766,6 +774,8 @@ router.post(
       await sendMail({
         senderName: "Team Dropin",
         subject: "Payment Success",
+        recieverEmailId: freelancer_details.email,
+        recieverName: freelancer_details.fullname,
         templateName: "payment_success",
         templateParams: {
           client_name: user._name,

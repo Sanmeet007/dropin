@@ -1280,6 +1280,7 @@ footer .footer-grid a:hover {
   cursor: not-allowed;
 }
 
+.one-liner,
 .jobs .job .desc {
   display: -webkit-box;
   -webkit-box-orient: vertical;
