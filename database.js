@@ -433,13 +433,14 @@ class DataBase {
     let query = "UPDATE users SET ";
     const entries = Object.entries(details);
     if (entries.length === 0) return;
+    const params = [];
 
     entries.map(([k, v], i) => {
       if (i !== 0) {
         query += ",";
       }
 
-      query += ` ${k} = ? `;
+      query += ` \`${k}\` = ? `;
       params.push(v);
     });
 
@@ -473,7 +474,7 @@ class DataBase {
         query += ",";
       }
 
-      query += ` ${k} = ? `;
+      query += ` \`${k}\` = ? `;
       params.push(v);
     });
 
@@ -510,7 +511,7 @@ class DataBase {
         query += ",";
       }
 
-      query += ` ${k} = ? `;
+      query += ` \`${k}\` = ? `;
       params.push(v);
     });
 
