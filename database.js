@@ -122,15 +122,15 @@ class DataBase {
       );
 
       const contracts = await this.#query(
-        "select * from contracts natural join freelancers natural join users where user_id = ?",
+        "select * from contracts natural join freelancers natural join users where user_id = ? order by start_date",
         [uid]
       );
       const withdrawHistory = await this.#query(
-        "select * from withdrawals natural join freelancers natural join users where user_id =?",
+        "select * from withdrawals natural join freelancers natural join users where user_id =? order by created_at",
         [uid]
       );
       const jobProposals = await this.#query(
-        "select  proposal_id , j.job_id , j.title , user_id ,cover_letter  , timeframe , bid_amount , p.status  , p.created_at from proposals p join jobs j on  j.job_id = p.job_id where user_id = ?",
+        "select  proposal_id , j.job_id , j.title , user_id ,cover_letter  , timeframe , bid_amount , p.status  , p.created_at from proposals p join jobs j on  j.job_id = p.job_id where user_id = ? order by j.created_at",
         [uid]
       );
 
@@ -151,11 +151,11 @@ class DataBase {
       );
 
       const contracts = await this.#query(
-        "select * from contracts natural join clients natural join users where user_id = ?",
+        "select * from contracts natural join clients natural join users where user_id = ? order by start_date desc",
         [uid]
       );
       const paymentHistory = await this.#query(
-        "select  id,user_id ,  client_id, t.job_id,t.status , t.created_at  , t.updated_at, amount from payments t inner join jobs j on j.job_id = t.job_id natural join clients where user_id = ?",
+        "select  id,user_id ,  client_id, t.job_id,t.status , t.created_at  , t.updated_at, amount from payments t inner join jobs j on j.job_id = t.job_id natural join clients where user_id = ? order by t.created_at desc",
         [uid]
       );
 
@@ -163,7 +163,7 @@ class DataBase {
         `select *,(select count(*)  from proposals t2 where job_id = t.job_id)  as 'proposal_count'
         from jobs t 
         join clients c where t.client_id = c.client_id
-        and user_id = ?`,
+        and user_id = ? order by t.created_at desc`,
         [uid]
       );
 
@@ -1023,7 +1023,7 @@ class DataBase {
       inner join clients c on c.client_id = j.client_id
       inner join users u on u.user_id = c.user_id 
       join contracts ct on ct.job_id = p.job_id
-      where c.user_id = ?;
+      where c.user_id = ? order by p.created_at desc;
     `,
       [user_id]
     );
@@ -1059,7 +1059,7 @@ class DataBase {
       `
       select * from jobs j
       inner join clients c on  c.client_id = j.client_id
-      where user_id = ?`,
+      where user_id = ? order by j.created_at desc `,
       [user_id]
     );
     if (result && result.length > 0) return result.map(JobDetails.fromData);
