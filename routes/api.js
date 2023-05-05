@@ -315,11 +315,11 @@ router.get("/user/verify", async (req, res) => {
 
     if (!isExpired) {
       await dbconn.verifyUser(token);
-
-      return res.json({
-        error: false,
-        message: "User verified successfully",
-      });
+      // return res.json({
+      //   error: false,
+      //   message: "User verified successfully",
+      // });
+      return res.redirect("/app");
     } else {
       return res.status(400).json({
         error: true,

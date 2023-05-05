@@ -30,10 +30,48 @@
 
 
 <% if (user.account_type === "client") { %>
+<div class="edit-modal modal" id="edit-modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="content">
+      <form class="form">
+        <h3>Edit job details</h3>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="budget">Budget</label>
+            <input type="number" id="budget" name="budget" value="<%= jobDetails.budget %>" placeholder="10 (in dollars)" />
+          </div>
+        </div>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="skillset">Required Skillset</label>
+            <input type="text" id="skillset" name="skillset" placeholder="e.g. react,react-native,flutter" value="<%= jobDetails?.required_skillset?.join(",") %>">
+          </div>
+        </div>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="title">Title</label>
+            <input type="text" id="title" value="<%= jobDetails.title %>" placeholder="Find luffy">
+          </div>
+        </div>
+        <div class="form-element-wrapper">
+          <div class="form-element">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" rows="5" placeholder="Write description about the job"><%= jobDetails.description?.trim() %></textarea>
+          </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>
+
 <div class="job-details <%= jobDetails.status %>">
   <div class="posted-at flex-centered space-between"> Posted at :
     <%= jobDetails.created_at.toLocaleString() %>
-    <button title="edit" class="btn iconbtn">
+
+    <button <%= jobDetails.status === "open" ? '': "disabled"  %> title="edit" class="btn iconbtn" id="edit-btn">
       <span class="material-symbols-outlined">
         edit
       </span>
@@ -83,6 +121,65 @@
   <div class="desc"><%= jobDetails.description %></div>
 
 </div>
+
+<script>
+  const editButton = document.querySelector("#edit-btn");
+  const editModal = document.querySelector("#edit-modal");
+  const editForm = editModal.querySelector("form");
+
+  editButton.addEventListener("click", (e) => {
+    editModal.classList.add("open");
+  });
+
+  editForm?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const {
+      title,
+      budget,
+      skillset,
+      description
+
+    } = editForm;
+
+    try {
+
+      const approved = confirm("Please confirm to continue");
+      if (approved) {
+        showLoader();
+
+        const res = await fetch("/api/jobs/update-details/<%= jobDetails.id %>", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title: title.value,
+            budget: budget.value,
+            description: description.value,
+            skillset: skillset.value?.trim()?.split(",")?.filter(x => x != null || x != "")
+          })
+        });
+        if (res.status === 200) {
+          editModal.classList.remove("open");
+          hideLoader();
+          showSnackBar("Job details updated successfully", "success");
+          setTimeout(() => {
+            window.location.reload();
+          }, 300);
+        } else {
+          const d = await res.json();
+          hideLoader();
+          showSnackBar(d.message, "error");
+        }
+      }
+
+    } catch (e) {
+      console.log(e)
+      hideLoader();
+      showSnackBar("Something went wrong", "error");
+    }
+  })
+</script>
 <% } else { %>
 
 <div class="job-details <%= jobDetails.status %>">

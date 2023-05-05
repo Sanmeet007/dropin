@@ -1253,6 +1253,17 @@ footer .footer-grid a:hover {
   flex-basis: 100%;
   gap: 1rem;
 }
+.text-btn {
+  display: inline-block;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: inherit;
+  transition: color 0.2s;
+}
+.text-btn:hover {
+  color: rgb(255, 199, 102);
+}
 
 .jobs .job .box > *:first-child {
   flex-grow: 1;
