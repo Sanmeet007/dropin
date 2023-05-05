@@ -98,7 +98,6 @@
 <% if (contracts) { %>
 <div class="contracts">
   <% for( let index = 0; index < contracts.length; index++ ) { %>
-  <% console.log(contracts[index]); %>
   <div class="contract card">
     <div class="title flex-centered space-between">
       <a href="/app/jobs/<%= contracts[index].job_id %>?status=<%=  contracts[index].job_status %>">
