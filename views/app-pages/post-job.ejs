@@ -1,0 +1,82 @@
+<form class="form" id="post-job">
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="title">Title</label>
+      <input type="text" id="title" name="title" placeholder="Find Luffy" required />
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="description">Description</label>
+      <textarea maxlength="1000" type="text" id="description" name="description" rows="10" placeholder="Write your job description here" required></textarea>
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="budget">Budget</label>
+      <input type="number" id="budget" placeholder="10 (in dollars)" name="budget" required min="10" />
+      <div class="silver mb1">Minimum budget is $10</div>
+    </div>
+  </div>
+  <div class="form-element-wrapper">
+    <div class="form-element">
+      <label for="skillset">Skillset</label>
+      <input type="text" id="skillset" required placeholder="e.g. react,react-native,flutter" name="skillset" />
+      <div class="silver">Enter skills seperated by comma (,)</div>
+    </div>
+  </div>
+
+  <button type="submit" class="btn mt2">Submit</button>
+
+</form>
+
+<script>
+  const form = document.querySelector("#post-job");
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const {
+      title,
+      description,
+      budget,
+      skillset
+    } = form;
+
+    try {
+      const approved = confirm("Please confirm to continue");
+
+      if (approved) {
+
+        const res = await fetch("/api/jobs/create", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            title: title.value,
+            description: description.value,
+            budget: budget.value,
+            skillset: skillset.value.trim().split(",")?.filter(x => x !== "" || x !== null)?.map(x => x.trim())
+          })
+        })
+        if (res.status === 200) {
+          form.querySelector("button")?.setAttribute("disabled", "")
+          hideLoader();
+          showSnackBar("Job posted successfully", "success");
+          setTimeout(() => {
+            window.location = "/app/posted-jobs"
+          }, 300)
+        } else {
+          const d = await res.json();
+          hideLoader();
+          showSnackBar(d.message, "error");
+        }
+      }
+
+    } catch (e) {
+      console.log(e)
+      hideLoader();
+      showSnackBar("Something went wrong", "error");
+    }
+  })
+</script>

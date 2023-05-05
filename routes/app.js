@@ -31,6 +31,15 @@ router.get("/jobs", authenticateSession, async (req, res) => {
   });
 });
 
+router.get("/post-job", authenticateSession, async (req, res) => {
+  return res.render("app", {
+    user: req.session.user,
+    title: "Jobs - Dropin",
+    heading: "Post Job",
+    view: "post-job",
+  });
+});
+
 router.get("/posted-jobs", authenticateSession, async (req, res) => {
   const user = req.session.user;
   const postedJobs = await dbconn.getAllJobsByUserId(user.uid);
