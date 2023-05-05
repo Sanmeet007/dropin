@@ -8,3 +8,4 @@ mail_templates/test*
 public/uploads/1*
 .vscode
 testing
+mail_templates/index*
