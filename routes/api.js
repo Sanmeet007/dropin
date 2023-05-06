@@ -212,9 +212,9 @@ router.post(
       if (req.file) {
         const url = new URL(
           path.join(process.env.UPLOADS_DIR, req.file.filename),
-          process.env.BASE_URL
+          process.env.HOST_ADDR
         );
-        profile_image = url.href;
+        profile_image = url.pathname;
       }
       const user = req.session.user;
 

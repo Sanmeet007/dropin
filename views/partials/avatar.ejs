@@ -1,10 +1,14 @@
   <div class="avatar-content" id="avatar-content">
     <div class="backdrop-sheet" id="avatar-backdrop"></div>
     <div class="avatar">
-      <div class="image" title="<%= user._name %>" data-letter="<%= user.first_name[0]%>" id="avatar-trigger"></div>
+      <div class="image" title="<%= user._name %>" data-letter="<%= user.first_name[0]%>" id="avatar-trigger">
+
+      </div>
       <div class="content">
         <div class="me">
-          <div class="image" data-letter="<%= user.first_name[0]%>"></div>
+          <div class="image" data-letter="<%= user.first_name[0]%>">
+            <img class="circular" src="<%= user.profile_image ?? '/assets/images/user.jpg' %>" alt="" width="35" height="35">
+          </div>
           <div class="user-details">
             <div class="name"><%= user._name %></div>
             <div class="email"><%= user.email %></div>
@@ -25,7 +29,7 @@
               </span> <span>Logout</span> </button>
           </div>
           <div class="help-btn">
-            <a href="/support.html">
+            <a href="/support.html" target="_blank">
               <button id="help-btn"><span class="material-symbols-outlined">
                   help
                 </span>

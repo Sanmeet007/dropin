@@ -120,7 +120,7 @@
             if (approved) {
               try {
                 showLoader();
-                const res = await fetch(`http://localhost/api/jobs/create-contract/${proposalId}`, {
+                const res = await fetch(`/api/jobs/create-contract/${proposalId}`, {
                   method: "POST",
                 });
 
