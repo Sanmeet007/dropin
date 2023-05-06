@@ -706,6 +706,8 @@ router.post(
         recieverEmailId: userDetails.email,
         templateName: "contract_end",
         templateParams: {
+          user_name: userDetails.fullname,
+          job_id: details.job_id,
           job_title: details.job_title,
           job_description: details.job_description,
           client_name: user._name,

@@ -223,7 +223,7 @@
                           <tr>
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:10px 30px;font-family:'Open Sans',sans-serif;" align="left">
 
-                              <h1 class="v-font-size" style="margin: 0px; color: #ecf0f1; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 29px; font-weight: 400;"><strong>Hi, <%= name %></strong></h1>
+                              <h1 class="v-font-size" style="margin: 0px; color: #ecf0f1; line-height: 140%; text-align: left; word-wrap: break-word; font-size: 29px; font-weight: 400;"><strong>Dear <%= name %>,</strong></h1>
 
                             </td>
                           </tr>
@@ -236,15 +236,15 @@
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 30px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                               <div class="v-font-size" style="color: #ced4d9; line-height: -70%; text-align: left; word-wrap: break-word;">
-                                <p style="font-size: 14px; line-height: 140%;">
-                                  <br>
-                                  Please verify your email address by visiting the link below. Link will expire after 3 hours
-                                  <br>
-                                  <br>
-                                  <%= verification_link %>
-                                  <br>
-
-                                </p>
+                                <p>Thank you for signing up with our platform. Before you can start using our services, we need to verify your email address.</p>
+                                <br>
+                                <p style="font-size: 14px; line-height: 140%;">Please click on the link below to verify your email address. This link will expire after 3 hours.</p>
+                                <br>
+                                <p style="font-size: 14px; line-height: 140%;"><a href="<%= verification_link %>"><%= verification_link %></a></p>
+                                <br>
+                                <p style="font-size: 14px; line-height: 140%;">If you have any questions or concerns, please don't hesitate to reach out to us.</p>
+                                <br>
+                                <p style="font-size: 14px; line-height: 140%;">Best regards,<br>Team Dropin</p>
                               </div>
 
                             </td>
