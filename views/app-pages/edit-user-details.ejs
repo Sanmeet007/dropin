@@ -385,7 +385,7 @@
   <div class="form-element-wrapper mt2">
     <div class="form-element">
       <label for="other-skills">Other Skills</label>
-      <input type="text" id="other-skills" name="other_skills" value="<%= user.details.other_skills %>" />
+      <input type="text" id="other-skills" name="other_skills" value="<%= user.details.other_skills %>" placeholder="e.g. machine-learning,deep-learning" />
       <div class=" label">Please enter skills seperated by comma (,)
       </div>
     </div>
@@ -396,7 +396,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="summary">Status</label>
-      <textarea name="summary" placeholder="Feeling Lucky" id="summary" rows="4" maxlength="255" required><%= user.summary.trim() %></textarea>
+      <textarea name="summary" placeholder="Feeling Lucky" id="summary" rows="4" maxlength="255" required><%= user?.summary?.trim() %></textarea>
     </div>
   </div>
 
@@ -404,7 +404,7 @@
   <div class="form-element-wrapper">
     <div class="form-element">
       <label for="bio">About me</label>
-      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , Our company is cool" required><%= user.bio  %></textarea>
+      <textarea name="bio" id="bio" rows="10" maxlength="1000" placeholder="Hi , i am a good developer" required><%= user?.bio?.trim()  %></textarea>
     </div>
   </div>
 
@@ -420,27 +420,34 @@
   const userLanguages = "<%= user.details.languages %>".split(",");
 
   userDatabases.forEach(db => {
-    const x = document.querySelector("#" + db);
-    if (x) {
-      x.checked = true;
+    if (db) {
+      const x = document.querySelector("#" + db);
+      if (x) {
+        x.checked = true;
+      }
     }
   })
   userProgrammingLanguages.forEach(db => {
-    const x = document.querySelector("#" + db);
-    if (x) {
-      x.checked = true;
+    if (db) {
+      const x = document.querySelector("#" + db);
+      if (x) {
+        x.checked = true;
+      }
     }
   })
   userLanguages.forEach(db => {
-    const x = document.querySelector("#" + db);
-    if (x) {
-      x.checked = true;
+    if (db) {
+      const x = document.querySelector("#" + db);
+      if (x) {
+        x.checked = true;
+      }
     }
   })
 
   const profileCheckbox = document.querySelector("#profile-checkbox");
 
   const form = document.querySelector("form");
+  console.log(form)
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();

@@ -207,6 +207,7 @@ router.post(
         languages = null,
         databases = null,
         other_skills = null,
+        summary = null,
       } = req.body;
 
       let profile_image = null;
@@ -226,6 +227,7 @@ router.post(
         bio,
         profile_image,
         gender,
+        summary,
       };
 
       const uid = user.uid;
