@@ -124,7 +124,7 @@
       <div class="nav-backdrop" id="nav-drawer">
         <div class="nav-backdrop-sheet" id="nav-backdrop-sheet"></div>
         <ul class="nav-links">
-          <li>
+          <li class="<%= view === "index" ? "active": '' %>">
             <a href="/">
               <span class="material-symbols-outlined">
                 home
@@ -132,7 +132,7 @@
               Home
             </a>
           </li>
-          <li>
+          <li class="<%= view === "about" ? "active": '' %>">
             <a href="/about-us">
               <span class="material-symbols-outlined">
                 info
@@ -140,7 +140,7 @@
               About
             </a>
           </li>
-          <li class="active">
+          <li class="<%= view === "services" ? "active": '' %>">
             <a href="/services">
               <span class="material-symbols-outlined">
                 settings
@@ -148,7 +148,7 @@
               Services
             </a>
           </li>
-          <li>
+          <li class="<%= view === "support" ? "active": '' %>">
             <a href="/support">
               <span class="material-symbols-outlined">
                 support_agent

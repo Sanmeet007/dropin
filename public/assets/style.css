@@ -152,6 +152,9 @@ nav {
 .nav-links li a:hover {
   color: #b392a0;
 }
+.nav-links li.active a {
+  color: var(--accent-clr-light);
+}
 
 .burger {
   display: none;

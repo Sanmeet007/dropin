@@ -25,7 +25,6 @@ if (logoutButton)
 if (helpButton)
   helpButton.addEventListener("click", () => {
     avatarContentDiv.classList.remove("active");
-    window.location = "/help";
   });
 
 const modals = document.querySelectorAll(".modal");
