@@ -41,7 +41,6 @@ CREATE TABLE `clients` (
 
 LOCK TABLES `clients` WRITE;
 /*!40000 ALTER TABLE `clients` DISABLE KEYS */;
-INSERT INTO `clients` VALUES (1,1001,'Rohit productions',NULL,NULL,NULL);
 /*!40000 ALTER TABLE `clients` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -73,7 +72,6 @@ CREATE TABLE `contracts` (
 
 LOCK TABLES `contracts` WRITE;
 /*!40000 ALTER TABLE `contracts` DISABLE KEYS */;
-INSERT INTO `contracts` VALUES (2,1,1,100,'2023-05-03 18:30:00','2023-05-03 18:30:00'),(3,1,10,120,'2023-05-04 18:30:00','2023-05-04 18:30:00');
 /*!40000 ALTER TABLE `contracts` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -106,7 +104,6 @@ CREATE TABLE `freelancers` (
 
 LOCK TABLES `freelancers` WRITE;
 /*!40000 ALTER TABLE `freelancers` DISABLE KEYS */;
-INSERT INTO `freelancers` VALUES (1,1000,'web development,UI/UX,Full Stack developer','javascript,html,css,php','mysql,postgres','punjabi,hindi,english','\"supe,man\"','+2',30);
 /*!40000 ALTER TABLE `freelancers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -140,7 +137,6 @@ CREATE TABLE `jobs` (
 
 LOCK TABLES `jobs` WRITE;
 /*!40000 ALTER TABLE `jobs` DISABLE KEYS */;
-INSERT INTO `jobs` VALUES (1,1,'Hello world','I want to create an android app which does nothing',10,'closed','2023-04-25 17:15:02','2023-05-04 12:33:48','react-native,react,flutter,next.js'),(10,1,'Bunjee Jumping App','Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi quibusdam, rem voluptatum a iure vitae autem unde tempore necessitatibus magnam earum non et officiis aut fugiat. In deserunt numquam sed eaque distinctio aspernatur quidem, consectetur repudiandae saepe alias fugit sequi nam sapiente repellat eius corporis soluta quas fuga hic minima nobis consequuntur dolores esse iure? Molestiae doloremque explicabo iure porro quisquam, dolorum autem voluptas nobis temporibus delectus alias. Officia, quos dolore sequi, repellendus vel perspiciatis, sunt quam magnam rem culpa veniam. Quod, laudantium! Praesentium, fuga rerum quia natus nisi itaque sit, quasi, dolorem aperiam ipsum magni! Saepe dignissimos hic excepturi, ad nulla a illo ullam fuga cumque. Quis debitis autem dicta quod asperiores sunt, neque deserunt accusantium qui amet reprehenderit vero sit expedita cumque voluptate laborum tempore, dolorem adipisci dolorum praesentium esse. Quibusdam culpa consectetur a. Quibusdam consequatur facilis dicta quas dolores quo. Unde magnam deserunt velit temporibus dignissimos blanditiis sed dicta, aliquid at porro! Similique explicabo eos quod dolorum iusto libero voluptatem, et tempora corporis, esse quo laboriosam autem ullam magni a fugit porro sequi inventore veniam nulla rerum doloremque? Modi temporibus consequatur repudiandae doloribus eius veritatis at mollitia alias in aut! Obcaecati doloremque delectus nam sit, eaque amet placeat nobis debitis repellendus porro et ratione nisi qui natus quisquam eum non nemo iure. Voluptates temporibus tempora, sunt omnis modi est quia. Eligendi quos aliquid dicta nulla rem quae reprehenderit nihil pariatur temporibus porro, ut omnis facilis nesciunt eius eos, est necessitatibus ea numquam esse. Doloribus nobis laborum ut architecto, soluta cupiditate, dignissimos similique ullam libero quis itaque temporibus ipsum! Odit, nostrum ducimus dignissimos atque dolor quibusdam mollitia ad debitis ex corrupti maiores quas autem ullam. Commodi impedit ipsam tempora, vel recusandae adipisci obcaecati suscipit explicabo fuga quis dicta expedita ipsum accusamus? Neque veritatis nihil, cum labore sint incidunt!',100,'closed','2023-04-28 15:16:17','2023-05-05 06:34:10','react-native,react,flutter,next.js'),(11,1,'Tell me new episode release date','Can you please tell me when will the new episode of one piece famous anime will arrive . \n\nI know there\'s only thing you could do i.e use google but i want to waste my hard earned money on finding the new episode release date. \n\n\n\nSincerely ,\nYour hirer\n[ Super cool dude :-) ]',100,'open','2023-05-05 13:53:59',NULL,'free-person,lucky person,someone-real'),(12,1,'Hello world hi','This is a new job',10000,'open','2023-05-05 13:54:50',NULL,'someone-free');
 /*!40000 ALTER TABLE `jobs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -171,7 +167,6 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (2,1,100,'success','2023-05-04 12:48:02','2023-05-05 08:10:38'),(3,10,120,'success','2023-05-05 06:44:33','2023-05-05 08:29:17');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +201,6 @@ CREATE TABLE `proposals` (
 
 LOCK TABLES `proposals` WRITE;
 /*!40000 ALTER TABLE `proposals` DISABLE KEYS */;
-INSERT INTO `proposals` VALUES (3,1000,1,'I want to earn money so please give me this job',100,'2023-05-04 05:18:02',2,'accepted'),(4,1000,10,'I want to do this job please accept my proposal',120,'2023-05-05 06:06:49',10,'accepted');
 /*!40000 ALTER TABLE `proposals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -245,7 +239,6 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1000,'Sanmeet','Singh','ssanmeet123@gmail.com','c0d922b3a29268975b481a6fea588da5',NULL,'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi tempora ullam aliquid. Deserunt eligendi dolore eos inventore maiores, ab quia nemo excepturi porro accusamus, et nostrum laborum laudantium, animi exercitationem! Lorem ipsum, dolor sit amet consectetur adipisicing elit. Culpa beatae consequatur facilis, facere corrupti veniam soluta totam quasi, maiores nostrum veritatis, ad itaque iusto. Culpa nulla necessitatibus vitae repudiandae provident?','http://localhost/uploads/profile-image.jpg','male','freelancer','2002-01-01',1,NULL,NULL,'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum, numquam!'),(1001,'Rohit','Kumar','torrentboy007@gmail.com','5f4dcc3b5aa765d61d8327deb882cf99',NULL,'Feeling Lucky','http://localhost/uploads/profile-image.jpg','male','client','1998-09-23',1,NULL,NULL,'Super happy client');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +269,6 @@ CREATE TABLE `withdrawals` (
 
 LOCK TABLES `withdrawals` WRITE;
 /*!40000 ALTER TABLE `withdrawals` DISABLE KEYS */;
-INSERT INTO `withdrawals` VALUES (1,1,76.00,'2023-04-26 16:14:32','2023-04-26 16:17:50','processed');
 /*!40000 ALTER TABLE `withdrawals` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -708,4 +700,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-05 23:18:38
+-- Dump completed on 2023-05-06 10:55:28
