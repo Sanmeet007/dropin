@@ -143,6 +143,13 @@ nav {
   display: none;
 }
 
+.link {
+  color: var(--accent-clr-light);
+  transition: color 0.2s ease;
+}
+.link:hover {
+  opacity: 0.9;
+}
 .nav-links li a {
   font-size: 1rem;
   text-decoration: none;
