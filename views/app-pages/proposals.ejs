@@ -22,7 +22,7 @@
     </div>
     <div class="user-details flex-centered">
       <div class="image">
-        <img class="circular" src="<%= proposal.freelancer_profile_image ? "/assets/images/user.jpg": proposal.freelancer_profile_image %>" alt="user" width="50" height="50">
+        <img class="circular" src="<%= proposal.freelancer_profile_image ?? "/assets/images/user.jpg" %>" alt="user" width="50" height="50">
       </div>
       <div class="info">
         <a href="/app/freelancer-details/?id=<%= proposal.freelancer_id %>" class="block">

@@ -75,7 +75,7 @@ router.get(
 
     if (!jobDetails) return res.redirect("/jobs");
 
-    if (proposals.map((x) => x.job_id).includes(jobDetails.id)) {
+    if (proposals?.map((x) => x.job_id).includes(jobDetails.id)) {
       jobDetails.proposal_sent = true;
     } else {
       jobDetails.proposal_sent = false;
