@@ -51,5 +51,9 @@ process.on("SIGINT", () => {
 });
 
 app.listen(80, () => {
-  console.log(`Server started at port ${PORT}. Click to visit ${HOST_ADDR}`);
+  console.log(
+    `Server started at port ${PORT}. Click to visit ${
+      process.env.HOST_ADDR + ":" + process.env.PORT
+    }`
+  );
 });
