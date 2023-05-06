@@ -212,7 +212,7 @@ router.post(
       if (req.file) {
         const url = new URL(
           path.join(process.env.UPLOADS_DIR, req.file.filename),
-          process.env.HOST_ADDR
+          process.env.HOST_ADDR + ":" + process.env.PORT
         );
         profile_image = url.pathname;
       }
@@ -289,7 +289,8 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
       templateParams: {
         name: user._name,
         verification_link:
-          `${processs.env.HOST_ADDR}/api/user/verify?token=` + token,
+          `${processs.env.HOST_ADDR}:${process.env.PORT}/api/user/verify?token=` +
+          token,
       },
     }); // working
 

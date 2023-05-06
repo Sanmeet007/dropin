@@ -8,6 +8,8 @@ const session = require("express-session");
 const ApiRoutes = require("./routes/api");
 const AppRoutes = require("./routes/app");
 
+const PORT = process.env.PORT || 3000;
+
 const app = express();
 app.set("view engine", "ejs");
 app.use(express.static("public"));
@@ -49,5 +51,5 @@ process.on("SIGINT", () => {
 });
 
 app.listen(80, () => {
-  console.log("Server started at port 80. Click to visit http://localhost");
+  console.log(`Server started at port ${PORT}. Click to visit ${HOST_ADDR}`);
 });
