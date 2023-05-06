@@ -32,7 +32,7 @@ CREATE TABLE `clients` (
   PRIMARY KEY (`client_id`),
   KEY `fk_client_user_key` (`user_id`),
   CONSTRAINT `fk_client_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -63,7 +63,7 @@ CREATE TABLE `contracts` (
   KEY `fk_job_key` (`job_id`),
   CONSTRAINT `fk_freelancer_key` FOREIGN KEY (`freelancer_id`) REFERENCES `freelancers` (`freelancer_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -87,15 +87,15 @@ CREATE TABLE `freelancers` (
   `user_id` int unsigned DEFAULT NULL,
   `skills` varchar(255) DEFAULT NULL,
   `programming_languages` set('java','javascript','html','css','rust','c','c++','go','dart','php','kotlin','python','c#','swift','typescript') DEFAULT NULL,
-  `databases` set('mysql','postgres','mongodb','dyanmodb','redis') DEFAULT NULL,
   `languages` set('punjabi','hindi','english','spanish') DEFAULT 'english',
   `other_skills` varchar(255) DEFAULT NULL,
   `education` longtext,
   `balance` double NOT NULL DEFAULT '0',
+  `databases` set('mysql','postgres','mongodb','dynamodb','redis') DEFAULT NULL,
   PRIMARY KEY (`freelancer_id`),
   KEY `fk_user_key` (`user_id`),
   CONSTRAINT `fk_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -128,7 +128,7 @@ CREATE TABLE `jobs` (
   KEY `fk_job_client_key` (`client_id`),
   CONSTRAINT `fk_job_client_key` FOREIGN KEY (`client_id`) REFERENCES `clients` (`client_id`) ON DELETE CASCADE,
   CONSTRAINT `min_job_price` CHECK ((`budget` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -158,7 +158,7 @@ CREATE TABLE `payments` (
   UNIQUE KEY `id` (`id`),
   KEY `fk_job_payment_key` (`job_id`),
   CONSTRAINT `fk_job_payment_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +192,7 @@ CREATE TABLE `proposals` (
   CONSTRAINT `fk_propoals_job_key` FOREIGN KEY (`job_id`) REFERENCES `jobs` (`job_id`) ON DELETE CASCADE,
   CONSTRAINT `fk_proposals_user_key` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE,
   CONSTRAINT `min_bid_amount` CHECK ((`bid_amount` > 5))
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -230,7 +230,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `verification_token` (`verification_token`)
-) ENGINE=InnoDB AUTO_INCREMENT=1013 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1002 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -308,7 +308,15 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `create_client`(
 BEGIN
 		declare k int;
         declare _e varchar(255);
-        set k = (select user_id + 1 from users order by user_id desc limit 1);
+        
+        select user_id  into k from users order by user_id desc limit 1;
+        
+		if k is null then 
+			alter table users auto_increment = 1000;
+            set k = 1000;
+        else 
+			set k = k + 1;
+        end if;
         
         select email into _e from users where email = _email;
         
@@ -411,7 +419,14 @@ BEGIN
 		declare k int;
 		declare _e varchar(255);
                 
-        set k = (select user_id + 1 from users order by user_id desc limit 1);
+        select user_id  into k from users order by user_id desc limit 1;
+        
+        if k is null then 
+			alter table users auto_increment = 1000;
+            set k = 1000;
+        else 
+			set k = k + 1;
+        end if;
         
 		select email into _e from users where email = _email;
         
@@ -700,4 +715,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-05-06 10:55:28
+-- Dump completed on 2023-05-06 13:03:14
