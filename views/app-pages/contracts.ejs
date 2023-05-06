@@ -53,38 +53,39 @@
       const contractEndButton = contract.querySelector(".end-contract");
       const contractStatus = contract.querySelector(".contract-status");
 
-      contractEndButton.addEventListener("click", async (e) => {
-        const contractId = parseInt(contractEndButton.getAttribute("data-contract-id"));
-        const approved = confirm("Are you sure you want to end contract ?");
-        if (approved) {
-          try {
-            showLoader();
-            const res = await fetch(`/api/jobs/end-contract/${contractId}`, {
-              method: "POST"
-            });
-            if (res.status === 200) {
-              contractEndButton.setAttribute("disabled", "");
-              contractStatus.className = "";
-              contractStatus.className = "contract-status status closed";
-              contractStatus.textContent = "ENDED";
+      if (contractEndButton)
+        contractEndButton.addEventListener("click", async (e) => {
+          const contractId = parseInt(contractEndButton.getAttribute("data-contract-id"));
+          const approved = confirm("Are you sure you want to end contract ?");
+          if (approved) {
+            try {
+              showLoader();
+              const res = await fetch(`/api/jobs/end-contract/${contractId}`, {
+                method: "POST"
+              });
+              if (res.status === 200) {
+                contractEndButton.setAttribute("disabled", "");
+                contractStatus.className = "";
+                contractStatus.className = "contract-status status closed";
+                contractStatus.textContent = "ENDED";
 
+                hideLoader();
+                showSnackBar("Contract ended successfully", "success");
+                setTimeout(() => {
+                  window.location = "/app/payments"
+                }, 300)
+              } else {
+                const d = await res.json();
+                hideLoader();
+                showSnackBar(d.message, "error");
+              }
+            } catch (e) {
               hideLoader();
-              showSnackBar("Contract ended successfully", "success");
-              setTimeout(() => {
-                window.location = "/app/payments"
-              }, 300)
-            } else {
-              const d = await res.json();
-              hideLoader();
-              showSnackBar(d.message, "error");
+              showSnackBar("Something went wrong", "error");
             }
-          } catch (e) {
-            hideLoader();
-            showSnackBar("Something went wrong", "error");
-          }
 
-        }
-      })
+          }
+        })
     })
   </script>
 
