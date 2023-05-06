@@ -247,8 +247,8 @@
         closeSignUpMoal();
         showSnackBar(d.message, "success");
         setTimeout(() => {
-          window.location.reload();
-        }, 1000)
+          window.location = "/app";
+        }, 400)
       } else {
         hideLoader();
         closeSignUpMoal();
