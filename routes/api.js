@@ -825,6 +825,7 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
         recieverName: user._name,
         templateName: "withdraw_failure",
         templateParams: {
+          support_email: process.env.SMTP_USER,
           name: user._name,
           email: user.email,
           reason: "Amount lesser than minimum withdrawal amount",
