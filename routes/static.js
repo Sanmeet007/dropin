@@ -22,7 +22,7 @@ router.get("/about-us", (req, res) => {
   return res.render("page", {
     user: req.session.user,
     login: false,
-    title: "About Us - Dropin",
+    title: "About Us | Dropin",
     view: "about",
   });
 });
@@ -30,7 +30,7 @@ router.get("/support", (req, res) => {
   return res.render("page", {
     user: req.session.user,
     login: false,
-    title: "Support - Dropin",
+    title: "Support | Dropin",
     view: "support",
   });
 });
@@ -38,7 +38,7 @@ router.get("/services", (req, res) => {
   return res.render("page", {
     user: req.session.user,
     login: false,
-    title: "Services - Dropin",
+    title: "Services | Dropin",
     view: "services",
   });
 });

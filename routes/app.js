@@ -7,7 +7,7 @@ const { clientOnly, freelancerOnly } = require("../middlewares/protected");
 router.get("/", authenticateSession, (req, res) => {
   return res.render("app", {
     user: req.session.user,
-    title: "Dashboard - Dropin",
+    title: "Dashboard | Dropin",
     heading: "Dashboard",
     view: "index",
   });
@@ -26,7 +26,7 @@ router.get("/jobs", authenticateSession, freelancerOnly, async (req, res) => {
   });
   return res.render("app", {
     user: req.session.user,
-    title: "Jobs - Dropin",
+    title: "Jobs | Dropin",
     heading: "Job Listings",
     view: "jobs",
     jobs: jobs,
@@ -36,7 +36,7 @@ router.get("/jobs", authenticateSession, freelancerOnly, async (req, res) => {
 router.get("/post-job", authenticateSession, clientOnly, async (req, res) => {
   return res.render("app", {
     user: req.session.user,
-    title: "Jobs - Dropin",
+    title: "Jobs | Dropin",
     heading: "Post Job",
     view: "post-job",
   });
@@ -52,7 +52,7 @@ router.get(
 
     return res.render("app", {
       user: req.session.user,
-      title: "Jobs - Dropin",
+      title: "Jobs | Dropin",
       heading: "Posted Jobs",
       view: "jobs",
       postedJobs: postedJobs,
@@ -83,7 +83,7 @@ router.get(
 
     return res.render("app", {
       user: req.session.user,
-      title: jobDetails.title + " - Dropin",
+      title: jobDetails.title + " | Dropin",
       heading: "Job Details",
       view: "job-details",
       jobDetails,
@@ -101,7 +101,7 @@ router.get(
     const jobDetails = await dbconn.getJobDetails(id);
     return res.render("app", {
       user: req.session.user,
-      title: jobDetails.title + " - Dropin",
+      title: jobDetails.title + " | Dropin",
       heading: "Job Details",
       view: "job-details",
       jobDetails,
@@ -118,7 +118,7 @@ router.get("/proposals", authenticateSession, async (req, res) => {
   }
   return res.render("app", {
     user: req.session.user,
-    title: "Proposals - Dropin",
+    title: "Proposals | Dropin",
     heading: "Proposals",
     view: "proposals",
     proposals,
@@ -141,7 +141,7 @@ router.get(
 
     return res.render("app", {
       user: req.session.user,
-      title: "Freelancer Details - Dropin",
+      title: "Freelancer Details | Dropin",
       heading: "Freelancer Details",
       view: "user-details",
       user_details: user_details,
@@ -165,7 +165,7 @@ router.get(
 
     return res.render("app", {
       user: req.session.user,
-      title: "Client Details - Dropin",
+      title: "Client Details | Dropin",
       heading: "Client Details",
       view: "user-details",
       user_details: user_details,
@@ -176,7 +176,7 @@ router.get(
 router.get("/my-account", authenticateSession, (req, res) => {
   return res.render("app", {
     user: req.session.user,
-    title: "My Account - Dropin",
+    title: "My Account | Dropin",
     heading: "Mange Account",
     view: "my-account",
   });
@@ -185,7 +185,7 @@ router.get("/my-account", authenticateSession, (req, res) => {
 router.get("/my-account/edit", authenticateSession, (req, res) => {
   return res.render("app", {
     user: req.session.user,
-    title: "Edit Account Details - Dropin",
+    title: "Edit Account Details | Dropin",
     heading: "Edit account details",
     view: "edit-user-details",
   });
@@ -198,7 +198,7 @@ router.get(
   async (req, res) => {
     return res.render("app", {
       user: req.session.user,
-      title: "Balance - Dropin",
+      title: "Balance | Dropin",
       heading: "Balance",
       view: "balance",
       balance: req.session.user.balance,
@@ -214,7 +214,7 @@ router.get("/payments", authenticateSession, clientOnly, async (req, res) => {
 
   return res.render("app", {
     user: req.session.user,
-    title: "Payments - Dropin",
+    title: "Payments | Dropin",
     heading: "Payments",
     view: "balance",
     payments,
@@ -226,7 +226,7 @@ router.get("/contracts", authenticateSession, async (req, res) => {
 
   return res.render("app", {
     user: req.session.user,
-    title: "Contracts - Dropin",
+    title: "Contracts | Dropin",
     heading: "Contracts",
     view: "contracts",
     contracts: contracts,
@@ -241,7 +241,7 @@ router.get("/contracts/:id", authenticateSession, async (req, res) => {
 
   return res.render("app", {
     user: req.session.user,
-    title: "Contracts - Dropin",
+    title: "Contracts | Dropin",
     heading: "Contracts",
     view: "contract-details",
     contractDetails,
