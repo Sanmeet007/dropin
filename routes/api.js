@@ -760,6 +760,7 @@ router.post(
           recieverName: user._name,
           templateName: "payment_failure",
           templateParams: {
+            support_email: process.env.SMTP_USER,
             client_name: user._name,
             client_email: user.email,
             client_profile_image: user.profile_image,
@@ -910,7 +911,7 @@ router.post("/payment-failure", authenticateSession, async (req, res) => {
       client_profile_image: user.profile_image,
       amount: amount,
       timestamp: new Date().toJSON(),
-      amount: amount ?? 0,
+      support_email: process.env.SMTP_USER,
     },
     templateName: "payment_failure",
   });
