@@ -238,7 +238,7 @@
                               <div class="v-font-size" style="color: #ced4d9; line-height: -70%; text-align: left; word-wrap: break-word;">
                                 <p>We are pleased to inform you that job <%= job_title %> has been submitted successfully by <%= freelancer_name %>.</p>
                                 <br>
-                                <p>To complete the contract and pay the freelancer, please click on the following link: <a href="/app/payments">End Contract</a></p>
+                                <p>To complete the contract and pay the freelancer, please click on the following link: <a href="<%= process.env.HOST_ADDR + ":" +  process.env.PORT%>/app/payments">End Contract</a></p>
                                 <br>
                                 <p>If you have any questions or concerns, please don't hesitate to reach out to us.</p>
                                 <br>

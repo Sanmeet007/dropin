@@ -236,7 +236,7 @@
                             <td class="v-container-padding-padding" style="overflow-wrap:break-word;word-break:break-word;padding:0px 30px 20px;font-family:'Open Sans',sans-serif;" align="left">
 
                               <div class="v-font-size" style="color: #ced4d9; line-height: -70%; text-align: left; word-wrap: break-word;">
-                                <p style="font-size: 14px; line-height: 140%;">We are pleased to inform you that your contract for job <a href="/app/jobs/<%= job_id %>"><%= job_title %></a> has been completed successfully. The client, <%= client_name %>, has confirmed that the work was completed to their satisfaction and your payment of $<%= payment_amount %> will be processed as soon as the client pays.</p>
+                                <p style="font-size: 14px; line-height: 140%;">We are pleased to inform you that your contract for job <a href="<%= process.env.HOST_ADDR + ":" +  process.env.PORT%>/app/jobs/<%= job_id %>"><%= job_title %></a> has been completed successfully. The client, <%= client_name %>, has confirmed that the work was completed to their satisfaction and your payment of $<%= payment_amount %> will be processed as soon as the client pays.</p>
                                 <br>
                                 <p style="font-size: 14px; line-height: 140%;">We appreciate your hard work and dedication to the project. Your professionalism and timely delivery have not gone unnoticed. We look forward to working with you on future projects.</p>
                                 <br>
