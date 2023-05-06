@@ -34,7 +34,7 @@
           <% } %>
         </div>
         <% if (contracts[index].end_date === null) { %>
-        <button class="end-contract" data-contract-id="<%= contracts[index].contract_id %>" class="btn" <%= contracts[index].job_status === "closed" ? '' : 'disabled'%>>
+        <button class="end-contract btn" data-contract-id="<%= contracts[index].contract_id %>" <%= contracts[index].job_status === "closed" ? '' : 'disabled'%>>
           End Contract
         </button>
 
@@ -104,38 +104,12 @@
         <%= contracts[index].job_title %>
       </a>
       <% if (contracts[index].job_status === "progress") { %>
-      <button title="Submit Job" data-job-id="<%=contracts[index].job_id %>" class="btn iconbtn" id="finish-job">
+      <button title="Submit Job" data-job-id="<%=contracts[index].job_id %>" class="btn iconbtn finish-job">
         <span class="material-symbols-outlined">
           task_alt
         </span>
       </button>
-      <script>
-        const finishJobButton = document.querySelector("#finish-job");
-        finishJobButton.addEventListener("click", async (e) => {
-          const approved = confirm("Mark this job as complete ?");
-          const jobId = parseInt(finishJobButton.getAttribute("data-job-id"));
 
-          if (approved) {
-            showLoader();
-            try {
-              const res = await fetch(`/api/jobs/submit/${jobId}`, {
-                method: "POST"
-              });
-              if (res.status === 200) {
-                hideLoader();
-                showSnackBar("Job ended successfully", "success")
-              } else {
-                const d = await res.json();
-                hideLoader();
-                showSnackBar(d.message, "error")
-              }
-            } catch (e) {
-              hideLoader();
-              showSnackBar("Something went wrong", "error");
-            }
-          }
-        });
-      </script>
       <% } %>
     </div>
     <div class="desc">
@@ -156,6 +130,37 @@
   </div>
   <% } %>
 </div>
+
+<script>
+  const finishJobButtons = document.querySelectorAll(".finish-job");
+  finishJobButtons.forEach(finishJobButton => {
+    finishJobButton.addEventListener("click", async (e) => {
+      const approved = confirm("Mark this job as complete ?");
+      const jobId = parseInt(finishJobButton.getAttribute("data-job-id"));
+
+      if (approved) {
+        showLoader();
+        try {
+          const res = await fetch(`/api/jobs/submit/${jobId}`, {
+            method: "POST"
+          });
+          if (res.status === 200) {
+            finishJobButton.setAttribute("disabled", "");
+            hideLoader();
+            showSnackBar("Job ended successfully", "success")
+          } else {
+            const d = await res.json();
+            hideLoader();
+            showSnackBar(d.message, "error")
+          }
+        } catch (e) {
+          hideLoader();
+          showSnackBar("Something went wrong", "error");
+        }
+      }
+    });
+  })
+</script>
 <% } %>
 <% } %>
 
