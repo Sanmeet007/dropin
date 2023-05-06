@@ -7,6 +7,7 @@ const session = require("express-session");
 
 const ApiRoutes = require("./routes/api");
 const AppRoutes = require("./routes/app");
+const WebsiteRoutes = require("./routes/static");
 
 const PORT = process.env.PORT || 3000;
 
@@ -26,23 +27,7 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  let login = false;
-  const action = req.query.action;
-  if (action === "login") login = true;
-  if (req.session.user) {
-    return res.render("index", {
-      user: req.session.user,
-      login,
-    });
-  } else {
-    return res.render("index", {
-      user: null,
-      login,
-    });
-  }
-});
-
+app.use("/", WebsiteRoutes);
 app.use("/app", AppRoutes);
 app.use("/api", ApiRoutes);
 

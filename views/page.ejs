@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('./partials/head.ejs'  , { title }) %>
+
+<body class="dark">
+  <%- include('./partials/loader.ejs') %>
+  <%- include('./partials/header.ejs'  , { login }) %>
+  <div class="container">
+    <%- include(`./static-pages/${view}.ejs`) %>
+  </div>
+  <%- include('./partials/footer.ejs') %>
+  <script src="/assets/script.js"></script>
+</body>
+
+</html>
