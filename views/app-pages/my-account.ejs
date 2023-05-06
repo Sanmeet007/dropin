@@ -4,13 +4,7 @@
   <div class="top">
 
     <div class="image">
-      <% if (user.profile_image) { %>
-      <img src="<%= user.profile_image %>" alt="Avatar Image">
-      <% } else { %>
-      <div class="atext">
-        S
-      </div>
-      <% } %>
+      <img src="<%= user.profile_image ?? '/assets/images/user.jpg' %>" alt="Avatar Image">
     </div>
     <div class="meta">
       <div>
@@ -111,13 +105,7 @@
   <div class="top">
 
     <div class="image">
-      <% if (user.profile_image) { %>
-      <img src="<%= user.profile_image %>" alt="Avatar Image">
-      <% } else { %>
-      <div class="atext">
-        S
-      </div>
-      <% } %>
+      <img src="<%= user.profile_image ?? '/assets/images/user.jpg' %>" alt="Avatar Image">
     </div>
     <div class="meta">
       <div>
