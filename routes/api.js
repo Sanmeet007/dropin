@@ -870,6 +870,7 @@ router.post("/withdraw-money", authenticateSession, async (req, res) => {
           recieverName: user._name,
           templateName: "withdraw_failure",
           templateParams: {
+            support_email: process.env.SMTP_USER,
             name: user._name,
             email: user.email,
             reason: "Insufficient Balance",
@@ -936,7 +937,10 @@ router.post("/withdraw-failure", authenticateSession, async (req, res) => {
     recieverEmailId: user.email,
     recieverName: user._name,
     templateParams: {
-      amount: amount ?? 0,
+      name: user._name,
+      email: user.email,
+      reason: "Something went wrong at server side.",
+      support_email: process.env.SMTP_USER,
     },
     templateName: "withdraw_failure",
   });
