@@ -1,3 +1,4 @@
+<script>let  verifyBtn = null;</script>
 <% if (user.account_type === "client") { %>
 <div class="details">
   <h3>
@@ -30,7 +31,7 @@
     <% }else { %>
     <button id="verify-btn" class="orange text-btn">Verify Now</button>
     <script>
-      const verifyBtn = document.querySelector("#verify-btn");
+      verifyBtn = document.querySelector("#verify-btn");
       verifyBtn.addEventListener("click", async () => {
         try {
           showLoader();
@@ -100,7 +101,31 @@
       </span><span>Verified</span>
     </div>
     <% }else { %>
-    <a href="#" class="orange">Verify Now</a>
+      <button id="verify-btn" class="orange text-btn">Verify Now</button>
+    <script>
+      verifyBtn = document.querySelector("#verify-btn");
+      verifyBtn.addEventListener("click", async () => {
+        try {
+          showLoader();
+          const res = await fetch('/api/user/get-verified');
+
+          if (res.status === 200) {
+            verifyBtn.setAttribute("disabled", "")
+            hideLoader();
+            showSnackBar("Verfication link sent successsfully to registered email id", "success");
+          } else {
+            const d = await res.json();
+            hideLoader();
+            showSnackBar(d.message, "error");
+          }
+
+        } catch (e) {
+          console.log(e)
+          hideLoader();
+          showSnackBar("Something went wrong", "error");
+        }
+      })
+    </script>
     <% } %>
   </div>
 </div>
