@@ -292,7 +292,7 @@ router.get("/user/get-verified", authenticateSession, async (req, res) => {
       templateParams: {
         name: user._name,
         verification_link:
-          `${processs.env.HOST_ADDR}:${process.env.PORT}/api/user/verify?token=` +
+          `${process.env.HOST_ADDR}:${process.env.PORT}/api/user/verify?token=` +
           token,
       },
     }); // working
