@@ -7,10 +7,9 @@ Dropin is a user-friendly platform that connects businesses with skilled freelan
 To get started with the Dropin project, follow these steps:
 
 1. Clone the repository to your local machine
-1. Import the database schema to your MySQL database
-1. Install required dependencies using `npm i` command
-1. Configure the application by setting up the `.env.local` file refer to `.env`
-1. Run the application using `npm run dev`
+1. Run command in terminal `docker-compose up -d`
+
+    Note: You need to have Docker set up already.
 
 ## Technologies Used
 
@@ -24,4 +23,4 @@ The Dropin project is licensed under the GNU General Public License v3.0. See th
 
 ## Developer Contact
 
-ssanmeet123@gmail.com
+<ssanmeet123@gmail.com>
