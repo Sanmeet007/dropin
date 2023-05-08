@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  mysqldb:
+    image: mysql:8.0
+    container_name: dropin-mysql
+    command: 
+      - --default-authentication-plugin=mysql_native_password
+    restart: unless-stopped  
+    volumes:
+      -  ./sql/config.sql:/docker-entrypoint-initdb.d/init.sql
+      - db:/var/lib/mysql
+    ports:
+      - "3308:3306"
+    expose:
+      - 3308
+    env_file: ./.env.local
+    environment:
+      - MYSQL_USER=admin
+      - MYSQL_DATABASE=dropin
+      - MYSQL_PASSWORD=admin
+      - MYSQL_ROOT_PASSWORD=admin
+    
+  app:
+    container_name: dropin-node
+    depends_on:
+      - mysqldb
+    build: .
+    restart: unless-stopped
+    env_file: ./.env.local
+    environment:
+      - DB_HOST=mysqldb
+      - DB_PORT=3306
+      - DB_USERNAME=admin
+      - DB_NAME=dropin
+      - DB_PASSWORD=admin
+    ports:
+      - 80:80    
+    expose : 
+      - 80  
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
