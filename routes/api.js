@@ -156,6 +156,10 @@ router.post("/sign-up", async (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  if (!req.session.user) {
+    res.status(401).end();
+    return;
+  }
   req.session.destroy();
   return res.end();
 });
